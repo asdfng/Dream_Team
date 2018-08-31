@@ -1,0 +1,34 @@
+<!-- WORK IN PROGRESS!! NOT FINISHED -->
+<?xml version="1.0"?>
+     <robot name="diff_drive_model">
+
+<!-- ~~~~~~~~~~~~~~~~ LINKS ~~~~~~~~~~~~~~~~ -->
+<!-- LINK 1: CHASSIS BASE -->
+<link name="chassis">
+<origin xyz="0 0 0" rpy="0 0 0"/>
+     <!-- COLLISION OF CHASSIS BASE -->
+     <collision name="collision">
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+               <cylinder length="0.0195" radius="0.0815"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF CHASSIS BASE -->
+     <visual name="visual">
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+               <mesh filename="model://romi/meshes/romi_base.dae"/>
+          </geometry>
+     </visual>
+     <!-- INERTIA OF CHASSIS BASE -->
+     <inertial>
+          <mass value="0.160"/>
+          <inertia
+               ixx="0.1"      ixy="0.0"      ixz="0.0"
+               iyy="0.1"      iyz="0.0"      izz="0.1"/>
+     </inertial>
+</link>
+<!-- ~~~~~~~~~~~~~~~~ JOINTS ~~~~~~~~~~~~~~~~ -->
+<!-- ~~~~~~~~~~~~~~~~ TRANSMISSIONS ~~~~~~~~~~~~~~~~ -->
+<!-- ~~~~~~~~~~~~~~~~ PLUG-INS ~~~~~~~~~~~~~~~~ -->
+</robot>
