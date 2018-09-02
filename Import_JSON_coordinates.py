@@ -1,5 +1,8 @@
-import urllib.request, json 
-with urllib.request.urlopen("http://172.16.0.1:8001/FieldData/GetData") as url:
-    data = json.loads(url.read().decode())
-    print(data)
-    
+import json, urllib.request
+
+with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
+    source = response.read()
+
+data = json.loads(source.decode())
+
+print(json.dumps(data, indent=2))
