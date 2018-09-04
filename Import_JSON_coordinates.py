@@ -1,8 +1,11 @@
-import json, urllib.request
+import json, urllib.request, time
 
-with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
-    source = response.read()
+while
 
-data = json.loads(source.decode())
+    with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
+        source = response.read()
 
-print(json.dumps(data, indent=2))
+    data = json.loads(source.decode())
+
+    print(json.dumps(data, indent=2))
+    time.sleep(2)
