@@ -7,7 +7,7 @@
 <origin xyz="0 0 0" rpy="0 0 0"/>
      <!-- COLLISION OF CHASSIS BASE -->
      <collision name="chassis_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <origin xyz="0.00975 0.078 0.0815" rpy="0 0 0"/>
           <geometry>
                <cylinder length="0.0195" radius="0.0815"/>
           </geometry>
@@ -30,9 +30,9 @@
 <!-- FRONT CASTER -->
      <!-- COLLISION OF FRONT CASTER -->
      <collision name="caster_front_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <origin xyz="0.0115 0.0325 0.06774" rpy="0 0 0"/>
           <geometry>
-               <cylinder length="0.029" radius="0.0254"/>
+               <cylinder length="0.007" radius="0.015"/>
           </geometry>
      </collision>
      <!-- VISUAL OF FRONT CASTER... N/A -->
@@ -40,7 +40,7 @@
 <!-- FRONT CASTER BALL -->
      <!-- COLLISION OF FRONT CASTER BALL -->
      <collision name="caster_ball_front_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <origin xyz="0.0115 0.0325 0.06774" rpy="0 0 0"/>
           <geometry>
                <sphere radius="0.0127"/>
           </geometry>
@@ -50,19 +50,19 @@
 <!-- BACK CASTER -->
      <!-- COLLISION OF BACK CASTER -->
      <collision name="caster_back_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <origin xyz="0.0115 0.1406 0.06774" rpy="0 0 0"/>
           <geometry>
-               <cylinder length="0.029" radius="0.0254"/>
+               <cylinder length="0.007" radius="0.015"/>
           </geometry>
      </collision>
      <!-- VISUAL OF BACK CASTER... N/A -->
 
 <!-- BACK CASTER BALL -->
      <!-- COLLISION OF BACK CASTER BALL -->
-     <collision name="caster_back_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+     <collision name="caster_back_ball_collision">
+          <origin xyz="0.0115 0.1406 0.06774" rpy="0 0 0"/>
           <geometry>
-               <cylinder length="0.029" radius="0.0254"/>
+               <sphere radius="0.0127"/>
           </geometry>
      </collision>
      <!-- VISUAL OF BACK CASTER BALL... N/A -->
@@ -73,14 +73,15 @@
 <origin xyz="0 0 0" rpy="0 0 0"/>
      <!-- COLLISION OF LEFT WHEEL -->
      <collision name="wheel_l_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <!-- <origin xyz="0.0815 0.077 0.091" rpy="0 1.5707 0"/> -->
+          <origin xyz="0 0 0" rpy="0 1.5707 0"/>
           <geometry>
                <cylinder length="0.008" radius="0.035"/>
           </geometry>
      </collision>
      <!-- VISUAL OF LEFT WHEEL -->
      <visual name="wheel_l_visual">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <origin xyz="-0.0815 -0.077 -0.091" rpy="0 0 0"/>
           <geometry>
                <mesh filename="model://romi/meshes/romi_wheel_left.dae"/>
           </geometry>
@@ -99,14 +100,15 @@
 <origin xyz="0 0 0" rpy="0 0 0"/>
      <!-- COLLISION OF RIGHT WHEEL -->
      <collision name="wheel_r_collision">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <!-- <origin xyz="-0.06 0.077 0.091" rpy="0 1.5707 0"/> -->
+          <origin xyz="0 0 0" rpy="0 1.5707 0"/>
           <geometry>
                <cylinder length="0.008" radius="0.035"/>
           </geometry>
      </collision>
      <!-- VISUAL OF RIGHT WHEEL -->
      <visual name="wheel_r_visual">
-          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <origin xyz="0.06 -0.077 -0.091" rpy="0 0 0"/>
           <geometry>
                <mesh filename="model://romi/meshes/romi_wheel_right.dae"/>
           </geometry>
@@ -123,19 +125,19 @@
 <!-- ~~~~~~~~~~~~~~~~ JOINTS ~~~~~~~~~~~~~~~~ -->
 <!-- JOINT 1: LEFT WHEEL -->
 <joint name="wheel_l_joint" type="continuous">
-     <origin xyz="0 0 0" rpy="0 0 0"/>
+     <origin xyz="0.0815 0.077 0.091" rpy="0 0 0"/>
      <parent link="chassis"/>
      <child link="wheel_l"/>
-     <axis xyz="0 0 1"/>
+     <axis xyz="1 0 0"/>
      <limit effort="10" velocity="1.0"/>
 </joint>
 
 <!-- JOINT 2: RIGHT WHEEL -->
 <joint name="wheel_r_joint" type="continuous">
-     <origin xyz="0 0 0" rpy="0 0 0"/>
+     <origin xyz="-0.06 0.077 0.091" rpy="0 0 0"/>
      <parent link="chassis"/>
      <child link="wheel_r"/>
-     <axis xyz="0 0 1"/>
+     <axis xyz="1 0 0"/>
      <limit effort="10" velocity="1.0"/>
 </joint>
 <!-- ~~~~~~~~~~~~~~~~ GAZEBO REFERENCES ~~~~~~~~~~~~~~~~ -->
@@ -143,12 +145,14 @@
 <gazebo reference="wheel_l">
      <mu1 value="0"/>
      <mu2 value="0"/>
+     <self_collide>0</self_collide>
 </gazebo>
 
 <!-- GAZEBO REFERENCE 2: RIGHT WHEEL -->
 <gazebo reference="wheel_r">
      <mu1 value="0"/>
      <mu2 value="0"/>
+     <self_collide>0</self_collide>
 </gazebo>
 <!-- ~~~~~~~~~~~~~~~~ TRANSMISSIONS ~~~~~~~~~~~~~~~~ -->
 <!-- LEFT WHEEL TRANSMISSION -->
@@ -173,9 +177,9 @@
      </joint>
 </transmission>
 <!-- ~~~~~~~~~~~~~~~~ PLUG-INS ~~~~~~~~~~~~~~~~ -->
-<gazebo>
+<!-- <gazebo>
      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
           <robotNamespace>/</robotNamespace>
      </plugin>
-</gazebo>
+</gazebo> -->
 </robot>
