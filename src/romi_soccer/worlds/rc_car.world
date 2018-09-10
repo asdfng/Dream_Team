@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="rc_car">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/> -->
+  </world>
+</sdf>
