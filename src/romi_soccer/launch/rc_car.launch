@@ -41,7 +41,7 @@
           type="rqt_robot_steering">
      <param
                name="default_topic"
-               value="/test_drive_controller/cmd_vel"/>
+               value="/romi_controller/cmd_vel"/>
      </node>
 
      <param

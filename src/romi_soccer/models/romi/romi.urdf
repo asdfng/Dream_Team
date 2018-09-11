@@ -21,7 +21,7 @@
      </visual>
      <!-- INERTIA OF CHASSIS BASE -->
      <inertial name="chassis_inertia">
-          <mass value="0.160"/>
+          <mass value="0.146"/>
           <inertia
                ixx="0.1"      ixy="0.0"      ixz="0.0"
                iyy="0.1"      iyz="0.0"      izz="0.1"/>
@@ -125,7 +125,7 @@
 <!-- ~~~~~~~~~~~~~~~~ JOINTS ~~~~~~~~~~~~~~~~ -->
 <!-- JOINT 1: LEFT WHEEL -->
 <joint name="wheel_l_joint" type="continuous">
-     <origin xyz="0.0815 0.077 0.091" rpy="0 0 0"/>
+     <origin xyz="0.0815 0.085 0.09" rpy="0 0 0"/>
      <parent link="chassis"/>
      <child link="wheel_l"/>
      <axis xyz="1 0 0"/>
@@ -134,25 +134,38 @@
 
 <!-- JOINT 2: RIGHT WHEEL -->
 <joint name="wheel_r_joint" type="continuous">
-     <origin xyz="-0.06 0.077 0.091" rpy="0 0 0"/>
+     <origin xyz="-0.06 0.085 0.09" rpy="0 0 0"/>
      <parent link="chassis"/>
      <child link="wheel_r"/>
      <axis xyz="1 0 0"/>
      <limit effort="10" velocity="1.0"/>
 </joint>
+<!-- FIXED LEFT WHEEL FRAME
+<joint name="base_to_wheel_l" type="fixed">
+  <origin xyz="0.0815 0.077 0.085" rpy="0 0 0"/>
+  <parent link="chassis"/>
+  <child link="wheel_l"/>
+</joint>
+FIXED RIGHT WHEEL FRAME
+<joint name="base_to_wheel_r" type="fixed">
+  <origin xyz="0.0815 0.077 0.085" rpy="0 0 0"/>
+  <parent link="chassis"/>
+  <child link="wheel_r"/>
+</joint> -->
+
 <!-- ~~~~~~~~~~~~~~~~ GAZEBO REFERENCES ~~~~~~~~~~~~~~~~ -->
 <!-- GAZEBO REFERENCE 1: LEFT WHEEL -->
 <gazebo reference="wheel_l">
-     <mu1 value="0"/>
-     <mu2 value="0"/>
-     <self_collide>0</self_collide>
+     <mu1 value="1"/>
+     <mu2 value="1"/>
+     <!-- <selfCollide>false</selfCollide> -->
 </gazebo>
 
 <!-- GAZEBO REFERENCE 2: RIGHT WHEEL -->
 <gazebo reference="wheel_r">
-     <mu1 value="0"/>
-     <mu2 value="0"/>
-     <self_collide>0</self_collide>
+     <mu1 value="1"/>
+     <mu2 value="1"/>
+     <!-- <selfCollide>false</selfCollide> -->
 </gazebo>
 <!-- ~~~~~~~~~~~~~~~~ TRANSMISSIONS ~~~~~~~~~~~~~~~~ -->
 <!-- LEFT WHEEL TRANSMISSION -->
@@ -177,9 +190,9 @@
      </joint>
 </transmission>
 <!-- ~~~~~~~~~~~~~~~~ PLUG-INS ~~~~~~~~~~~~~~~~ -->
-<!-- <gazebo>
+<gazebo>
      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
           <robotNamespace>/</robotNamespace>
      </plugin>
-</gazebo> -->
+</gazebo>
 </robot>

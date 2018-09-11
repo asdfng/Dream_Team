@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   joint_state_publisher
   nav_msgs
   robot_state_publisher
-  rqt
   roscpp
   rospy
   tf
