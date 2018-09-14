@@ -1,3 +1,0 @@
-Coordinates4 pixel
-Coordinates4 table
-Homography homography

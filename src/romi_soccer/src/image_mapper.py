@@ -35,23 +35,23 @@ class ImageMapper():
 
 # Recalibrates homography matrix with new corner data
     def recalibrate():
-        u1 = corner.pixel.TopL.x + 32
-        v2 = corner.pixel.TopL.y + 32
+        u1 = corner.TopL.x + 32
+        v2 = corner.TopL.y + 32
         x1 = 0
         y1 = 0
 
-        u2 = corner.pixel.BotL.x - 32
-        v2 = corner.pixel.BotL.y + 32
+        u2 = corner.BotL.x - 32
+        v2 = corner.BotL.y + 32
         x2 = 5
         y2 = 0
 
-        u3 = corner.pixel.TopR.x + 32
-        v3 = corner.pixel.TopR.y - 32
+        u3 = corner.TopR.x + 32
+        v3 = corner.TopR.y - 32
         x3 = 5
         y3 = 10
 
-        u4 = corner.pixel.BotR.x - 32
-        v4 = corner.pixel.BotR.y - 32
+        u4 = corner.BotR.x - 32
+        v4 = corner.BotR.y - 32
         x4 = 0
         y4 = 10
 
@@ -73,11 +73,11 @@ class ImageMapper():
                         [u4],
                         [v4])
         x = numpy.linalg.solve(A,b)
-        corner.homography.mat[0] = x[0,0]
-        corner.homography.mat[1] = x[1,0]
-        corner.homography.mat[2] = x[2,0]
-        corner.homography.mat[3] = x[3,0]
-        corner.homography.mat[4] = x[4,0]
-        corner.homography.mat[5] = x[5,0]
-        corner.homography.mat[6] = x[6,0]
-        corner.homography.mat[7] = x[7,0]
+        mat[0] = x[0,0]
+        mat[1] = x[1,0]
+        mat[2] = x[2,0]
+        mat[3] = x[3,0]
+        mat[4] = x[4,0]
+        mat[5] = x[5,0]
+        mat[6] = x[6,0]
+        mat[7] = x[7,0]
