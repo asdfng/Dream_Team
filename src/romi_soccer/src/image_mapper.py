@@ -9,15 +9,12 @@ class ImageMapper():
 # Initializes publishers
     def init_pubs():
         rospy.loginfo('Initializing publishers...')
-        # Publisher of pixel coordinates taken from JSON
-        pub_pix   = rospy.Publisher('mapper/pix_coordinates',Corner,queue_size=10)
-        # Publisher of table coordinates converted from homography
-        pub_table = rospy.Publisher('mapper/table_coordinates',CornerConverted,queue_size=10)
+        pub = rospy.Publisher('mapper',CornerConverted,queue_size=10)
         rospy.loginfo('Done.')
         corner = Corner()
         while not rospy.is_shutdown():
             json_grabber()
-            pub_pix.publish(corner)
+            pub.publish(corner)
             if rate:
                 rospy.sleep(1/rate)
             else:
@@ -25,7 +22,7 @@ class ImageMapper():
 
     def init_subs():
         rospy.loginfo('Initializing subscriber...')
-        rospy.Subscriber('mapper/pix_coordinates',CornerConverted,callback)
+        rospy.Subscriber('mapper',CornerConverted,callback)
         rospy.loginfo('Done.')
 
     def callback(data):
@@ -84,29 +81,3 @@ class ImageMapper():
         corner.homography.mat[5] = x[5,0]
         corner.homography.mat[6] = x[6,0]
         corner.homography.mat[7] = x[7,0]
-
-
-    # # Convert top left coordinates
-    #     A_TopL = numpy.array([x1, y1, 1, 0, 0, 0, -u1*x1, -u1*y1],
-    #                          [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1])
-    #     b_TopL = numpy.array([u1],
-    #                          [v1])
-    #     x_TopL = numpy.linalg.solve(A_TopL,b_TopL)
-    # # Convert top right coordinates
-    #     A_TopR = numpy.array([x2, y2, 1, 0, 0, 0, -u2*x2, -u2*y2],
-    #                          [0, 0, 0, x2, y2, 1, -v2*x2, -v2*y2])
-    #     b_TopR = numpy.array([u2],
-    #                          [v2])
-    #     x_TopR = numpy.linalg.solve(A_TopR,b_TopR)
-    # # Convert bottom left coordinates
-    #     A_BotL = numpy.array([x3, y3, 1, 0, 0, 0, -u3*x3, -u3*y3],
-    #                          [0, 0, 0, x3, y3, 1, -v3*x3, -v3*y3])
-    #     b_BotL = numpy.array([u3],
-    #                          [v3])
-    #     x_BotL = numpy.linalg.solve(A_BotL,b_BotL)
-    # # Convert bottom right coordinates
-    #     A_BotR = numpy.array([x4, y4, 1, 0, 0, 0, -u4*x4, -u4*y4],
-    #                          [0, 0, 0, x4, y4, 1, -v4*x4, -v4*y4])
-    #     b_BotR = numpy.array([u4],
-    #                          [v4])
-    #     x_BotR = numpy.linalg.solve(A_BotR,b_BotR)
