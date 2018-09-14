@@ -1,0 +1,36 @@
+<launch>
+     <arg
+          name = "paused"
+          value = "true"
+     />
+     <arg
+          name = "use_sim_time"
+          value = "true"
+     />
+     <arg
+          name = "gui"
+          default = "false"
+     />
+     <arg
+          name = "headless"
+          value = "true"
+     />
+     <arg
+          name = "debug"
+          value = "false"
+     />
+     <arg
+          name = "world_name"
+          value = "$(find romi_soccer)/worlds/rc_car.world"
+     />
+
+     <rosparam command="load"
+          file="$(find romi_soccer)/config/diffdrive.yaml"
+     />
+
+     <param
+          name = "robot_description"
+          textfile = "$(find romi_soccer)/models/romi/romi.urdf"
+     />
+
+</launch>

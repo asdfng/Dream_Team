@@ -1,0 +1,198 @@
+<?xml version="1.0"?>
+     <robot name="romi_red">
+
+<!-- ~~~~~~~~~~~~~~~~ LINKS ~~~~~~~~~~~~~~~~ -->
+<!-- LINK 1: CHASSIS BASE -->
+<link name="chassis">
+<origin xyz="0 0 0" rpy="0 0 0"/>
+     <!-- COLLISION OF CHASSIS BASE -->
+     <collision name="chassis_collision">
+          <origin xyz="0.00975 0.078 0.0815" rpy="0 0 0"/>
+          <geometry>
+               <cylinder length="0.0195" radius="0.0815"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF CHASSIS BASE -->
+     <visual name="chassis_visual">
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+               <mesh filename="model://romi/meshes/romi_base.dae"/>
+          </geometry>
+     </visual>
+     <!-- INERTIA OF CHASSIS BASE -->
+     <inertial name="chassis_inertia">
+          <mass value="0.146"/>
+          <inertia
+               ixx="0.1"      ixy="0.0"      ixz="0.0"
+               iyy="0.1"      iyz="0.0"      izz="0.1"/>
+     </inertial>
+
+<!-- FRONT CASTER -->
+     <!-- COLLISION OF FRONT CASTER -->
+     <collision name="caster_front_collision">
+          <origin xyz="0.0115 0.0325 0.06774" rpy="0 0 0"/>
+          <geometry>
+               <cylinder length="0.007" radius="0.015"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF FRONT CASTER... N/A -->
+
+<!-- FRONT CASTER BALL -->
+     <!-- COLLISION OF FRONT CASTER BALL -->
+     <collision name="caster_ball_front_collision">
+          <origin xyz="0.0115 0.0325 0.06774" rpy="0 0 0"/>
+          <geometry>
+               <sphere radius="0.0127"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF FRONT CASTER BALL... N/A -->
+
+<!-- BACK CASTER -->
+     <!-- COLLISION OF BACK CASTER -->
+     <collision name="caster_back_collision">
+          <origin xyz="0.0115 0.1406 0.06774" rpy="0 0 0"/>
+          <geometry>
+               <cylinder length="0.007" radius="0.015"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF BACK CASTER... N/A -->
+
+<!-- BACK CASTER BALL -->
+     <!-- COLLISION OF BACK CASTER BALL -->
+     <collision name="caster_back_ball_collision">
+          <origin xyz="0.0115 0.1406 0.06774" rpy="0 0 0"/>
+          <geometry>
+               <sphere radius="0.0127"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF BACK CASTER BALL... N/A -->
+</link>
+
+<!-- LINK 2: LEFT WHEEL -->
+<link name="wheel_l">
+<origin xyz="0 0 0" rpy="0 0 0"/>
+     <!-- COLLISION OF LEFT WHEEL -->
+     <collision name="wheel_l_collision">
+          <!-- <origin xyz="0.0815 0.077 0.091" rpy="0 1.5707 0"/> -->
+          <origin xyz="0 0 0" rpy="0 1.5707 0"/>
+          <geometry>
+               <cylinder length="0.008" radius="0.035"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF LEFT WHEEL -->
+     <visual name="wheel_l_visual">
+          <origin xyz="-0.0815 -0.077 -0.091" rpy="0 0 0"/>
+          <geometry>
+               <mesh filename="model://romi/meshes/romi_wheel_left.dae"/>
+          </geometry>
+     </visual>
+     <!-- INERTIA OF LEFT WHEEL -->
+     <inertial name="wheel_l_inertia">
+          <mass value="0.141748"/>
+          <inertia
+               ixx="0.0000441663143"      ixy="0.0"      ixz="0.0"
+               iyy="0.0000441663143"      iyz="0.0"      izz="0.00008682065"/>
+     </inertial>
+</link>
+
+<!-- LINK 3: RIGHT WHEEL -->
+<link name="wheel_r">
+<origin xyz="0 0 0" rpy="0 0 0"/>
+     <!-- COLLISION OF RIGHT WHEEL -->
+     <collision name="wheel_r_collision">
+          <!-- <origin xyz="-0.06 0.077 0.091" rpy="0 1.5707 0"/> -->
+          <origin xyz="0 0 0" rpy="0 1.5707 0"/>
+          <geometry>
+               <cylinder length="0.008" radius="0.035"/>
+          </geometry>
+     </collision>
+     <!-- VISUAL OF RIGHT WHEEL -->
+     <visual name="wheel_r_visual">
+          <origin xyz="0.06 -0.077 -0.091" rpy="0 0 0"/>
+          <geometry>
+               <mesh filename="model://romi/meshes/romi_wheel_right.dae"/>
+          </geometry>
+     </visual>
+     <!-- INERTIA OF RIGHT WHEEL -->
+     <inertial name="wheel_r_inertia">
+          <mass value="0.141748"/>
+          <inertia
+               ixx="0.0000441663143"      ixy="0.0"      ixz="0.0"
+               iyy="0.0000441663143"      iyz="0.0"      izz="0.00008682065"/>
+     </inertial>
+</link>
+
+<!-- ~~~~~~~~~~~~~~~~ JOINTS ~~~~~~~~~~~~~~~~ -->
+<!-- JOINT 1: LEFT WHEEL -->
+<joint name="wheel_l_joint" type="continuous">
+     <origin xyz="0.0815 0.085 0.09" rpy="0 0 0"/>
+     <parent link="chassis"/>
+     <child link="wheel_l"/>
+     <axis xyz="1 0 0"/>
+     <limit effort="10" velocity="1.0"/>
+</joint>
+
+<!-- JOINT 2: RIGHT WHEEL -->
+<joint name="wheel_r_joint" type="continuous">
+     <origin xyz="-0.06 0.085 0.09" rpy="0 0 0"/>
+     <parent link="chassis"/>
+     <child link="wheel_r"/>
+     <axis xyz="1 0 0"/>
+     <limit effort="10" velocity="1.0"/>
+</joint>
+<!-- FIXED LEFT WHEEL FRAME
+<joint name="base_to_wheel_l" type="fixed">
+  <origin xyz="0.0815 0.077 0.085" rpy="0 0 0"/>
+  <parent link="chassis"/>
+  <child link="wheel_l"/>
+</joint>
+FIXED RIGHT WHEEL FRAME
+<joint name="base_to_wheel_r" type="fixed">
+  <origin xyz="0.0815 0.077 0.085" rpy="0 0 0"/>
+  <parent link="chassis"/>
+  <child link="wheel_r"/>
+</joint> -->
+
+<!-- ~~~~~~~~~~~~~~~~ GAZEBO REFERENCES ~~~~~~~~~~~~~~~~ -->
+<!-- GAZEBO REFERENCE 1: LEFT WHEEL -->
+<gazebo reference="wheel_l">
+     <mu1 value="1"/>
+     <mu2 value="1"/>
+     <!-- <selfCollide>false</selfCollide> -->
+</gazebo>
+
+<!-- GAZEBO REFERENCE 2: RIGHT WHEEL -->
+<gazebo reference="wheel_r">
+     <mu1 value="1"/>
+     <mu2 value="1"/>
+     <!-- <selfCollide>false</selfCollide> -->
+</gazebo>
+<!-- ~~~~~~~~~~~~~~~~ TRANSMISSIONS ~~~~~~~~~~~~~~~~ -->
+<!-- LEFT WHEEL TRANSMISSION -->
+<transmission name="wheel_l_trans">
+     <type>transmission_interface/SimpleTransmission</type>
+     <actuator name="wheel_l_motor">
+          <mechanicalReduction>1</mechanicalReduction>
+     </actuator>
+     <joint name="wheel_l_joint">
+          <hardwareInterface>VelocityJointInterface</hardwareInterface>
+     </joint>
+</transmission>
+
+<!-- RIGHT WHEEL TRANSMISSION -->
+<transmission name="wheel_r_trans">
+     <type>transmission_interface/SimpleTransmission</type>
+     <actuator name="wheel_r_motor">
+          <mechanicalReduction>1</mechanicalReduction>
+     </actuator>
+     <joint name="wheel_r_joint">
+          <hardwareInterface>VelocityJointInterface</hardwareInterface>
+     </joint>
+</transmission>
+<!-- ~~~~~~~~~~~~~~~~ PLUG-INS ~~~~~~~~~~~~~~~~ -->
+<gazebo>
+     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+          <robotNamespace>/</robotNamespace>
+     </plugin>
+</gazebo>
+</robot>
