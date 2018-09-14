@@ -19,7 +19,7 @@ class JSONGrabber():
             rospy.spinOnce()
             rospy.sleep()
 
-    def json_grabber():
+    def json_grabber(): #code will run continuously until program is terminated!
         while 1:
         with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
         source = response.read()
