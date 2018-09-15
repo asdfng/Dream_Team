@@ -24,33 +24,6 @@
           value = "$(find romi_soccer)/worlds/rc_car.world"
      />
 
-     <rosparam command="load"
-          file="$(find romi_soccer)/config/diffdrive.yaml"
-     />
-
-
-     <param
-          name = "robot_description"
-          textfile = "$(find romi_soccer)/models/romi/romi.urdf"
-     />
-
-     <node
-          name   = "controller_node"
-          pkg    = "controller_manager"
-          type   = "spawner"
-          args   = "romi_controller"
-     />
-
-     <node
-          name   = "rqt_robot_steering"
-          pkg    = "rqt_robot_steering"
-          type   = "rqt_robot_steering">
-     <param
-          name   = "default_topic"
-          value  = "/cmd_vel"/>
-     </node>
-
-
      <node
           name = "gazebo"
           pkg = "gazebo_ros"
@@ -58,10 +31,6 @@
           args = "$(arg world_name)"
           respawn = "false"
      />
-     <node
-          name = "spawn_urdf"
-          pkg = "gazebo_ros"
-          type = "spawn_model"
-          args = "-param robot_description -urdf -z 1 -model romi"
-     />
+
+     <include file="$(find romi_soccer)/launch/swarm_pi.launch"/>
 </launch>

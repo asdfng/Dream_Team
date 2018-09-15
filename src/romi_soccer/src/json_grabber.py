@@ -1,48 +1,54 @@
 import rospy
 import roslib
-from romi_soccer.msg import Coordinates4
+from romi_soccer.msg import Map, Vector2
 from rospy.numpy_msg import numpy_msg
 import json, urllib.request, time
 class JSONGrabber():
     def __init__(self):
         init_pubs()
+        self.corner = Map()
+        with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
+        self.source = response.read()
+        self.data = json.loads(source.decode())
 # Initializes publishers
     def init_pubs():
         rospy.loginfo('Initializing publisher...')
-        pub = rospy.Publisher('mapper/raw_data',Coordinates4,queue_size=10)
+        pub_corner = rospy.Publisher('mapper/raw_data/corners',Map,queue_size=10)
+        pub_ball = rospy.Publisher('mapper/raw_data/ball',Vector2,queue_size=10)
+        pub_ = rospy.Publisher('mapper/raw_data/corners',Map,queue_size=10)
         rospy.loginfo('Done.')
-        rawJSON = Coordinates4()
         rate = rospy.Rate(10)  # 10 Hz
         while not rospy.is_shutdown():
-            self.json_grabber()
-            pub.publish(rawJSON)
+            # self.json_grabber()
+            pub.publish(corners)
             rospy.spinOnce()
             rospy.sleep()
 
     def json_grabber():
-        while 1:
-        with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
-        source = response.read()
-        data = json.loads(source.decode())
-        #Ball data parsing
-        ball = data['Ball']
-        ball_coordinates = ball['Object Center']
-        ball_coordinateX = ball_coordinates['X']
-        ball_coordinateY = ball_coordinates['Y']
+        while not rospy.is_shutdown:
+            with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
+            self.source = response.read()
+            self.data = json.loads(source.decode())
+            json_ball_grabber()
+            json_corner_grabber()
+            rospy.spinOnce()
+            rospy.sleep()
+
+    def json_corner_grabber():
         #Corners data parsing
         corners = data['Corners']
         cornerBL = corners[0]
         cornerBR = corners[1]
         cornerTL = corners[2]
         cornerTR = corners[3]
-        cornerBLX = cornerBL['X']
-        cornerBLY = cornerBL['Y']
-        cornerBRX = cornerBR['X']
-        cornerBRY = cornerBR['Y']
-        cornerTLX = cornerTL['X']
-        cornerTLY = cornerTL['Y']
-        cornerTRX = cornerTR['X']
-        cornerTRY = cornerTR['Y']
+        corner.BotL.x = cornerBL['X']
+        corner.BotL.y = cornerBL['Y']
+        corner.BotR.x = cornerBR['X']
+        corner.BotR.y = cornerBR['Y']
+        corner.TopL.x = cornerTL['X']
+        corner.TopL.y = cornerTL['Y']
+        corner.TopR.x = cornerTR['X']
+        corner.TopR.y = cornerTR['Y']
         #Red Team data parsing
          Red = data['Red Team Data']
         #Red Circle
@@ -132,7 +138,13 @@ class JSONGrabber():
         btbbYB = btBoundinBox['Y Bottom']
         #Area
         btArea = bTriangle['Area']
-        time.sleep(1)
+
+def json_ball_grabber():
+    #Ball data parsing
+    ball = data['Ball']
+    ball_coordinates = ball['Object Center']
+    ball_coordinateX = ball_coordinates['X']
+    ball_coordinateY = ball_coordinates['Y']
 
 
 if __name__=='__main__':

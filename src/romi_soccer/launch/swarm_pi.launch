@@ -1,36 +1,30 @@
 <launch>
-     <arg
-          name = "paused"
-          value = "true"
-     />
-     <arg
-          name = "use_sim_time"
-          value = "true"
-     />
-     <arg
-          name = "gui"
-          default = "false"
-     />
-     <arg
-          name = "headless"
-          value = "true"
-     />
-     <arg
-          name = "debug"
-          value = "false"
-     />
-     <arg
-          name = "world_name"
-          value = "$(find romi_soccer)/worlds/rc_car.world"
-     />
-
-     <rosparam command="load"
-          file="$(find romi_soccer)/config/diffdrive.yaml"
-     />
+     <rosparam file="$(find romi_soccer)/config/diffdrive.yaml"
+               command="load"/>
 
      <param
           name = "robot_description"
-          textfile = "$(find romi_soccer)/models/romi/romi.urdf"
-     />
+          textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
+
+     <group ns="romi_pink">
+          <include file="$(find romi_soccer)/launch/romi_one.launch">
+               <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
+               <arg name="robot_name" value="romi_pink"/>
+          </include>
+     </group>
+
+     <group ns="romi_red">
+          <include file="$(find romi_soccer)/launch/romi_one.launch">
+               <arg name="init_pose" value="-x -1 -y 1 -z 0"/>
+               <arg name="robot_name" value="romi_red"/>
+          </include>
+     </group>
+
+     <group ns="romi_white">
+     <include file="$(find romi_soccer)/launch/romi_one.launch">
+          <arg name="init_pose" value="-x 0 -y 1 -z 0"/>
+          <arg name="robot_name" value="romi_white"/>
+     </include>
+     </group>
 
 </launch>

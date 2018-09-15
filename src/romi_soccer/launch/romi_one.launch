@@ -2,6 +2,9 @@
      <arg name   = "robot_name"/>
      <arg name   = "init_pose"/>
 
+     <rosparam file="$(find romi_soccer)/config/diffdrive.yaml"
+               command="load"
+               ns = "/$(arg robot_name)"/>
      <node
           name   = "spawn_urdf"
           pkg    = "gazebo_ros"
@@ -12,7 +15,7 @@
      <node
           name   = "robot_state_publisher"
           pkg    = "robot_state_publisher"
-          type   = "state_publisher"
+          type   = "robot_state_publisher"
           output = "screen"
           />
 
@@ -20,7 +23,9 @@
           name   = "controller_node"
           pkg    = "controller_manager"
           type   = "spawner"
-          args   = "romi_controller"
+          args   = "--namespace=/$(arg robot_name)
+                    romi_controller
+                    --shutdown-timeout 3"
      />
 
      <node
@@ -29,7 +34,7 @@
           type   = "rqt_robot_steering">
      <param
           name   = "default_topic"
-          value  = "/cmd_vel"/>
+          value  = "/$(arg robot_name)/romi_controller/cmd_vel"/>
      </node>
 
 </launch>
