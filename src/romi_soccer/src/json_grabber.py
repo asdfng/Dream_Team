@@ -10,6 +10,11 @@ class JSONGrabber():
         with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
         self.source = response.read()
         self.data = json.loads(source.decode())
+        while not rospy.is_shutdown():
+            # self.json_grabber()
+            # pub.publish(corners)
+            rospy.spinOnce()
+            rospy.sleep()
 # Initializes publishers
     def init_pubs():
         rospy.loginfo('Initializing publisher...')
@@ -18,11 +23,7 @@ class JSONGrabber():
         pub_ = rospy.Publisher('mapper/raw_data/corners',Map,queue_size=10)
         rospy.loginfo('Done.')
         rate = rospy.Rate(10)  # 10 Hz
-        while not rospy.is_shutdown():
-            # self.json_grabber()
-            pub.publish(corners)
-            rospy.spinOnce()
-            rospy.sleep()
+
 
     def json_grabber():
         while not rospy.is_shutdown:
