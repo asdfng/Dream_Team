@@ -12,10 +12,12 @@ find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
   geometry_msgs
   joint_state_publisher
+  message_generation
   nav_msgs
   robot_state_publisher
   roscpp
   rospy
+  std_msgs
   tf
 )
 
@@ -23,10 +25,10 @@ find_package(catkin REQUIRED COMPONENTS
 # find_package(Boost REQUIRED COMPONENTS system)
 
 
-## Uncomment this if the package has a setup.py. This macro ensures
-## modules and global scripts declared therein get installed
-## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+# Uncomment this if the package has a setup.py. This macro ensures
+# modules and global scripts declared therein get installed
+# See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -53,11 +55,13 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  Homography.msg
+  Map.msg
+  Rover.msg
+  Vector2.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -74,10 +78,12 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   nav_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  nav_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -169,6 +175,8 @@ include_directories(
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
+
+catkin_install_python(PROGRAMS src/)
 
 ## Mark executables and/or libraries for installation
 # install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node

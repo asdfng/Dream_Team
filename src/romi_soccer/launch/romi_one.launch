@@ -24,8 +24,7 @@
           pkg    = "controller_manager"
           type   = "spawner"
           args   = "--namespace=/$(arg robot_name)
-                    romi_controller
-                    --shutdown-timeout 3"
+                    romi_controller"
      />
 
      <node

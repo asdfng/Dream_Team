@@ -1,6 +1,6 @@
 import rospy
 import roslib
-from romi_soccer.msg import Corner
+from romi_soccer.msg import Map
 from rospy.numpy_msg import numpy_msg
 class ImageMapper():
     def __init__(self):
@@ -22,16 +22,13 @@ class ImageMapper():
 
     def init_subs():
         rospy.loginfo('Initializing subscriber...')
-        rospy.Subscriber('mapper',CornerConverted,callback)
+        rospy.Subscriber('mapper/raw_data/corners',Map,callback)
         rospy.loginfo('Done.')
 
     def callback(data):
         rospy.loginfo('Received new coordinate data.')
         rospy.loginfo('Recalibrating...')
         recalibrate()
-
-    def json_grabber():
-        # Noah's code here
 
 # Recalibrates homography matrix with new corner data
     def recalibrate():

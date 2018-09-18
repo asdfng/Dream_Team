@@ -2,6 +2,9 @@
      <robot name="romi">
 
 <!-- ~~~~~~~~~~~~~~~~ LINKS ~~~~~~~~~~~~~~~~ -->
+<!-- LINK 0: DUMMY BASE LINK -->
+<link name="dummy">
+</link>
 <!-- LINK 1: CHASSIS BASE -->
 <link name="chassis">
 <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -123,6 +126,11 @@
 </link>
 
 <!-- ~~~~~~~~~~~~~~~~ JOINTS ~~~~~~~~~~~~~~~~ -->
+<!-- JOINT 0: FIXED DUMMY BASE -->
+<joint name="dummy_joint" type="fixed">
+     <parent link="chassis"/>
+     <child link="dummy"/>
+</joint>
 <!-- JOINT 1: LEFT WHEEL -->
 <joint name="wheel_l_joint" type="continuous">
      <origin xyz="0.0815 0.085 0.09" rpy="0 0 0"/>
@@ -192,6 +200,7 @@ FIXED RIGHT WHEEL FRAME
 <!-- ~~~~~~~~~~~~~~~~ PLUG-INS ~~~~~~~~~~~~~~~~ -->
 <gazebo>
      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+          <!-- <robotNamespace>/</robotNamespace> -->
      </plugin>
 </gazebo>
 </robot>
