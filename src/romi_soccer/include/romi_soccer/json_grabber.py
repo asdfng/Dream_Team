@@ -1,9 +1,11 @@
+#! /usr/bin/env python
 import rospy
 import roslib
 from romi_soccer.msg import Map, Vector2, Rover
 from rospy.numpy_msg import numpy_msg
-import json, urllib.request, time
-class JSONGrabber():
+import json, urllib, time
+
+class JSONGrabber:
     def __init__(self):
         # Initializing publishers
         rospy.loginfo('Initializing publisher...')

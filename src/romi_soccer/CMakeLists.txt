@@ -115,7 +115,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+ INCLUDE_DIRS include
 #  LIBRARIES romi_soccer
  CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs std_msgs
 #  DEPENDS system_lib
@@ -172,7 +172,7 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS bin/jsongwriter
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/src/)
 
 ## Mark executables and/or libraries for installation
 
