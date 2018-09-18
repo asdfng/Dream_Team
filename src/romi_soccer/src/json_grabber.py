@@ -185,10 +185,3 @@ class JSONGrabber():
         ball.x = ball_coordinates['X']
         ball.y = ball_coordinates['Y']
         pub_ball.publish(ball)
-
-if __name__=='__main__':
-    rospy.init_node('json_grabber')
-    try:
-        jason = JSONGrabber()
-    except:
-        rospy.ROSInterruptException: pass
