@@ -4,7 +4,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 d = generate_distutils_setup(
     packages=['romi_soccer'],
     # scripts=['bin/myscript'],
-    package_dir={'': 'src'}
+    package_dir={'': 'include'}
 )
 
 setup(**d)
