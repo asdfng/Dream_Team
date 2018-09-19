@@ -171,7 +171,7 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS bin/jsongwriter
+catkin_install_python(PROGRAMS bin/jsongwriter.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/src/)
 
 ## Mark executables and/or libraries for installation
