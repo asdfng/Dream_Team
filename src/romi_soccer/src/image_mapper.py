@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import rospy
 import roslib
 from romi_soccer.msg import Map

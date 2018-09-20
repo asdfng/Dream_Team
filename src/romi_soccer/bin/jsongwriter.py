@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import rospy
-import romi_soccer.json_grabber
+from json_grabber import JSONGrabber
 if __name__=='__main__':
     rospy.init_node('jsong_writer')
     try:
