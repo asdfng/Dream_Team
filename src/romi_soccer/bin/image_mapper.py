@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 import rospy
 import roslib
+import urllib.urlopen
 from romi_soccer.msg import Map
 from rospy.numpy_msg import numpy_msg
 class ImageMapper():

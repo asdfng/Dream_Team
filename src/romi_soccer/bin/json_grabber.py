@@ -1,9 +1,7 @@
 #! /usr/bin/env python
-import rospy
-import roslib
+import rospy, roslib, json, time
 from romi_soccer.msg import Map, Vector2, Rover
-from rospy.numpy_msg import numpy_msg
-import json, urllib, time
+import urllib2
 
 class JSONGrabber:
     def __init__(self):
@@ -21,169 +19,170 @@ class JSONGrabber:
 
         rate = rospy.Rate(10)  # 10 Hz
         while not rospy.is_shutdown():
-            with urllib.request.urlopen('http://172.16.0.1:8001/FieldData/GetData') as response:
-                source = response.read()
-                data = json.loads(source.decode())
-                #Red Team data parsing
-                self.Red = data['Red Team Data']
-                #Blue Team data parsing
-                self.Blue = data['Blue Team Data']
+            response = urllib2.urlopen('http://172.16.0.1:8001/FieldData/GetData')
+            source = response.read()
+            data = json.loads(source.decode())
+            #Red Team data parsing
+            self.Red = data['Red Team Data']
+            #Blue Team data parsing
+            self.Blue = data['Blue Team Data']
 
-                #Red Circle
-                self.rCircle = Red['Circle']
-                self.rcCenterPoint = rCircle['Object Center']
-                #Bounding Box
-                self.rcBoundinBox = rCircle['Bounding Box']
-                json_red_circle_grabber()
+            #Red Circle
+            self.rCircle = self.Red['Circle']
+            self.rcCenterPoint = self.rCircle['Object Center']
+            #Bounding Box
+            self.rcBoundinBox = self.rCircle['Bounding Box']
+            self.json_red_circle_grabber()
 
-                #Red Square
-                self.rSquare = Red['Square']
-                self.rsCenterPoint = rSquare['Object Center']
-                #Bounding Box
-                self.rsBoundinBox = rSquare['Bounding Box']
-                json_red_square_grabber()
+            #Red Square
+            self.rSquare = self.Red['Square']
+            self.rsCenterPoint = self.rSquare['Object Center']
+            #Bounding Box
+            self.rsBoundinBox = self.rSquare['Bounding Box']
+            self.json_red_square_grabber()
 
-                #Red Triangle
-                self.rTriangle = Red['Triangle']
-                self.rtCenterPoint = rTriangle['Object Center']
-                #Bounding Btox
-                self.rtBoundinBox = rTriangle['Bounding Box']
-                json_red_triangle_grabber()
+            #Red Triangle
+            self.rTriangle = self.Red['Triangle']
+            self.rtCenterPoint = self.rTriangle['Object Center']
+            #Bounding Btox
+            self.rtBoundinBox = self.rTriangle['Bounding Box']
+            self.json_red_triangle_grabber()
 
-                #Blue Circle
-                self.bCircle = Blue['Circle']
-                self.bcCenterPoint = bCircle['Object Center']
-                #Bounding Box
-                self.bcBoundinBox = bCircle['Bounding Box']
-                json_blue_circle_grabber()
+            #Blue Circle
+            self.bCircle = self.Blue['Circle']
+            self.bcCenterPoint = self.bCircle['Object Center']
+            #Bounding Box
+            self.bcBoundinBox = self.bCircle['Bounding Box']
+            self.json_blue_circle_grabber()
 
-                #Blue Square
-                self.bSquare = Blue['Square']
-                self.bsCenterPoint = bSquare['Object Center']
-                #Bounding Box
-                self.bsBoundinBox = bSquare['Bounding Box']
-                json_blue_square_grabber()
+            #Blue Square
+            self.bSquare = self.Blue['Square']
+            self.bsCenterPoint = self.bSquare['Object Center']
+            #Bounding Box
+            self.bsBoundinBox = self.bSquare['Bounding Box']
+            self.json_blue_square_grabber()
 
-                #Blue Triangle
-                self.bTriangle = Blue['Triangle']
-                self.btCenterPoint = bTriangle['Object Center']
-                #Bounding Box
-                self.btBoundinBox = bTriangle['Bounding Box']
-                json_blue_triangle_grabber()
+            #Blue Triangle
+            self.bTriangle = self.Blue['Triangle']
+            self.btCenterPoint = self.bTriangle['Object Center']
+            #Bounding Box
+            self.btBoundinBox = self.bTriangle['Bounding Box']
+            self.json_blue_triangle_grabber()
 
-                #Ball data parsing
-                self.ball_json = data['Ball']
-                self.ball_coordinates = ball_json['Object Center']
-                json_ball_grabber()
+            #Ball data parsing
+            self.ball_json = data['Ball']
+            self.ball_coordinates = self.ball_json['Object Center']
+            self.json_ball_grabber()
 
-                #Corners data parsing
-                self.corners = data['Corners']
-                self.cornerBL = corners[0]
-                self.cornerBR = corners[1]
-                self.cornerTL = corners[2]
-                self.cornerTR = corners[3]
-                json_corner_grabber()
-            rospy.spinOnce()
-            rospy.sleep()
+            #Corners data parsing
+            self.corners = data['Corners']
+            self.cornerBL = self.corners[0]
+            self.cornerBR = self.corners[1]
+            self.cornerTL = self.corners[2]
+            self.cornerTR = self.corners[3]
+            self.json_corner_grabber()
 
-    def json_corner_grabber():
+            # rospy.spin()
+            rate.sleep()
+
+    def json_corner_grabber(self):
         corner = Map()
-        corner.BotL.x = cornerBL['X']
-        corner.BotL.y = cornerBL['Y']
-        corner.BotR.x = cornerBR['X']
-        corner.BotR.y = cornerBR['Y']
-        corner.TopL.x = cornerTL['X']
-        corner.TopL.y = cornerTL['Y']
-        corner.TopR.x = cornerTR['X']
-        corner.TopR.y = cornerTR['Y']
-        pub_corner.publish(corner)
+        corner.BotL.x = self.cornerBL['X']
+        corner.BotL.y = self.cornerBL['Y']
+        corner.BotR.x = self.cornerBR['X']
+        corner.BotR.y = self.cornerBR['Y']
+        corner.TopL.x = self.cornerTL['X']
+        corner.TopL.y = self.cornerTL['Y']
+        corner.TopR.x = self.cornerTR['X']
+        corner.TopR.y = self.cornerTR['Y']
+        self.pub_corner.publish(corner)
 
-    def json_red_circle_grabber():
+    def json_red_circle_grabber(self):
         player_rc = Rover()
-        player_rc.center.x = rcCenterPoint['X']
-        player_rc.center.y = rcCenterPoint['Y']
-        player_rc.bound.TopL.x = rcBoundinBox['X Left']
-        player_rc.bound.TopL.y = rcBoundinBox['Y Top']
-        player_rc.bound.BotL.x = rcBoundinBox['X Left']
-        player_rc.bound.BotL.y = rcBoundinBox['Y Bottom']
-        player_rc.bound.TopR.x = rcBoundinBox['X Right']
-        player_rc.bound.TopR.y = rcBoundinBox['Y Top']
-        player_rc.bound.BotR.x = rcBoundinBox['X Right']
-        player_rc.bound.BotR.y = rcBoundinBox['Y Bottom']
-        pub_red_circle.publish(player_rc)
+        player_rc.center.x = self.rcCenterPoint['X']
+        player_rc.center.y = self.rcCenterPoint['Y']
+        player_rc.bound.TopL.x = self.rcBoundinBox['X Left']
+        player_rc.bound.TopL.y = self.rcBoundinBox['Y Top']
+        player_rc.bound.BotL.x = self.rcBoundinBox['X Left']
+        player_rc.bound.BotL.y = self.rcBoundinBox['Y Bottom']
+        player_rc.bound.TopR.x = self.rcBoundinBox['X Right']
+        player_rc.bound.TopR.y = self.rcBoundinBox['Y Top']
+        player_rc.bound.BotR.x = self.rcBoundinBox['X Right']
+        player_rc.bound.BotR.y = self.rcBoundinBox['Y Bottom']
+        self.pub_red_circle.publish(player_rc)
 
-    def json_red_square_grabber():
+    def json_red_square_grabber(self):
         player_rs = Rover()
-        player_rs.center.x = rsCenterPoint['X']
-        player_rs.center.y = rsCenterPoint['Y']
-        player_rs.bound.TopL.x = rsBoundinBox['X Left']
-        player_rs.bound.TopL.y = rsBoundinBox['Y Top']
-        player_rs.bound.BotL.x = rsBoundinBox['X Left']
-        player_rs.bound.BotL.y = rsBoundinBox['Y Bottom']
-        player_rs.bound.TopR.x = rsBoundinBox['X Right']
-        player_rs.bound.TopR.y = rsBoundinBox['Y Top']
-        player_rs.bound.BotR.x = rsBoundinBox['X Right']
-        player_rs.bound.BotR.y = rsBoundinBox['Y Bottom']
-        pub_red_square.publish(player_rs)
+        player_rs.center.x = self.rsCenterPoint['X']
+        player_rs.center.y = self.rsCenterPoint['Y']
+        player_rs.bound.TopL.x = self.rsBoundinBox['X Left']
+        player_rs.bound.TopL.y = self.rsBoundinBox['Y Top']
+        player_rs.bound.BotL.x = self.rsBoundinBox['X Left']
+        player_rs.bound.BotL.y = self.rsBoundinBox['Y Bottom']
+        player_rs.bound.TopR.x = self.rsBoundinBox['X Right']
+        player_rs.bound.TopR.y = self.rsBoundinBox['Y Top']
+        player_rs.bound.BotR.x = self.rsBoundinBox['X Right']
+        player_rs.bound.BotR.y = self.rsBoundinBox['Y Bottom']
+        self.pub_red_square.publish(player_rs)
 
-    def json_red_triangle_grabber():
+    def json_red_triangle_grabber(self):
         player_rt = Rover()
-        player_rt.center.x = rtCenterPoint['X']
-        player_rt.center.y = rtCenterPoint['Y']
-        player_rt.bound.TopL.x = rtBoundinBox['X Left']
-        player_rt.bound.TopL.y = rtBoundinBox['Y Top']
-        player_rt.bound.BotL.x = rtBoundinBox['X Left']
-        player_rt.bound.BotL.y = rtBoundinBox['Y Bottom']
-        player_rt.bound.TopR.x = rtBoundinBox['X Right']
-        player_rt.bound.TopR.y = rtBoundinBox['Y Top']
-        player_rt.bound.BotR.x = rtBoundinBox['X Right']
-        player_rt.bound.BotR.y = rtBoundinBox['Y Bottom']
-        pub_red_triangle.publish(player_rt)
+        player_rt.center.x = self.rtCenterPoint['X']
+        player_rt.center.y = self.rtCenterPoint['Y']
+        player_rt.bound.TopL.x = self.rtBoundinBox['X Left']
+        player_rt.bound.TopL.y = self.rtBoundinBox['Y Top']
+        player_rt.bound.BotL.x = self.rtBoundinBox['X Left']
+        player_rt.bound.BotL.y = self.rtBoundinBox['Y Bottom']
+        player_rt.bound.TopR.x = self.rtBoundinBox['X Right']
+        player_rt.bound.TopR.y = self.rtBoundinBox['Y Top']
+        player_rt.bound.BotR.x = self.rtBoundinBox['X Right']
+        player_rt.bound.BotR.y = self.rtBoundinBox['Y Bottom']
+        self.pub_red_triangle.publish(player_rt)
 
-    def json_blue_circle_grabber():
+    def json_blue_circle_grabber(self):
         player_bc = Rover()
-        player_bc.center.x = bcCenterPoint['X']
-        player_bc.center.y = bcCenterPoint['Y']
-        player_bc.bound.TopL.x = bcBoundinBox['X Left']
-        player_bc.bound.TopL.y = bcBoundinBox['Y Top']
-        player_bc.bound.BotL.x = bcBoundinBox['X Left']
-        player_bc.bound.BotL.y = bcBoundinBox['Y Bottom']
-        player_bc.bound.TopR.x = bcBoundinBox['X Right']
-        player_bc.bound.TopR.y = bcBoundinBox['Y Top']
-        player_bc.bound.BotR.x = bcBoundinBox['X Right']
-        player_bc.bound.BotR.y = bcBoundinBox['Y Bottom']
-        pub_blue_circle.publish(player_bc)
+        player_bc.center.x = self.bcCenterPoint['X']
+        player_bc.center.y = self.bcCenterPoint['Y']
+        player_bc.bound.TopL.x = self.bcBoundinBox['X Left']
+        player_bc.bound.TopL.y = self.bcBoundinBox['Y Top']
+        player_bc.bound.BotL.x = self.bcBoundinBox['X Left']
+        player_bc.bound.BotL.y = self.bcBoundinBox['Y Bottom']
+        player_bc.bound.TopR.x = self.bcBoundinBox['X Right']
+        player_bc.bound.TopR.y = self.bcBoundinBox['Y Top']
+        player_bc.bound.BotR.x = self.bcBoundinBox['X Right']
+        player_bc.bound.BotR.y = self.bcBoundinBox['Y Bottom']
+        self.pub_blue_circle.publish(player_bc)
 
-    def json_blue_square_grabber():
+    def json_blue_square_grabber(self):
         player_bs = Rover()
-        player_bs.center.x = bsCenterPoint['X']
-        player_bs.center.y = bsCenterPoint['Y']
-        player_bs.bound.TopL.x = bsBoundinBox['X Left']
-        player_bs.bound.TopL.y = bsBoundinBox['Y Top']
-        player_bs.bound.BotL.x = bsBoundinBox['X Left']
-        player_bs.bound.BotL.y = bsBoundinBox['Y Bottom']
-        player_bs.bound.TopR.x = bsBoundinBox['X Right']
-        player_bs.bound.TopR.y = bsBoundinBox['Y Top']
-        player_bs.bound.BotR.x = bsBoundinBox['X Right']
-        player_bs.bound.BotR.y = bsBoundinBox['Y Bottom']
-        pub_blue_square.publish(player_bs)
+        player_bs.center.x = self.bsCenterPoint['X']
+        player_bs.center.y = self.bsCenterPoint['Y']
+        player_bs.bound.TopL.x = self.bsBoundinBox['X Left']
+        player_bs.bound.TopL.y = self.bsBoundinBox['Y Top']
+        player_bs.bound.BotL.x = self.bsBoundinBox['X Left']
+        player_bs.bound.BotL.y = self.bsBoundinBox['Y Bottom']
+        player_bs.bound.TopR.x = self.bsBoundinBox['X Right']
+        player_bs.bound.TopR.y = self.bsBoundinBox['Y Top']
+        player_bs.bound.BotR.x = self.bsBoundinBox['X Right']
+        player_bs.bound.BotR.y = self.bsBoundinBox['Y Bottom']
+        self.pub_blue_square.publish(player_bs)
 
-    def json_blue_triangle_grabber():
+    def json_blue_triangle_grabber(self):
         player_bt = Rover()
-        player_bt.center.x = btCenterPoint['X']
-        player_bt.center.y = btCenterPoint['Y']
-        player_bt.bound.TopL.x = btBoundinBox['X Left']
-        player_bt.bound.TopL.y = btBoundinBox['Y Top']
-        player_bt.bound.BotL.x = btBoundinBox['X Left']
-        player_bt.bound.BotL.y = btBoundinBox['Y Bottom']
-        player_bt.bound.TopR.x = btBoundinBox['X Right']
-        player_bt.bound.TopR.y = btBoundinBox['Y Top']
-        player_bt.bound.BotR.x = btBoundinBox['X Right']
-        player_bt.bound.BotR.y = btBoundinBox['Y Bottom']
-        pub_blue_triangle.publish(player_bt)
+        player_bt.center.x = self.btCenterPoint['X']
+        player_bt.center.y = self.btCenterPoint['Y']
+        player_bt.bound.TopL.x = self.btBoundinBox['X Left']
+        player_bt.bound.TopL.y = self.btBoundinBox['Y Top']
+        player_bt.bound.BotL.x = self.btBoundinBox['X Left']
+        player_bt.bound.BotL.y = self.btBoundinBox['Y Bottom']
+        player_bt.bound.TopR.x = self.btBoundinBox['X Right']
+        player_bt.bound.TopR.y = self.btBoundinBox['Y Top']
+        player_bt.bound.BotR.x = self.btBoundinBox['X Right']
+        player_bt.bound.BotR.y = self.btBoundinBox['Y Bottom']
+        self.pub_blue_triangle.publish(player_bt)
 
-    def json_ball_grabber():
+    def json_ball_grabber(self):
         ball = Vector2()
-        ball.x = ball_coordinates['X']
-        ball.y = ball_coordinates['Y']
-        pub_ball.publish(ball)
+        ball.x = self.ball_coordinates['X']
+        ball.y = self.ball_coordinates['Y']
+        self.pub_ball.publish(ball)
