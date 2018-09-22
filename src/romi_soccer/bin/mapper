@@ -2,7 +2,7 @@
 import rospy
 from image_mapper import ImageMapper
 if __name__=='__main__':
-    rospy.init_node('json_grabber')
+    rospy.init_node('image_mapper')
     try:
         rospy.loginfo('Initializing node...')
         map = ImageMapper()
