@@ -2,7 +2,7 @@
 import rospy
 from json_grabber import JSONGrabber
 if __name__=='__main__':
-    rospy.init_node('jsong_writer')
+    rospy.init_node('json_grabber')
     try:
         rospy.loginfo('Initializing node...')
         jason = JSONGrabber()

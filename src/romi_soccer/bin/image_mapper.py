@@ -1,39 +1,27 @@
 #! /usr/bin/env python
-import rospy
-import roslib
-import urllib.urlopen
+import rospy, roslib, numpy
 from romi_soccer.msg import Map
-from rospy.numpy_msg import numpy_msg
+# from rospy.numpy_msg import numpy_msg as numpy
 class ImageMapper():
     def __init__(self):
-        init_subs()
-        init_pubs()
-# Initializes publishers
-    def init_pubs():
+        global u1, v1, u2, v2, u3, v3, u4, v4
+        global x1, y1, x2, y2, x3, y3, x4, y4
+        # Initializes publishers
         rospy.loginfo('Initializing publishers...')
-        pub = rospy.Publisher('mapper',CornerConverted,queue_size=10)
+        pub = rospy.Publisher('mapper/homography',Homography,queue_size=10)
+        # pub_corner = rospy.Publisher('mapper/corner',Map,queue_size=10)
         rospy.loginfo('Done.')
-        corner = Corner()
+
+        rate = rospy.Rate(10)
+        rospy.loginfo('Initializing subscribers...')
+        rospy.Subscriber('mapper/raw_data/corners',Map,recalibrate)
+        rospy.loginfo('Done.')
         while not rospy.is_shutdown():
-            json_grabber()
-            pub.publish(corner)
-            if rate:
-                rospy.sleep(1/rate)
-            else:
-                rospy.sleep(1.0)
+            self.recalibrate()
+            rate.sleep()
 
-    def init_subs():
-        rospy.loginfo('Initializing subscriber...')
-        rospy.Subscriber('mapper/raw_data/corners',Map,callback)
-        rospy.loginfo('Done.')
-
-    def callback(data):
+    def callback(corner):
         rospy.loginfo('Received new coordinate data.')
-        rospy.loginfo('Recalibrating...')
-        recalibrate()
-
-# Recalibrates homography matrix with new corner data
-    def recalibrate():
         u1 = corner.TopL.x + 32
         v2 = corner.TopL.y + 32
         x1 = 0
@@ -53,7 +41,12 @@ class ImageMapper():
         v4 = corner.BotR.y - 32
         x4 = 0
         y4 = 10
+        rospy.loginfo('Recalibrating...')
 
+
+# Recalibrates homography matrix with new corner data
+    def recalibrate(self):
+        homography = Homography()
         A = numpy.array([x1, y1, 1, 0 , 0, 0, -u1*x1, -u1*y1],
                         [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1],
                         [x2, y2, 1, 0, 0, 0, -u2*x2, -u2*y2],
@@ -72,11 +65,23 @@ class ImageMapper():
                         [u4],
                         [v4])
         x = numpy.linalg.solve(A,b)
-        mat[0] = x[0,0]
-        mat[1] = x[1,0]
-        mat[2] = x[2,0]
-        mat[3] = x[3,0]
-        mat[4] = x[4,0]
-        mat[5] = x[5,0]
-        mat[6] = x[6,0]
-        mat[7] = x[7,0]
+        homography.h[0] = x[0,0]
+        homography.h[1] = x[1,0]
+        homography.h[2] = x[2,0]
+        homography.h[3] = x[3,0]
+        homography.h[4] = x[4,0]
+        homography.h[5] = x[5,0]
+        homography.h[6] = x[6,0]
+        homography.h[7] = x[7,0]
+
+        inv_mat = inv(x)
+        homography.q[0] = inv_mat[0,0]
+        homography.q[1] = inv_mat[1,0]
+        homography.q[2] = inv_mat[2,0]
+        homography.q[3] = inv_mat[3,0]
+        homography.q[4] = inv_mat[4,0]
+        homography.q[5] = inv_mat[5,0]
+        homography.q[6] = inv_mat[6,0]
+        homography.q[7] = inv_mat[7,0]
+
+        pub.publish(homography)
