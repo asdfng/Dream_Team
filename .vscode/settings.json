@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "C:\\Users\\Nicholas Gregg\\AppData\\Local\\Programs\\Python\\Python37\\python.exe"
+    "python.pythonPath": "C:\\Users\\Nicholas Gregg\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+    ]
 }
