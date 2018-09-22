@@ -1,2 +1,2 @@
-float x
-float y
+uint32 x
+uint32 y
