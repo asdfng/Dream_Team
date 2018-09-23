@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 import rospy, roslib, json, time
 from romi_soccer.msg import Map, Vector2, Rover
 import urllib2
