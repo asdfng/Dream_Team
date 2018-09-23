@@ -4,11 +4,30 @@ from romi_soccer.msg import Map
 from romi_soccer.msg import Homography
 
 
+# u1 = None
+# v1 = None
+# u2 = None
+# v2 = None
+# u3 = None
+# v3 = None
+# u4 = None
+# v4 = None
+# x1 = None
+# y1 = None
+# x2 = None
+# y2 = None
+# x3 = None
+# y3 = None
+# x4 = None
+# y4 = None
+u1, u2, u3, u4 = None, None, None, None
+v1, v2, v3, v4 = None, None, None, None
+x1, x2, x3, x4 = None, None, None, None
+y1, y2, y3, y4 = None, None, None, None
+
 class ImageMapper():
 
     def __init__(self):
-        global u1, v1, u2, v2, u3, v3, u4, v4
-        global x1, y1, x2, y2, x3, y3, x4, y4
         # Initializes publishers
         rospy.loginfo('Initializing publishers...')
         pub = rospy.Publisher('mapper/homography',Homography,queue_size=10)
@@ -19,12 +38,14 @@ class ImageMapper():
         rospy.Subscriber('mapper/raw_data/corners',Map, self.recalibrate)
         rospy.loginfo('Done.')
         while not rospy.is_shutdown():
-            rospy.loginfo('Recalibrating homography matrix...')
-            self.recalibrate()
-            rospy.loginfo('Done.')
-            rospy.loginfo('Publishing recalibrated homography matrix...')
-            pub.publish(homography)
-            rospy.loginfo('Done.')
+            if u1 is not None:
+                rospy.loginfo('Recalibrating homography matrix...')
+                self.recalibrate()
+                rospy.loginfo('Done.')
+                rospy.loginfo('Publishing recalibrated homography matrix...')
+                pub.publish(homography)
+                rospy.loginfo('Done.')
+            else: rospy.loginfo('Coordinates not initialized yet.')
             rate.sleep()
 
     def callback(corner):
@@ -61,6 +82,7 @@ class ImageMapper():
 # Recalibrates homography matrix with new corner data
     def recalibrate(self):
         homography = Homography()
+
         A = numpy.array([[x1, y1, 1, 0 , 0, 0, -u1*x1, -u1*y1],
                         [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1],
                         [x2, y2, 1, 0, 0, 0, -u2*x2, -u2*y2],
