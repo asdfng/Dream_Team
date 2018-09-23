@@ -1,3 +1,10 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "C:\\Users\\npratt\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe"
+=======
+    "python.pythonPath": "C:\\Users\\Nicholas Gregg\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+    ]
+>>>>>>> 65ae4a2ea6a956dccf0c4178177bcff1bca95853
 }
