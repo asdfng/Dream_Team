@@ -40,7 +40,8 @@ class ImageMapper():
         rospy.loginfo('Received new coordinate data.')
         rospy.loginfo('Recalibrating new coordinate pairs (pixels <=> table)...')
         try:
-            # Set origin to top left corner, offset the pixel coordinate by the radius of the rover
+            # Set origin to top left corner, offset the pixel coordinate by the
+            # radius of the rover
             u1 = corner.TopL.x + 32
             v2 = corner.TopL.y + 32
             x1 = 0
@@ -67,18 +68,18 @@ class ImageMapper():
         rospy.loginfo('Recalibrated pairs.')
 
 
-# Recalibrates homography matrix with new corner data
+    # Recalibrates homography matrix with new corner data
     def recalibrate(self):
         homography = Homography()
 
         A = numpy.array([[x1, y1, 1, 0 , 0, 0, -u1*x1, -u1*y1],
-                        [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1],
-                        [x2, y2, 1, 0, 0, 0, -u2*x2, -u2*y2],
-                        [0, 0, 0, x2, y2, 1, -v2*x2, -v2*y2],
-                        [x3, y3, 1, 0, 0, 0, -u3*x3, -u3*y3],
-                        [0, 0, 0, x3, y3, 1, -v3*x3, -v3*y3],
-                        [x4, y4, 1, 0, 0, 0, -u4*x4, -u4*y4],
-                        [0, 0, 0, x4, y4, 1, -v4*x4, -v4*y4]])
+                         [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1],
+                         [x2, y2, 1, 0, 0, 0, -u2*x2, -u2*y2],
+                         [0, 0, 0, x2, y2, 1, -v2*x2, -v2*y2],
+                         [x3, y3, 1, 0, 0, 0, -u3*x3, -u3*y3],
+                         [0, 0, 0, x3, y3, 1, -v3*x3, -v3*y3],
+                         [x4, y4, 1, 0, 0, 0, -u4*x4, -u4*y4],
+                         [0, 0, 0, x4, y4, 1, -v4*x4, -v4*y4]])
 
         b = numpy.array([[u1],
                         [v1],
