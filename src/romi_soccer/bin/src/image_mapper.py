@@ -3,19 +3,15 @@ import rospy, roslib, numpy
 from romi_soccer.msg import Map
 from romi_soccer.msg import Homography
 
-u1, v1, u2, v2, u3, v3, u4, v4 = 1, 2, 3, 4, 5, 6, 7, 8
-x1, y1, x2, y2, x3, y3, x4, y4 = 1, 2, 3, 4, 5, 6, 7, 8
-homography = Homography()
 
-# from rospy.numpy_msg import numpy_msg as numpy
 class ImageMapper():
 
     def __init__(self):
+        global u1, v1, u2, v2, u3, v3, u4, v4
+        global x1, y1, x2, y2, x3, y3, x4, y4
         # Initializes publishers
         rospy.loginfo('Initializing publishers...')
         pub = rospy.Publisher('mapper/homography',Homography,queue_size=10)
-        pub.publish(homography)
-        # pub_corner = rospy.Publisher('mapper/corner',Map,queue_size=10)
         rospy.loginfo('Done.')
 
         rate = rospy.Rate(10)
@@ -23,35 +19,48 @@ class ImageMapper():
         rospy.Subscriber('mapper/raw_data/corners',Map, self.recalibrate)
         rospy.loginfo('Done.')
         while not rospy.is_shutdown():
+            rospy.loginfo('Recalibrating homography matrix...')
             self.recalibrate()
+            rospy.loginfo('Done.')
+            rospy.loginfo('Publishing recalibrated homography matrix...')
+            pub.publish(homography)
+            rospy.loginfo('Done.')
             rate.sleep()
 
     def callback(corner):
         rospy.loginfo('Received new coordinate data.')
-        u1 = corner.TopL.x + 32
-        v2 = corner.TopL.y + 32
-        x1 = 0
-        y1 = 0
+        rospy.loginfo('Recalibrating new coordinate pairs (pixels <=> table)...')
+        try:
+            # Set origin to top left corner, offset the pixel coordinate by the radius of the rover
+            u1 = corner.TopL.x + 32
+            v2 = corner.TopL.y + 32
+            x1 = 0
+            y1 = 0
 
-        u2 = corner.BotL.x - 32
-        v2 = corner.BotL.y + 32
-        x2 = 5
-        y2 = 0
+            u2 = corner.BotL.x - 32
+            v2 = corner.BotL.y + 32
+            x2 = 5
+            y2 = 0
 
-        u3 = corner.TopR.x + 32
-        v3 = corner.TopR.y - 32
-        x3 = 5
-        y3 = 10
+            u3 = corner.TopR.x + 32
+            v3 = corner.TopR.y - 32
+            x3 = 5
+            y3 = 10
 
-        u4 = corner.BotR.x - 32
-        v4 = corner.BotR.y - 32
-        x4 = 0
-        y4 = 10
-        rospy.loginfo('Recalibrating...')
+            u4 = corner.BotR.x - 32
+            v4 = corner.BotR.y - 32
+            x4 = 0
+            y4 = 10
+
+        except rospy.ROSInterruptException:
+            pass
+
+        rospy.loginfo('Recalibrated pairs.')
 
 
 # Recalibrates homography matrix with new corner data
     def recalibrate(self):
+        homography = Homography()
         A = numpy.array([[x1, y1, 1, 0 , 0, 0, -u1*x1, -u1*y1],
                         [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1],
                         [x2, y2, 1, 0, 0, 0, -u2*x2, -u2*y2],
@@ -71,6 +80,8 @@ class ImageMapper():
                         [v4]])
 
         x = numpy.linalg.solve(A,b)
+
+        # Store the homography 8x1 column vector into the message to publish
         homography.h[0] = x[0,0]
         homography.h[1] = x[1,0]
         homography.h[2] = x[2,0]
@@ -80,14 +91,21 @@ class ImageMapper():
         homography.h[6] = x[6,0]
         homography.h[7] = x[7,0]
 
-        inv_mat = numpy.reciprocal(x)
-        homography.q[0] = inv_mat[0,0]
-        homography.q[1] = inv_mat[1,0]
-        homography.q[2] = inv_mat[2,0]
-        homography.q[3] = inv_mat[3,0]
-        homography.q[4] = inv_mat[4,0]
-        homography.q[5] = inv_mat[5,0]
-        homography.q[6] = inv_mat[6,0]
-        homography.q[7] = inv_mat[7,0]
+        # Make a square matrix from the homography 8x1 column vector
+        mat_h = numpy.array([[x[0,0], x[1,0], x[2,0]],
+                             [x[3,0], x[4,0], x[5,0]],
+                             [x[6,0], x[7,0],     1]])
 
-        
+        # Take the inverse of the square homography matrix
+        inv_mat = numpy.linalg.inv(mat_h)
+
+        # Store the inverse matrix into the message to publish
+        homography.q[0] = inv_mat[0,0]
+        homography.q[1] = inv_mat[0,1]
+        homography.q[2] = inv_mat[0,2]
+        homography.q[3] = inv_mat[1,0]
+        homography.q[4] = inv_mat[1,1]
+        homography.q[5] = inv_mat[1,2]
+        homography.q[6] = inv_mat[2,0]
+        homography.q[7] = inv_mat[2,1]
+        homography.q[8] = inv_mat[2,2]
