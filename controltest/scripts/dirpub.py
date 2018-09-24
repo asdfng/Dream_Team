@@ -5,7 +5,7 @@ from controltest.msg import RoverDirections
 
 rospy.init_node('Controller',anonymous=True)
 pub = rospy.Publisher('/directions_rover', RoverDirections, queue_size=10)
-rate = rospy.Rate(2)
+rate = rospy.Rate(100)
 directions = RoverDirections()
 
 while not rospy.is_shutdown():
@@ -26,5 +26,5 @@ while not rospy.is_shutdown():
 
     #Publish message
     pub.publish(directions)
-    rate.sleep
+    rate.sleep()
 
