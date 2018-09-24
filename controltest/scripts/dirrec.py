@@ -8,13 +8,13 @@ from controltest.msg import RoverDirections
 def callback(directions):
 	a_star = AStar()
 	if directions.forward:
-		a_star.motors('200','200')
+		a_star.motors(int(200),int(200)
 	elif directions.back:
-		a_star.motors('-200','-200')
+		a_star.motors(int(-200),int(-200)
 	elif directions.left:
-		a_star.motors('200','-200')
+		a_star.motors(int(200),int(-200))
 	elif directions.right:
-		a_star.motors('-200','200')
+		a_star.motors(int(-200),int(200))
 
 def main():
 	rospy.init_node('Receiver')
