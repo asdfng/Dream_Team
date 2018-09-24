@@ -3,8 +3,9 @@ import rospy, roslib, numpy
 from romi_soccer.msg import Map, Vector2, Rover
 
 class ImageMapper():
-
     def __init__(self):
+        self.mat_h = numpy.empty([3,3])
+        self.mat_q = numpy.empty([3,3])
         # Initializes publishers
         rospy.loginfo('Initializing publishers...')
         self.pub_corner = rospy.Publisher('mapper/new_data/corners',Map,queue_size=10)
@@ -16,23 +17,21 @@ class ImageMapper():
         self.pub_blue_square = rospy.Publisher('mapper/new_data/blue/square',Rover,queue_size=10)
         self.pub_blue_circle = rospy.Publisher('mapper/new_data/blue/circle',Rover,queue_size=10)
         rospy.loginfo('Done.')
-        self.init_subs()
-
-    def init_subs(self):
         # Initializes subscribers
         rospy.loginfo('Initializing subscribers...')
-        rospy.Subscriber('mapper/raw_data/corners',Map, callback_calibrate)
-        rospy.Subscriber('mapper/raw_data/ball',Vector2, callback_ball)
-        rospy.Subscriber('mapper/raw_data/red/triangle',Rover, callback_red_triangle)
-        rospy.Subscriber('mapper/raw_data/red/square',Rover, callback_red_square)
-        rospy.Subscriber('mapper/raw_data/red/circle',Rover, callback_red_circle)
-        rospy.Subscriber('mapper/raw_data/blue/triangle',Rover, callback_blue_triangle)
-        rospy.Subscriber('mapper/raw_data/blue/square',Rover, callback_blue_square)
-        rospy.Subscriber('mapper/raw_data/blue/circle',Rover, callback_blue_circle)
+        # rospy.Subscriber('mapper/raw_data/corners',Map, self.callback_calibrate)
+        rospy.Subscriber('mapper/raw_data/ball',Vector2, self.callback_ball)
+        rospy.Subscriber('mapper/raw_data/red/triangle',Rover, self.callback_red_triangle)
+        rospy.Subscriber('mapper/raw_data/red/square',Rover, self.callback_red_square)
+        rospy.Subscriber('mapper/raw_data/red/circle',Rover, self.callback_red_circle)
+        rospy.Subscriber('mapper/raw_data/blue/triangle',Rover, self.callback_blue_triangle)
+        rospy.Subscriber('mapper/raw_data/blue/square',Rover, self.callback_blue_square)
+        rospy.Subscriber('mapper/raw_data/blue/circle',Rover, self.callback_blue_circle)
         rospy.loginfo('Done.')
+
         rospy.spin()
 
-    def callback_calibrate(corner):
+    def callback_calibrate(self,corner):
         rospy.loginfo('Received new coordinate data.')
         rospy.loginfo('Recalibrating new coordinate pairs (pixels <=> table)...')
         try:
@@ -86,89 +85,82 @@ class ImageMapper():
 
         # Make a square matrix from the homography 8x1 column vector
         self.mat_h = numpy.array([[x[0,0], x[1,0], x[2,0]],
-                             [x[3,0], x[4,0], x[5,0]],
-                             [x[6,0], x[7,0],     1]])
+                                  [x[3,0], x[4,0], x[5,0]],
+                                  [x[6,0], x[7,0],     1]])
 
         # Take the inverse of the square homography matrix
-        self.inv_mat = numpy.linalg.inv(mat_h)
-        table = Map()
-        table.TopL.x = self.mapx2tab(u1,v1)
-        table.TopL.y = self.mapy2tab(u1,v1)
+        self.mat_q = numpy.linalg.inv(mat_h)
 
-        table.TopR.x = self.mapx2tab(u1,v1)
-        table.TopR.y = self.mapy2tab(u1,v1)
-
-        table.BotL.x = self.mapx2tab(u1,v1)
-        table.BotL.y = self.mapy2tab(u1,v1)
-
-        table.BotR.x = self.mapx2tab(u1,v1)
-        table.BotR.y = self.mapy2tab(u1,v1)
-
-        self.pub_corner.publish(table)
-
-
-    def callback_ball(ball):
+    def callback_ball(self,ball):
+        rospy.loginfo('Received new ball coordinates...')
         ball_new = Vector2()
         ball_new.x = self.mapx2tab(ball.x, ball.y)
         ball_new.y = self.mapy2tab(ball.x, ball.y)
+        rospy.loginfo('Publishing converted coordinates...')
         self.pub_ball.publish(ball_new)
 
-    def callback_red_triangle(rover_old):
+    def callback_red_triangle(self,rover_old):
         rover_new = Rover()
-        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
-        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
         self.pub_red_triangle.publish(rover_new)
 
-    def callback_red_square(rover_old):
+    def callback_red_square(self,rover_old):
         rover_new = Rover()
-        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
-        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
         self.pub_red_square.publish(rover_new)
 
-    def callback_blue_triangle(rover_old):
+    def callback_red_circle(self,rover_old):
         rover_new = Rover()
-        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
-        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+        self.pub_red_circle.publish(rover_new)
+
+    def callback_blue_triangle(self,rover_old):
+        rover_new = Rover()
+        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
         self.pub_blue_triangle.publish(rover_new)
 
-    def callback_blue_square(rover_old):
+    def callback_blue_square(self,rover_old):
         rover_new = Rover()
-        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
-        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
         self.pub_blue_square.publish(rover_new)
 
-    def callback_blue_circle(rover_old):
+    def callback_blue_circle(self,rover_old):
         rover_new = Rover()
-        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
-        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
         self.pub_blue_circle.publish(rover_new)
 
 
-    def mapx2tab(u,v):
-        q11 = self.inv_mat[0,0]
-        q12 = self.inv_mat[0,1]
-        q13 = self.inv_mat[0,2]
-        q21 = self.inv_mat[1,0]
-        q22 = self.inv_mat[1,1]
-        q23 = self.inv_mat[1,2]
-        q31 = self.inv_mat[2,0]
-        q32 = self.inv_mat[2,1]
-        q33 = self.inv_mat[2,2]
+    def mapx2tab(self,u,v):
+        q11 = self.mat_q[0,0]
+        q12 = self.mat_q[0,1]
+        q13 = self.mat_q[0,2]
+        q21 = self.mat_q[1,0]
+        q22 = self.mat_q[1,1]
+        q23 = self.mat_q[1,2]
+        q31 = self.mat_q[2,0]
+        q32 = self.mat_q[2,1]
+        q33 = self.mat_q[2,2]
         return ((q11*u+q12*v+q13)/(q31*u+q32*v+q33))
 
-    def mapy2tab(u,v):
-        q11 = self.inv_mat[0,0]
-        q12 = self.inv_mat[0,1]
-        q13 = self.inv_mat[0,2]
-        q21 = self.inv_mat[1,0]
-        q22 = self.inv_mat[1,1]
-        q23 = self.inv_mat[1,2]
-        q31 = self.inv_mat[2,0]
-        q32 = self.inv_mat[2,1]
-        q33 = self.inv_mat[2,2]
+    def mapy2tab(self,u,v):
+        q11 = self.mat_q[0,0]
+        q12 = self.mat_q[0,1]
+        q13 = self.mat_q[0,2]
+        q21 = self.mat_q[1,0]
+        q22 = self.mat_q[1,1]
+        q23 = self.mat_q[1,2]
+        q31 = self.mat_q[2,0]
+        q32 = self.mat_q[2,1]
+        q33 = self.mat_q[2,2]
         return ((q21*u+q22*v+q23)/(q31*u+q32*v+q33))
 
-    def mapy2pix(x,y):
+    def mapy2pix(self,x,y):
         h11 = self.mat_h[0,0]
         h12 = self.mat_h[0,1]
         h13 = self.mat_h[0,2]
@@ -179,7 +171,7 @@ class ImageMapper():
         h32 = self.mat_h[2,1]
         return ((h11*x+h12*y+h13)/(h31*x+h32*y+1))
 
-    def mapx2pix(x,y):
+    def mapx2pix(self,x,y):
         h11 = self.mat_h[0,0]
         h12 = self.mat_h[0,1]
         h13 = self.mat_h[0,2]
