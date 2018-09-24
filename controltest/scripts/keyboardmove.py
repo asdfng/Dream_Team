@@ -4,10 +4,11 @@ import time
 from a_star import AStar
 
 a_star = AStar()
+speed = (200, 200)
 
 while True:
 
-    a_star.motors(int('200'),int('200'))
+    a_star.motors(speed)
     time.sleep(5)
     a_star.motors([-200],[-200])
     time.sleep(5)
