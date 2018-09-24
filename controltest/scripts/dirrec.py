@@ -10,7 +10,7 @@ def callback(directions):
 	if directions.forward:
 		a_star.motors([int(200),int(200)])
 	elif directions.back:
-		a_star.motors([int(-200),int(-200])
+		a_star.motors([int(-200),int(-200)])
 	elif directions.left:
 		a_star.motors([int(200),int(-200)])
 	elif directions.right:
