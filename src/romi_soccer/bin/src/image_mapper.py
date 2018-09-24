@@ -2,14 +2,7 @@
 import rospy, roslib, numpy
 from romi_soccer.msg import Map
 from romi_soccer.msg import Homography
-# from map_calc import MapCalculator
 
-# u1, u2, u3, u4 = None, None, None, None
-# v1, v2, v3, v4 = None, None, None, None
-# x1, x2, x3, x4 = None, None, None, None
-# y1, y2, y3, y4 = None, None, None, None
-# mat_h[] = None
-# inv_mat[] = None
 class ImageMapper():
 
     def __init__(self):
@@ -38,19 +31,6 @@ class ImageMapper():
         rospy.Subscriber('mapper/raw_data/blue/square',Rover, callback_blue_square)
         rospy.Subscriber('mapper/raw_data/blue/circle',Rover, callback_blue_circle)
         rospy.loginfo('Done.')
-
-        # Recalibrates the homography matrix after the subscriber initalizes
-        # the pixel coordinates
-        # while not rospy.is_shutdown():
-        #     if u1 is not None:
-        #         rospy.loginfo('Recalibrating homography matrix...')
-        #         self.recalibrate()
-        #         rospy.loginfo('Done.')
-        #         rospy.loginfo('Publishing recalibrated homography matrix...')
-        #         pub.publish(homography)
-        #         rospy.loginfo('Done.')
-        #     else: rospy.loginfo('Coordinates not initialized yet.')
-        #     rate.sleep()
 
     def callback_calibrate(corner):
         rospy.loginfo('Received new coordinate data.')
@@ -104,33 +84,108 @@ class ImageMapper():
 
         x = numpy.linalg.solve(A,b)
 
-        # # Store the homography 8x1 column vector into the message to publish
-        # homography.h[0] = x[0,0]
-        # homography.h[1] = x[1,0]
-        # homography.h[2] = x[2,0]
-        # homography.h[3] = x[3,0]
-        # homography.h[4] = x[4,0]
-        # homography.h[5] = x[5,0]
-        # homography.h[6] = x[6,0]
-        # homography.h[7] = x[7,0]
-
         # Make a square matrix from the homography 8x1 column vector
-        mat_h = numpy.array([[x[0,0], x[1,0], x[2,0]],
+        self.mat_h = numpy.array([[x[0,0], x[1,0], x[2,0]],
                              [x[3,0], x[4,0], x[5,0]],
                              [x[6,0], x[7,0],     1]])
 
         # Take the inverse of the square homography matrix
-        inv_mat = numpy.linalg.inv(mat_h)
+        self.inv_mat = numpy.linalg.inv(mat_h)
+        table = Map()
+        table.TopL.x = self.mapx2tab(u1,v1)
+        table.TopL.y = self.mapy2tab(u1,v1)
 
-        # # Store the inverse matrix into the message to publish
-        # homography.q[0] = inv_mat[0,0]
-        # homography.q[1] = inv_mat[0,1]
-        # homography.q[2] = inv_mat[0,2]
-        # homography.q[3] = inv_mat[1,0]
-        # homography.q[4] = inv_mat[1,1]
-        # homography.q[5] = inv_mat[1,2]
-        # homography.q[6] = inv_mat[2,0]
-        # homography.q[7] = inv_mat[2,1]
-        # homography.q[8] = inv_mat[2,2]
+        table.TopR.x = self.mapx2tab(u1,v1)
+        table.TopR.y = self.mapy2tab(u1,v1)
 
-    def map2pix(x,y):
+        table.BotL.x = self.mapx2tab(u1,v1)
+        table.BotL.y = self.mapy2tab(u1,v1)
+
+        table.BotR.x = self.mapx2tab(u1,v1)
+        table.BotR.y = self.mapy2tab(u1,v1)
+
+        self.pub_corner.publish(table)
+
+
+    def callback_ball(ball):
+        ball_new = Vector2()
+        ball_new.x = self.mapx2tab(ball.x, ball.y)
+        ball_new.y = self.mapy2tab(ball.x, ball.y)
+        self.pub_ball.publish(ball_new)
+
+    def callback_red_triangle(rover_old):
+        rover_new = Rover()
+        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
+        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        self.pub_red_triangle.publish(rover_new)
+
+    def callback_red_square(rover_old):
+        rover_new = Rover()
+        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
+        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        self.pub_red_square.publish(rover_new)
+
+    def callback_blue_triangle(rover_old):
+        rover_new = Rover()
+        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
+        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        self.pub_blue_triangle.publish(rover_new)
+
+    def callback_blue_square(rover_old):
+        rover_new = Rover()
+        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
+        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        self.pub_blue_square.publish(rover_new)
+
+    def callback_blue_circle(rover_old):
+        rover_new = Rover()
+        rover_new.x = self.mapx2tab(rover_old.x, rover_old.y)
+        rover_new.y = self.mapy2tab(rover_old.x, rover_old.y)
+        self.pub_blue_circle.publish(rover_new)
+
+
+    def mapx2tab(u,v):
+        q11 = self.inv_mat[0,0]
+        q12 = self.inv_mat[0,1]
+        q13 = self.inv_mat[0,2]
+        q21 = self.inv_mat[1,0]
+        q22 = self.inv_mat[1,1]
+        q23 = self.inv_mat[1,2]
+        q31 = self.inv_mat[2,0]
+        q32 = self.inv_mat[2,1]
+        q33 = self.inv_mat[2,2]
+        return ((q11*u+q12*v+q13)/(q31*u+q32*v+q33))
+
+    def mapy2tab(u,v):
+        q11 = self.inv_mat[0,0]
+        q12 = self.inv_mat[0,1]
+        q13 = self.inv_mat[0,2]
+        q21 = self.inv_mat[1,0]
+        q22 = self.inv_mat[1,1]
+        q23 = self.inv_mat[1,2]
+        q31 = self.inv_mat[2,0]
+        q32 = self.inv_mat[2,1]
+        q33 = self.inv_mat[2,2]
+        return ((q21*u+q22*v+q23)/(q31*u+q32*v+q33))
+
+    def mapy2pix(x,y):
+        h11 = self.mat_h[0,0]
+        h12 = self.mat_h[0,1]
+        h13 = self.mat_h[0,2]
+        h21 = self.mat_h[1,0]
+        h22 = self.mat_h[1,1]
+        h23 = self.mat_h[1,2]
+        h31 = self.mat_h[2,0]
+        h32 = self.mat_h[2,1]
+        return ((h11*x+h12*y+h13)/(h31*x+h32*y+1))
+
+    def mapx2pix(x,y):
+        h11 = self.mat_h[0,0]
+        h12 = self.mat_h[0,1]
+        h13 = self.mat_h[0,2]
+        h21 = self.mat_h[1,0]
+        h22 = self.mat_h[1,1]
+        h23 = self.mat_h[1,2]
+        h31 = self.mat_h[2,0]
+        h32 = self.mat_h[2,1]
+        return ((h21*x+h22*y+h23)/(h31*x+h32*y+1))
