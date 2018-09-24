@@ -8,7 +8,7 @@ speed = (200, 200)
 
 while True:
 
-    a_star.motors(speed)
+    a_star.motors(*speed)
     time.sleep(5)
     a_star.motors([-200],[-200])
     time.sleep(5)
