@@ -2,41 +2,57 @@
 import rospy, roslib, numpy
 from romi_soccer.msg import Map
 from romi_soccer.msg import Homography
+# from map_calc import MapCalculator
 
-u1, u2, u3, u4 = None, None, None, None
-v1, v2, v3, v4 = None, None, None, None
-x1, x2, x3, x4 = None, None, None, None
-y1, y2, y3, y4 = None, None, None, None
-
+# u1, u2, u3, u4 = None, None, None, None
+# v1, v2, v3, v4 = None, None, None, None
+# x1, x2, x3, x4 = None, None, None, None
+# y1, y2, y3, y4 = None, None, None, None
+# mat_h[] = None
+# inv_mat[] = None
 class ImageMapper():
 
     def __init__(self):
-        # Initializes publisher
+        # Initializes publishers
         rospy.loginfo('Initializing publishers...')
-        pub = rospy.Publisher('mapper/homography',Homography,queue_size=10)
+        self.pub_corner = rospy.Publisher('mapper/new_data/corners',Map,queue_size=10)
+        self.pub_ball = rospy.Publisher('mapper/new_data/ball',Vector2,queue_size=10)
+        self.pub_red_triangle = rospy.Publisher('mapper/new_data/red/triangle',Rover,queue_size=10)
+        self.pub_red_square = rospy.Publisher('mapper/new_data/red/square',Rover,queue_size=10)
+        self.pub_red_circle = rospy.Publisher('mapper/new_data/red/circle',Rover,queue_size=10)
+        self.pub_blue_triangle = rospy.Publisher('mapper/new_data/blue/triangle',Rover,queue_size=10)
+        self.pub_blue_square = rospy.Publisher('mapper/new_data/blue/square',Rover,queue_size=10)
+        self.pub_blue_circle = rospy.Publisher('mapper/new_data/blue/circle',Rover,queue_size=10)
         rospy.loginfo('Done.')
 
         # Set the ROS rate to 10 Hz
         rate = rospy.Rate(10)
-        # Initializes subscriber
+        # Initializes subscribers
         rospy.loginfo('Initializing subscribers...')
-        rospy.Subscriber('mapper/raw_data/corners',Map, self.recalibrate)
+        rospy.Subscriber('mapper/raw_data/corners',Map, callback_calibrate)
+        rospy.Subscriber('mapper/raw_data/ball',Vector2, callback_ball)
+        rospy.Subscriber('mapper/raw_data/red/triangle',Rover, callback_red_triangle)
+        rospy.Subscriber('mapper/raw_data/red/square',Rover, callback_red_square)
+        rospy.Subscriber('mapper/raw_data/red/circle',Rover, callback_red_circle)
+        rospy.Subscriber('mapper/raw_data/blue/triangle',Rover, callback_blue_triangle)
+        rospy.Subscriber('mapper/raw_data/blue/square',Rover, callback_blue_square)
+        rospy.Subscriber('mapper/raw_data/blue/circle',Rover, callback_blue_circle)
         rospy.loginfo('Done.')
 
         # Recalibrates the homography matrix after the subscriber initalizes
         # the pixel coordinates
-        while not rospy.is_shutdown():
-            if u1 is not None:
-                rospy.loginfo('Recalibrating homography matrix...')
-                self.recalibrate()
-                rospy.loginfo('Done.')
-                rospy.loginfo('Publishing recalibrated homography matrix...')
-                pub.publish(homography)
-                rospy.loginfo('Done.')
-            else: rospy.loginfo('Coordinates not initialized yet.')
-            rate.sleep()
+        # while not rospy.is_shutdown():
+        #     if u1 is not None:
+        #         rospy.loginfo('Recalibrating homography matrix...')
+        #         self.recalibrate()
+        #         rospy.loginfo('Done.')
+        #         rospy.loginfo('Publishing recalibrated homography matrix...')
+        #         pub.publish(homography)
+        #         rospy.loginfo('Done.')
+        #     else: rospy.loginfo('Coordinates not initialized yet.')
+        #     rate.sleep()
 
-    def callback(corner):
+    def callback_calibrate(corner):
         rospy.loginfo('Received new coordinate data.')
         rospy.loginfo('Recalibrating new coordinate pairs (pixels <=> table)...')
         try:
@@ -66,11 +82,7 @@ class ImageMapper():
             pass
 
         rospy.loginfo('Recalibrated pairs.')
-
-
-    # Recalibrates homography matrix with new corner data
-    def recalibrate(self):
-        homography = Homography()
+        rospy.loginfo('Recalibrating homography matrix...')
 
         A = numpy.array([[x1, y1, 1, 0 , 0, 0, -u1*x1, -u1*y1],
                          [0, 0, 0, x1, y1, 1, -v1*x1, -v1*y1],
@@ -92,15 +104,15 @@ class ImageMapper():
 
         x = numpy.linalg.solve(A,b)
 
-        # Store the homography 8x1 column vector into the message to publish
-        homography.h[0] = x[0,0]
-        homography.h[1] = x[1,0]
-        homography.h[2] = x[2,0]
-        homography.h[3] = x[3,0]
-        homography.h[4] = x[4,0]
-        homography.h[5] = x[5,0]
-        homography.h[6] = x[6,0]
-        homography.h[7] = x[7,0]
+        # # Store the homography 8x1 column vector into the message to publish
+        # homography.h[0] = x[0,0]
+        # homography.h[1] = x[1,0]
+        # homography.h[2] = x[2,0]
+        # homography.h[3] = x[3,0]
+        # homography.h[4] = x[4,0]
+        # homography.h[5] = x[5,0]
+        # homography.h[6] = x[6,0]
+        # homography.h[7] = x[7,0]
 
         # Make a square matrix from the homography 8x1 column vector
         mat_h = numpy.array([[x[0,0], x[1,0], x[2,0]],
@@ -110,13 +122,15 @@ class ImageMapper():
         # Take the inverse of the square homography matrix
         inv_mat = numpy.linalg.inv(mat_h)
 
-        # Store the inverse matrix into the message to publish
-        homography.q[0] = inv_mat[0,0]
-        homography.q[1] = inv_mat[0,1]
-        homography.q[2] = inv_mat[0,2]
-        homography.q[3] = inv_mat[1,0]
-        homography.q[4] = inv_mat[1,1]
-        homography.q[5] = inv_mat[1,2]
-        homography.q[6] = inv_mat[2,0]
-        homography.q[7] = inv_mat[2,1]
-        homography.q[8] = inv_mat[2,2]
+        # # Store the inverse matrix into the message to publish
+        # homography.q[0] = inv_mat[0,0]
+        # homography.q[1] = inv_mat[0,1]
+        # homography.q[2] = inv_mat[0,2]
+        # homography.q[3] = inv_mat[1,0]
+        # homography.q[4] = inv_mat[1,1]
+        # homography.q[5] = inv_mat[1,2]
+        # homography.q[6] = inv_mat[2,0]
+        # homography.q[7] = inv_mat[2,1]
+        # homography.q[8] = inv_mat[2,2]
+
+    def map2pix(x,y):
