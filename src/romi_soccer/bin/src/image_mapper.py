@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import rospy, roslib, numpy
-from romi_soccer.msg import Map
-from romi_soccer.msg import Homography
+from romi_soccer.msg import Map, Vector2, Rover
 
 class ImageMapper():
 
@@ -17,9 +16,9 @@ class ImageMapper():
         self.pub_blue_square = rospy.Publisher('mapper/new_data/blue/square',Rover,queue_size=10)
         self.pub_blue_circle = rospy.Publisher('mapper/new_data/blue/circle',Rover,queue_size=10)
         rospy.loginfo('Done.')
+        self.init_subs()
 
-        # Set the ROS rate to 10 Hz
-        rate = rospy.Rate(10)
+    def init_subs(self):
         # Initializes subscribers
         rospy.loginfo('Initializing subscribers...')
         rospy.Subscriber('mapper/raw_data/corners',Map, callback_calibrate)
@@ -31,6 +30,7 @@ class ImageMapper():
         rospy.Subscriber('mapper/raw_data/blue/square',Rover, callback_blue_square)
         rospy.Subscriber('mapper/raw_data/blue/circle',Rover, callback_blue_circle)
         rospy.loginfo('Done.')
+        rospy.spin()
 
     def callback_calibrate(corner):
         rospy.loginfo('Received new coordinate data.')
