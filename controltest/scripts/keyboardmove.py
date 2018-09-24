@@ -7,13 +7,13 @@ a_star = AStar()
 
 while True:
 
-    a_star.motors([1,200,200])
+    a_star.motors([200],[200])
     time.sleep(5)
-    a_star.motors([-200,-200])
+    a_star.motors([-200],[-200])
     time.sleep(5)
-    a_star.motors([-200,200])
+    a_star.motors([-200],[200])
     time.sleep(5)
-    a_star.motors([200,-200])
+    a_star.motors([200],[-200])
     time.sleep(5)
-    a_star.motors([0,0])
+    a_star.motors([0],[0])
     time.sleep(5)
