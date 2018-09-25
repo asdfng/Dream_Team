@@ -42,20 +42,36 @@ class ImageMapper():
             x1 = 0
             y1 = 0
 
+            rospy.loginfo('Received table coordinate (0,0) as pixel coordinates (%s,%s).',corner.TopL.x, corner.TopL.y)
+            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
+
             u2 = corner.BotL.x - 32
             v2 = corner.BotL.y + 32
             x2 = 5
             y2 = 0
+
+            rospy.loginfo('Received table coordinate (5,0) as pixel coordinates (%s,%s).',corner.BotL.x, corner.BotL.y)
+            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
 
             u3 = corner.TopR.x + 32
             v3 = corner.TopR.y - 32
             x3 = 5
             y3 = 10
 
+            rospy.loginfo('Received table coordinate (5,10) as pixel coordinates (%s,%s).',corner.TopR.x, corner.TopR.y)
+            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
+
             u4 = corner.BotR.x - 32
             v4 = corner.BotR.y - 32
             x4 = 0
             y4 = 10
+
+            rospy.loginfo('Received table coordinate (0,10) as pixel coordinates (%s,%s).',corner.BotR.x, corner.BotR.y)
+            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
 
         except rospy.ROSInterruptException:
             pass
