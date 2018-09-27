@@ -6,9 +6,10 @@ class ImageMapper():
     def __init__(self):
         self.mat_h = numpy.empty([3,3])
         self.mat_q = numpy.empty([3,3])
+        self.calibrated = False
         # Initializes publishers
         rospy.loginfo('Initializing publishers...')
-        self.pub_corner = rospy.Publisher('mapper/new_data/corners',Map,queue_size=10)
+        # self.pub_corner = rospy.Publisher('mapper/new_data/corners',Map,queue_size=10)
         self.pub_ball = rospy.Publisher('mapper/new_data/ball',Vector2,queue_size=10)
         self.pub_red_triangle = rospy.Publisher('mapper/new_data/red/triangle',Rover,queue_size=10)
         self.pub_red_square = rospy.Publisher('mapper/new_data/red/square',Rover,queue_size=10)
@@ -19,7 +20,7 @@ class ImageMapper():
         rospy.loginfo('Done.')
         # Initializes subscribers
         rospy.loginfo('Initializing subscribers...')
-        # rospy.Subscriber('mapper/raw_data/corners',Map, self.callback_calibrate)
+        rospy.Subscriber('mapper/raw_data/corners',Map, self.callback_calibrate)
         rospy.Subscriber('mapper/raw_data/ball',Vector2, self.callback_ball)
         rospy.Subscriber('mapper/raw_data/red/triangle',Rover, self.callback_red_triangle)
         rospy.Subscriber('mapper/raw_data/red/square',Rover, self.callback_red_square)
@@ -34,47 +35,51 @@ class ImageMapper():
     def callback_calibrate(self,corner):
         rospy.loginfo('Received new coordinate data.')
         rospy.loginfo('Recalibrating new coordinate pairs (pixels <=> table)...')
-        try:
-            # Set origin to top left corner, offset the pixel coordinate by the
-            # radius of the rover
-            u1 = corner.TopL.x + 32
-            v2 = corner.TopL.y + 32
-            x1 = 0
-            y1 = 0
+        # Set origin to top left corner, offset the pixel coordinate by the
+        # radius of the rover
+        u1 = corner.BotL.x
+        v1 = corner.BotL.y
+        # u1 = corner.BotL.x + 32
+        # v1 = corner.BotL.y + 32
+        x1 = 0
+        y1 = 0
 
-            rospy.loginfo('Received table coordinate (0,0) as pixel coordinates (%s,%s).',corner.TopL.x, corner.TopL.y)
-            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
-            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
+        rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x1,y1,corner.BotL.x, corner.BotL.y)
+        # rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+        # rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,v1)
 
-            u2 = corner.BotL.x - 32
-            v2 = corner.BotL.y + 32
-            x2 = 5
-            y2 = 0
+        u2 = corner.BotR.x
+        v2 = corner.BotR.y
+        # u2 = corner.BotR.x - 32
+        # v2 = corner.BotR.y + 32
+        x2 = 3.9
+        y2 = 0
 
-            rospy.loginfo('Received table coordinate (5,0) as pixel coordinates (%s,%s).',corner.BotL.x, corner.BotL.y)
-            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
-            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
+        rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x2,y2,corner.BotR.x, corner.BotR.y)
+        # rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+        # rospy.loginfo('Set pixel coordinates to (%s,%s).',u2,v2)
 
-            u3 = corner.TopR.x + 32
-            v3 = corner.TopR.y - 32
-            x3 = 5
-            y3 = 10
+        u3 = corner.TopL.x
+        v3 = corner.TopL.y
+        # u3 = corner.TopL.x + 32
+        # v3 = corner.TopL.y - 32
+        x3 = 0
+        y3 = 8
 
-            rospy.loginfo('Received table coordinate (5,10) as pixel coordinates (%s,%s).',corner.TopR.x, corner.TopR.y)
-            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
-            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
+        rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x3,y3,corner.TopL.x, corner.TopL.y)
+        # rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+        # rospy.loginfo('Set pixel coordinates to (%s,%s).',u3,v3)
 
-            u4 = corner.BotR.x - 32
-            v4 = corner.BotR.y - 32
-            x4 = 0
-            y4 = 10
+        u4 = corner.TopR.x
+        v4 = corner.TopR.y
+        # u4 = corner.TopR.x - 32
+        # v4 = corner.TopR.y - 32
+        x4 = 3.9
+        y4 = 8
 
-            rospy.loginfo('Received table coordinate (0,10) as pixel coordinates (%s,%s).',corner.BotR.x, corner.BotR.y)
-            rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
-            rospy.loginfo('Set pixel coordinates to (%s,%s).',u1,u2)
-
-        except rospy.ROSInterruptException:
-            pass
+        rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x4,y4,corner.TopR.x, corner.TopR.y)
+        # rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
+        # rospy.loginfo('Set pixel coordinates to (%s,%s).',u4,v4)
 
         rospy.loginfo('Recalibrated pairs.')
         rospy.loginfo('Recalibrating homography matrix...')
@@ -105,52 +110,66 @@ class ImageMapper():
                                   [x[6,0], x[7,0],     1]])
 
         # Take the inverse of the square homography matrix
-        self.mat_q = numpy.linalg.inv(mat_h)
+        self.mat_q = numpy.linalg.inv(self.mat_h)
+        self.calibrated = True
 
     def callback_ball(self,ball):
-        rospy.loginfo('Received new ball coordinates...')
-        ball_new = Vector2()
-        ball_new.x = self.mapx2tab(ball.x, ball.y)
-        ball_new.y = self.mapy2tab(ball.x, ball.y)
-        rospy.loginfo('Publishing converted coordinates...')
-        self.pub_ball.publish(ball_new)
+        if self.calibrated:
+            rospy.loginfo('Received new ball coordinates...')
+            ball_new = Vector2()
+            ball_new.x = self.mapx2tab(ball.x, ball.y)
+            ball_new.y = self.mapy2tab(ball.x, ball.y)
+            rospy.loginfo('Publishing converted coordinates...')
+            self.pub_ball.publish(ball_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def callback_red_triangle(self,rover_old):
-        rover_new = Rover()
-        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
-        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
-        self.pub_red_triangle.publish(rover_new)
+        if self.calibrated:
+            rover_new = Rover()
+            rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+            rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+            self.pub_red_triangle.publish(rover_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def callback_red_square(self,rover_old):
-        rover_new = Rover()
-        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
-        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
-        self.pub_red_square.publish(rover_new)
+        if self.calibrated:
+            rover_new = Rover()
+            rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+            rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+            self.pub_red_square.publish(rover_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def callback_red_circle(self,rover_old):
-        rover_new = Rover()
-        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
-        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
-        self.pub_red_circle.publish(rover_new)
+        if self.calibrated:
+            rover_new = Rover()
+            rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+            rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+            self.pub_red_circle.publish(rover_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def callback_blue_triangle(self,rover_old):
-        rover_new = Rover()
-        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
-        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
-        self.pub_blue_triangle.publish(rover_new)
+        if self.calibrated:
+            rover_new = Rover()
+            rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+            rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+            self.pub_blue_triangle.publish(rover_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def callback_blue_square(self,rover_old):
-        rover_new = Rover()
-        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
-        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
-        self.pub_blue_square.publish(rover_new)
+        if self.calibrated:
+            rover_new = Rover()
+            rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+            rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+            self.pub_blue_square.publish(rover_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def callback_blue_circle(self,rover_old):
-        rover_new = Rover()
-        rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
-        rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
-        self.pub_blue_circle.publish(rover_new)
-
+        if self.calibrated:
+            rover_new = Rover()
+            rover_new.center.x = self.mapx2tab(rover_old.center.x, rover_old.center.y)
+            rover_new.center.y = self.mapy2tab(rover_old.center.x, rover_old.center.y)
+            self.pub_blue_circle.publish(rover_new)
+        else: rospy.loginfo('Homography matrix has not been calibrated yet, cannot convert coordinates yet.')
 
     def mapx2tab(self,u,v):
         q11 = self.mat_q[0,0]
