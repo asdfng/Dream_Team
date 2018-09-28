@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
 import smbus
 import struct
