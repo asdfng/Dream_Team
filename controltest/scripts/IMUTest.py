@@ -22,6 +22,6 @@ while True:
         "az": imu.a.z
     }
 
-    print("G - x: %(gx)s y:%(gy)s z:%(gz)s /nA - x:%(ax)s y:%(ay)s z:%(az)s" % imudata)
+    print("G - x: %(gx)s y:%(gy)s z:%(gz)s /n A - x:%(ax)s y:%(ay)s z:%(az)s" % imudata)
     time.sleep(1)
 
