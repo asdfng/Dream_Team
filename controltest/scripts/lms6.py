@@ -1,5 +1,6 @@
+#!/usr/bin/env/ python
 #Imported from Pololu balboa github
-import smbus2
+import smbus
 import struct
 import collections
 

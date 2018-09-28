@@ -1,4 +1,5 @@
 #code to use the IMU
+#!/usr/bin/env python
 #Written by: Nicholas Gregg
 
 import time
