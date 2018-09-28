@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright (c) 2017 Adafruit Industries
 # Author: James DeVito
 #
@@ -33,7 +34,7 @@ from PIL import ImageDraw
 from PIL import ImageFont
 
 rospy.init_node('Remote')
-pub = rospy.Pulisher('/directions_rover',RoverDirections, queue_size=10)
+pub = rospy.Publisher('/directions_rover',RoverDirections, queue_size=10)
 rate = rospy.Rate(100)
 directions = RoverDirections()
 
@@ -122,31 +123,31 @@ try:
     while not rospy.is_shutdown():
         if GPIO.input(U_pin): # button is released
             draw.polygon([(20, 20), (30, 2), (40, 20)], outline=255, fill=0)  #Up
-            directions.right = True
+            directions.right = False
         else: # button is pressed:
             draw.polygon([(20, 20), (30, 2), (40, 20)], outline=255, fill=1)  #Up filled
-            directions.right = False
+            directions.right = True
 
         if GPIO.input(L_pin): # button is released
             draw.polygon([(0, 30), (18, 21), (18, 41)], outline=255, fill=0)  #left
-            directions.back = True
+            directions.forward = False
         else: # button is pressed:
             draw.polygon([(0, 30), (18, 21), (18, 41)], outline=255, fill=1)  #left filled
-            directions.back = False
+            directions.forward = True
 
         if GPIO.input(R_pin): # button is released
             draw.polygon([(60, 30), (42, 21), (42, 41)], outline=255, fill=0) #right
-            directions.forward = True
+            directions.back = False
         else: # button is pressed:
             draw.polygon([(60, 30), (42, 21), (42, 41)], outline=255, fill=1) #right filled
-            directions.forward = False
+            directions.back = True
 
         if GPIO.input(D_pin): # button is released
             draw.polygon([(30, 60), (40, 42), (20, 42)], outline=255, fill=0) #down
-            directions.left = True
+            directions.left = False
         else: # button is pressed:
             draw.polygon([(30, 60), (40, 42), (20, 42)], outline=255, fill=1) #down filled
-            directions.left = False
+            directions.left = True
 
         if GPIO.input(C_pin): # button is released
             draw.rectangle((20, 22,40,40), outline=255, fill=0) #center
