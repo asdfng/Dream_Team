@@ -122,46 +122,34 @@ try:
     while not rospy.is_shutdown():
         if GPIO.input(U_pin): # button is released
             draw.polygon([(20, 20), (30, 2), (40, 20)], outline=255, fill=0)  #Up
-            directions.left = False
             directions.right = True
-            directions.back = False
-            directions.forward = False
         else: # button is pressed:
             draw.polygon([(20, 20), (30, 2), (40, 20)], outline=255, fill=1)  #Up filled
+            directions.right = False
 
         if GPIO.input(L_pin): # button is released
             draw.polygon([(0, 30), (18, 21), (18, 41)], outline=255, fill=0)  #left
-            directions.left = False
-            directions.right = False
-            directions.back = False
-            directions.forward = True
+            directions.back = True
         else: # button is pressed:
             draw.polygon([(0, 30), (18, 21), (18, 41)], outline=255, fill=1)  #left filled
+            directions.back = False
 
         if GPIO.input(R_pin): # button is released
             draw.polygon([(60, 30), (42, 21), (42, 41)], outline=255, fill=0) #right
-            directions.left = False
-            directions.right = False
-            directions.back = True
-            directions.forward = False
+            directions.forward = True
         else: # button is pressed:
             draw.polygon([(60, 30), (42, 21), (42, 41)], outline=255, fill=1) #right filled
+            directions.forward = False
 
         if GPIO.input(D_pin): # button is released
             draw.polygon([(30, 60), (40, 42), (20, 42)], outline=255, fill=0) #down
-            directions.left = False
-            directions.right = False
-            directions.back = True
-            directions.forward = False
+            directions.left = True
         else: # button is pressed:
             draw.polygon([(30, 60), (40, 42), (20, 42)], outline=255, fill=1) #down filled
+            directions.left = False
 
         if GPIO.input(C_pin): # button is released
             draw.rectangle((20, 22,40,40), outline=255, fill=0) #center
-            directions.left = False
-            directions.right = False
-            directions.back = False
-            directions.forward = False 
         else: # button is pressed:
             draw.rectangle((20, 22,40,40), outline=255, fill=1) #center filled
 
