@@ -1,5 +1,5 @@
 #Imported from Pololu balboa github
-import smbus
+import smbus2
 import struct
 import collections
 
