@@ -1,1 +1,2 @@
-float64[7] mat
+float64[8] h
+float64[8] q

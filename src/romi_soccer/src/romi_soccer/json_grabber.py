@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 import rospy, roslib, json, time
 from romi_soccer.msg import Map, Vector2, Rover
 import urllib2
@@ -6,7 +6,7 @@ import urllib2
 class JSONGrabber:
     def __init__(self):
         # Initializing publishers
-        rospy.loginfo('Initializing publisher...')
+        rospy.loginfo('Initializing publishers...')
         self.pub_corner = rospy.Publisher('mapper/raw_data/corners',Map,queue_size=10)
         self.pub_ball = rospy.Publisher('mapper/raw_data/ball',Vector2,queue_size=10)
         self.pub_red_triangle = rospy.Publisher('mapper/raw_data/red/triangle',Rover,queue_size=10)
@@ -23,6 +23,7 @@ class JSONGrabber:
             source = response.read()
             data = json.loads(source.decode())
             #Red Team data parsing
+            rospy.loginfo('It connected!')
             self.Red = data['Red Team Data']
             #Blue Team data parsing
             self.Blue = data['Blue Team Data']
@@ -87,6 +88,8 @@ class JSONGrabber:
 
     def json_corner_grabber(self):
         corner = Map()
+        rospy.loginfo('Received corner coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         corner.BotL.x = self.cornerBL['X']
         corner.BotL.y = self.cornerBL['Y']
         corner.BotR.x = self.cornerBR['X']
@@ -95,10 +98,13 @@ class JSONGrabber:
         corner.TopL.y = self.cornerTL['Y']
         corner.TopR.x = self.cornerTR['X']
         corner.TopR.y = self.cornerTR['Y']
+        rospy.loginfo('Done.')
         self.pub_corner.publish(corner)
 
     def json_red_circle_grabber(self):
         player_rc = Rover()
+        rospy.loginfo('Received red circle coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         player_rc.center.x = self.rcCenterPoint['X']
         player_rc.center.y = self.rcCenterPoint['Y']
         player_rc.bound.TopL.x = self.rcBoundinBox['X Left']
@@ -110,9 +116,12 @@ class JSONGrabber:
         player_rc.bound.BotR.x = self.rcBoundinBox['X Right']
         player_rc.bound.BotR.y = self.rcBoundinBox['Y Bottom']
         self.pub_red_circle.publish(player_rc)
+        rospy.loginfo('Done.')
 
     def json_red_square_grabber(self):
         player_rs = Rover()
+        rospy.loginfo('Received red square coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         player_rs.center.x = self.rsCenterPoint['X']
         player_rs.center.y = self.rsCenterPoint['Y']
         player_rs.bound.TopL.x = self.rsBoundinBox['X Left']
@@ -124,9 +133,12 @@ class JSONGrabber:
         player_rs.bound.BotR.x = self.rsBoundinBox['X Right']
         player_rs.bound.BotR.y = self.rsBoundinBox['Y Bottom']
         self.pub_red_square.publish(player_rs)
+        rospy.loginfo('Done.')
 
     def json_red_triangle_grabber(self):
         player_rt = Rover()
+        rospy.loginfo('Received red triangle coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         player_rt.center.x = self.rtCenterPoint['X']
         player_rt.center.y = self.rtCenterPoint['Y']
         player_rt.bound.TopL.x = self.rtBoundinBox['X Left']
@@ -138,9 +150,12 @@ class JSONGrabber:
         player_rt.bound.BotR.x = self.rtBoundinBox['X Right']
         player_rt.bound.BotR.y = self.rtBoundinBox['Y Bottom']
         self.pub_red_triangle.publish(player_rt)
+        rospy.loginfo('Done.')
 
     def json_blue_circle_grabber(self):
         player_bc = Rover()
+        rospy.loginfo('Received blue circle coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         player_bc.center.x = self.bcCenterPoint['X']
         player_bc.center.y = self.bcCenterPoint['Y']
         player_bc.bound.TopL.x = self.bcBoundinBox['X Left']
@@ -152,9 +167,12 @@ class JSONGrabber:
         player_bc.bound.BotR.x = self.bcBoundinBox['X Right']
         player_bc.bound.BotR.y = self.bcBoundinBox['Y Bottom']
         self.pub_blue_circle.publish(player_bc)
+        rospy.loginfo('Done.')
 
     def json_blue_square_grabber(self):
         player_bs = Rover()
+        rospy.loginfo('Received blue square coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         player_bs.center.x = self.bsCenterPoint['X']
         player_bs.center.y = self.bsCenterPoint['Y']
         player_bs.bound.TopL.x = self.bsBoundinBox['X Left']
@@ -166,9 +184,12 @@ class JSONGrabber:
         player_bs.bound.BotR.x = self.bsBoundinBox['X Right']
         player_bs.bound.BotR.y = self.bsBoundinBox['Y Bottom']
         self.pub_blue_square.publish(player_bs)
+        rospy.loginfo('Done.')
 
     def json_blue_triangle_grabber(self):
         player_bt = Rover()
+        rospy.loginfo('Received blue triangle coordinates from JSON.')
+        rospy.loginfo('Publishing raw data coordinates to topic...')
         player_bt.center.x = self.btCenterPoint['X']
         player_bt.center.y = self.btCenterPoint['Y']
         player_bt.bound.TopL.x = self.btBoundinBox['X Left']
@@ -180,6 +201,7 @@ class JSONGrabber:
         player_bt.bound.BotR.x = self.btBoundinBox['X Right']
         player_bt.bound.BotR.y = self.btBoundinBox['Y Bottom']
         self.pub_blue_triangle.publish(player_bt)
+        rospy.loginfo('Done.')
 
     def json_ball_grabber(self):
         ball = Vector2()

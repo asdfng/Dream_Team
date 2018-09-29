@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+import rospy, roslib, json, time
+from romi_soccer.msg import Rover
+import urllib2
+
+def json_team_grabber():
+    rospy.init_node('json_team_grabber')
+    # Grabbing the team/shape name from parameters
+    team_name = rospy.get_param('~team')
+    shape_name = rospy.get_param('~shape')
+    # Initializing publishers
+    rospy.loginfo('Initializing publishers...')
+    pub = rospy.Pubisher('mapper/raw_data/%s/%s' %team_name %shape_name, Rover, queue_size=10)
+    rospy.loginfo('Done.')
+
+    rate = rospy.Rate(10)  # 10 Hz
+    while not rospy.is_shutdown():
+        response = urllib2.urlopen('http://172.16.0.1:8001/FieldData/GetData')
+        source = response.read()
+        data = json.loads(source.decode())
+        rospy.loginfo('It connected!')
+        #Team data parsing
+        team = data['%s Team Data' % team_name]
+        #Shape data parsing
+        shape = team['%s' % shape_name]
+        center_shape = shape['Object Center']
+        #Grab the bounding box too, why not?
+        bounding_box = shape['Bounding Box']
+        json_grabber()
+        rover = Rover()
+        rospy.loginfo('Received %s %s coordinates from JSON.' % team_name % shape_name)
+        rospy.loginfo('Publishing raw data coordinates to topic...')
+        rover.center.x     = center_shape['X']
+        rover.center.y     = center_shape['Y']
+        rover.bound.TopL.x = bounding_box['X Left']
+        rover.bound.TopL.y = bounding_box['Y Top']
+        rover.bound.BotL.x = bounding_box['X Left']
+        rover.bound.BotL.y = bounding_box['Y Bottom']
+        rover.bound.TopR.x = bounding_box['X Right']
+        rover.bound.TopR.y = bounding_box['Y Top']
+        rover.bound.BotR.x = bounding_box['X Right']
+        rover.bound.BotR.y = bounding_box['Y Bottom']
+        pub.publish(rover)
+        rospy.loginfo('Done.')
+        rate.sleep()
+if __name__ == '__main__':
+    try:
+        json_team_grabber()
+    except rospy.ROSInterruptException:
+        pass
