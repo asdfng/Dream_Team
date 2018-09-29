@@ -57,6 +57,7 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  Homography.msg
   Map.msg
   Rover.msg
   Vector2.msg
@@ -174,7 +175,10 @@ catkin_install_python(
   PROGRAMS
   scripts/mapper
   scripts/jsongwriter
-  nodes/json_team_grabber
+  nodes/json_team_grabber.py
+  nodes/team_tf_broadcaster.py
+  nodes/json_corner_grabber.py
+  nodes/homography_calibrater.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ## Mark executables and/or libraries for installation
