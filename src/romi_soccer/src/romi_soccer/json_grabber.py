@@ -77,10 +77,10 @@ class JSONGrabber:
 
             #Corners data parsing
             self.corners = data['Corners']
-            self.cornerBL = self.corners[0]
-            self.cornerBR = self.corners[1]
-            self.cornerTL = self.corners[2]
-            self.cornerTR = self.corners[3]
+            self.cornerTL = self.corners[0]
+            self.cornerTR = self.corners[1]
+            self.cornerBL = self.corners[2]
+            self.cornerBR = self.corners[3]
             self.json_corner_grabber()
 
             # rospy.spin()

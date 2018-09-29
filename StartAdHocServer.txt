@@ -1,0 +1,3 @@
+netsh wlan set hostednetwork mode=allow ssid=dreamteam key=dreamteam
+
+netsh wlan start hostednetwork
