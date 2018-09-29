@@ -2,6 +2,9 @@
 #Code for getting the IMU data
 #Written by: Nicholas Gregg
 
+#This code should be run as a standalone Publisher, this way code is made
+#very clear
+
 import time
 from lms6 import LSM6
 
@@ -13,6 +16,7 @@ accelSensitivity = 0.061
 accelRatio = 1/1000 #Converting from milligrams to grams
 gyroSensitivity = 0.00875
 
+#Change this to rospy.is_shutdown() to use this in ros 
 while True:
     
     #read the IMU, print and wait
