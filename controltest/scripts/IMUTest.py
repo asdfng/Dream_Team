@@ -1,5 +1,5 @@
-#code to use the IMU
 #!/usr/bin/env python
+#Code for getting the IMU data
 #Written by: Nicholas Gregg
 
 import time
