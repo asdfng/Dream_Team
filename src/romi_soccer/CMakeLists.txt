@@ -57,7 +57,6 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  Homography.msg
   Map.msg
   Rover.msg
   Vector2.msg
@@ -171,7 +170,11 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-catkin_install_python(PROGRAMS bin/jsongwriter bin/mapper
+catkin_install_python(
+  PROGRAMS
+  scripts/mapper
+  scripts/jsongwriter
+  nodes/json_team_grabber
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ## Mark executables and/or libraries for installation
