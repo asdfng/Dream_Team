@@ -6,6 +6,7 @@ import os
 from a_star import AStar
 
 a_star = AStar()
+a_star.motors(50,-50)
 
 while True:
     encoders = a_star.read_encoders()
