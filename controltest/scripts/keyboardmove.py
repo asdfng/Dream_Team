@@ -1,5 +1,5 @@
-import sys
-sys.path.insert(0, '/home/pi/pololu-rpi-slave-arduino-library-2.0.0/pi')
+#import sys
+#sys.path.insert(0, '/home/pi/pololu-rpi-slave-arduino-library-2.0.0/pi')
 import time
 from a_star import AStar
 
