@@ -145,7 +145,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/romi_soccer_node.cpp)
+add_executable(tf_world_to_map src/romi_soccer/tf_world_map.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -161,7 +161,7 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-
+target_link_libraries(tf_world_to_map ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############
@@ -176,7 +176,7 @@ catkin_install_python(
   scripts/mapper
   scripts/jsongwriter
   nodes/json_team_grabber.py
-  nodes/team_tf_broadcaster.py
+  nodes/tf_world_team.py
   nodes/json_corner_grabber.py
   nodes/homography_calibrater.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

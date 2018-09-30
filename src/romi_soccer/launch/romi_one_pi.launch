@@ -1,0 +1,9 @@
+<launch>
+     <arg name='team' />
+     <arg name='shape'/>
+     <node
+          name="link1_broadcaster"
+          pkg="tf2_ros"
+          type="static_transform_publisher"
+          args="1 0 0 0 0 0 1 world map_$(arg team)_$(arg shape)" />
+</launch>

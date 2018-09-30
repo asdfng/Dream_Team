@@ -82,25 +82,25 @@ def callback(corner):
     # Take the inverse of the square homography matrix
     mat_q = numpy.linalg.inv(mat_h)
     homography = Homography()
-    homography.h[0] = x[0,0]
-    homography.h[1] = x[1,0]
-    homography.h[2] = x[2,0]
-    homography.h[3] = x[3,0]
-    homography.h[4] = x[4,0]
-    homography.h[5] = x[5,0]
-    homography.h[6] = x[6,0]
-    homography.h[7] = x[7,0]
-    homography.h[8] = 1
+    homography.h11 = x[0,0]
+    homography.h12 = x[1,0]
+    homography.h13 = x[2,0]
+    homography.h21 = x[3,0]
+    homography.h22 = x[4,0]
+    homography.h23 = x[5,0]
+    homography.h31 = x[6,0]
+    homography.h32 = x[7,0]
+    homography.h33 = 1
 
-    homography.q[0] = mat_q[0,0]
-    homography.q[1] = mat_q[0,1]
-    homography.q[2] = mat_q[0,2]
-    homography.q[3] = mat_q[1,0]
-    homography.q[4] = mat_q[1,1]
-    homography.q[5] = mat_q[1,2]
-    homography.q[6] = mat_q[2,0]
-    homography.q[7] = mat_q[2,1]
-    homography.q[8] = mat_q[2,2]
+    homography.q11 = mat_q[0,0]
+    homography.q12 = mat_q[0,1]
+    homography.q13 = mat_q[0,2]
+    homography.q21 = mat_q[1,0]
+    homography.q22 = mat_q[1,1]
+    homography.q23 = mat_q[1,2]
+    homography.q31 = mat_q[2,0]
+    homography.q32 = mat_q[2,1]
+    homography.q33 = mat_q[2,2]
     pub.publish(homography)
 
 if __name__ == '__main__':

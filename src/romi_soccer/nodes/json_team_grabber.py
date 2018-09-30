@@ -2,16 +2,9 @@
 import rospy, roslib, json, time, tf2_ros, tf_conversions, math
 import urllib2
 import geometry_msgs.msg
-import tf_calibrater
 
 def json_team_grabber():
-    rospy.init_node('json_team_grabber')
-    # Grabbing the team/shape name from parameters
-    # Initializing publishers
-    rospy.loginfo('Initializing publishers...')
-    rospy.loginfo('Done.')
     rover = Rover()
-
     rate = rospy.Rate(10)  # 10 Hz
     while not rospy.is_shutdown():
         response = urllib2.urlopen('http://172.16.0.1:8001/FieldData/GetData')
@@ -26,7 +19,7 @@ def json_team_grabber():
         rospy.loginfo('Received %s %s coordinates from JSON.' % team_name % shape_name)
         rospy.loginfo('Publishing raw data coordinates to topic...')
         rover.header.time = rospy.Time.now()
-        rover.header.frame_id = 'pixels_frame'
+        rover.header.frame_id = 'world'
         rover.pose.position.x = center_shape['X']
         rover.pose.position.y = center_shape['Y']
         th = shape['Orientation']
@@ -40,8 +33,8 @@ def json_team_grabber():
         rospy.loginfo('Done.')
         rate.sleep()
 
-
 if __name__ == '__main__':
+    rospy.init_node('json_team_grabber')
     team_name = rospy.get_param('~team')
     shape_name = rospy.get_param('~shape')
     pub = rospy.Publisher('mapper/raw_data/%s/%s' %team_name %shape_name, geometry_msgs.msg.PoseStamped, queue_size=10)
