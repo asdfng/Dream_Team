@@ -13,10 +13,6 @@ from lms6 import LSM6
 imu = LSM6()
 imu.enable()
 
-gyroXOffset = 2.00
-gyroYOffset = -9.00
-gyroZOffset = -5.00
-
 accelSensitivity = 0.061
 accelRatio = .001 #Converting from milligrams to grams
 gyroSensitivity = 0.035
@@ -29,9 +25,9 @@ while True:
 
     #Create a dictionary of converted values, use sensitivety data from the spec sheet
     imudata = {
-        "gx": imu.g.x*gyroSensitivity - gyroXOffset,
-        "gy": imu.g.y*gyroSensitivity - gyroYOffset,
-        "gz": imu.g.z*gyroSensitivity - gyroZOffset,
+        "gx": imu.g.x*gyroSensitivity,
+        "gy": imu.g.y*gyroSensitivity,
+        "gz": imu.g.z*gyroSensitivity,
         "ax": imu.a.x*accelSensitivity*accelRatio,  
         "ay": imu.a.y*accelSensitivity*accelRatio,
         "az": imu.a.z*accelSensitivity*accelRatio
