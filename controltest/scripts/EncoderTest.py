@@ -14,6 +14,5 @@ try:
         print(encoders[0], encoders[1])
         time.sleep(.1)
         os.system('clear')
-
-    except KeyboardInterrupt:
-        a_star.motors(0,0)
+except KeyboardInterrupt:
+    a_star.motors(0,0)
