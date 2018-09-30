@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
 import smbus
 import struct
@@ -41,6 +42,9 @@ class AStar(object):
 
   def read_analog(self):
     return self.read_unpack(12, 12, "HHHHHH")
+
+  def read_encoders(self):
+    return self.read_unpack(39, 4, 'hh')
 
   def test_read8(self):
     self.read_unpack(0, 8, 'cccccccc')
