@@ -9,6 +9,6 @@ a_star = AStar()
 
 while True:
     encoders = a_star.read_encoders()
-    print('%s %s'encoders)
+    print(encoders)
     time.sleep(.1)
     os.system('clear')
