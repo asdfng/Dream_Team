@@ -6,6 +6,7 @@
 #very clear
 
 import time
+import os
 from lms6 import LSM6
 
 #Initiate the IMU and enable it
@@ -35,4 +36,5 @@ while True:
     #Gyro is in degrees per second while accel is in g
     print("G - x: %(gx)s y:%(gy)s z:%(gz)s \nA - x:%(ax)s y:%(ay)s z:%(az)s" % imudata)
     time.sleep(1)
+    os.system('clear')
 
