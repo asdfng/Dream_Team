@@ -34,7 +34,7 @@ while True:
     }
 
     #Gyro is in degrees per second while accel is in g
-    print("G - x: %(gx)5s y:%(gy)5s z:%(gz)5s \nA - x:%(ax)5s y:%(ay)5s z:%(az)5s" % imudata)
+    print("G - x: %(gx)3s y:%(gy)5s z:%(gz)3s \nA - x:%(ax)3s y:%(ay)3s z:%(az)3s" % imudata)
     time.sleep(.2)
     os.system('clear')
 
