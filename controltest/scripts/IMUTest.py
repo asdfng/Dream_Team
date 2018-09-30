@@ -13,8 +13,8 @@ imu = LSM6()
 imu.enable()
 
 accelSensitivity = 0.061
-accelRatio = 1/1000 #Converting from milligrams to grams
-gyroSensitivity = 0.00875
+accelRatio = .001 #Converting from milligrams to grams
+gyroSensitivity = 0.035
 
 #Change this to rospy.is_shutdown() to use this in ros 
 while True:
