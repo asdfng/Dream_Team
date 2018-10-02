@@ -6,22 +6,7 @@ a_star = AStar()
 a_star.motors(50,-50)
 theta_initial = 0
 dist_between_wheels = 0.541339
-
-try:
-    while True:
-        encoders = a_star.read_encoders()
-        print(encoders[0], encoders[1])
-        right_encoder = encoders[0]
-        left_encoder = encoders[1]
-        displacement()
-        print("orientation = %s degrees",displacement.theta_new)                               #prints angle every 100ms 
-        theta_initial = displacement.theta_new
-        time.sleep(.1)
-        os.system('clear')
-except KeyboardInterrupt:
-    a_star.motors(0,0)
-
-def displacement(self) #velocity: ft/s, position: ft
+def displacement(self): #velocity: ft/s, position: ft
     self.right_wheel_rotations = right_encoder/1440                  #converts encoder counts to rotations
     self.left_wheel_rotations = left_encoder/1440                    
     self.right_displacement = right_wheel_rotations*2*pi*.114829     #calculates displacement of right, left and center wheels
@@ -39,3 +24,17 @@ def displacement(self) #velocity: ft/s, position: ft
     else
         theta_initial = theta_new
                                                                                                 #saves the new theta as the initial theta for next execution
+try:
+    while True:
+        encoders = a_star.read_encoders()
+        print(encoders[0], encoders[1])
+        right_encoder = encoders[0]
+        left_encoder = encoders[1]
+        displacement()
+        print("orientation = %s degrees",displacement.theta_new)                               #prints angle every 100ms 
+        theta_initial = displacement.theta_new
+        time.sleep(.1)
+        os.system('clear')
+except KeyboardInterrupt:
+    a_star.motors(0,0)
+    
