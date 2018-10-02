@@ -6,6 +6,7 @@ a_star = AStar()
 a_star.motors(50,-50)
 
 theta_initial = 0.0
+theta_new = 0.0
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: 
     global theta_initial
