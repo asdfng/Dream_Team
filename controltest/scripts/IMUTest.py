@@ -20,8 +20,8 @@ sampleRate = .01 #100Hz
 #Change this to rospy.is_shutdown() to use this in ros 
 
 i = 0
-angle = 0
-total = 0
+angle = 0.0
+total = 0.0
 
 while True:
     
