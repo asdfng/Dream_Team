@@ -30,12 +30,21 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
         theta_initial = theta_new #saves the new theta as the initial theta for next execution
     print("orientation = %s degrees" % theta_new)                               #prints angle every 100ms
 
+oldright_encoder = 0.0
+oldleft_encoder = 0.0
+
 try:
     while True:
+
         encoders = a_star.read_encoders()
         print(encoders[0], encoders[1])
-        right_encoder = encoders[0]
-        left_encoder = encoders[1]
+
+        right_encoder = encoders[0] - oldright_encoder
+        left_encoder = encoders[1] - oldleft_encoder
+
+        oldright_encoder = right_encoder 
+        oldleft_encoder = left_encoder
+
         displacement(right_encoder,left_encoder) 
         time.sleep(.1)
         os.system('clear')
