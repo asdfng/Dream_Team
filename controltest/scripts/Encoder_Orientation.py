@@ -10,6 +10,7 @@ theta_new = 0.0
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: 
     global theta_initial
+    global theta_new
     pi = math.pi
     dist_between_wheels = 0.541339
     right_wheel_rotations = right_encoder/1440                  #converts encoder counts to rotations
