@@ -39,13 +39,16 @@ try:
         encoders = a_star.read_encoders()
         print(encoders[0], encoders[1])
 
-        right_encoder = encoders[0] - oldright_encoder
-        left_encoder = encoders[1] - oldleft_encoder
+        right_encoder = encoders[0]
+        left_encoder = encoders[1]
 
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
 
-        displacement(right_encoder,left_encoder) 
+        passRight = right_encoder - oldright_encoder
+        passLeft = left_encoder - oldleft_encoder
+
+        displacement(passRight,passLeft) 
         time.sleep(.1)
         os.system('clear')
 except KeyboardInterrupt:
