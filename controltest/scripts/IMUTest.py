@@ -21,9 +21,9 @@ sampleRate = .01 #100Hz
 
 i = 0
 angle = 0
+total = 0
 
 while True:
-    total = 0
     
     #Find the offset and remove it
     while i<=10:
