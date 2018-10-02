@@ -27,6 +27,7 @@ while True:
     #Find the offset and remove it
     while i<=10:
          total += imu.g.z
+         i++
     
     offsetGZ = total/10
 
