@@ -18,12 +18,19 @@ accelRatio = .001 #Converting from milligrams to grams
 gyroSensitivity = 0.035
 sampleRate = .01 #100Hz
 #Change this to rospy.is_shutdown() to use this in ros 
-while True:
-    
-    #read the IMU, print and wait
-    imu.read()
 
-    #Create a dictionary of converted values, use sensitivety data from the spec sheet
+i = 0
+
+while True:
+    total = 0
+
+    #Find the offset and remove it
+    while i<=10:
+         total += imu.g.z
+    
+    offsetGZ = total/10
+
+#Create a dictionary of converted values, use sensitivety data from the spec sheet
     imudata = {
         "gx": imu.g.x*gyroSensitivity,
         "gy": imu.g.y*gyroSensitivity,
@@ -32,12 +39,14 @@ while True:
         "ay": imu.a.y*accelSensitivity*accelRatio,
         "az": imu.a.z*accelSensitivity*accelRatio
     }
+    #read the IMU, print and wait
+    imu.read()
 
     angle = imu.g.z*sampleRate
 
     #Gyro is in degrees per second while accel is in g
-    print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
-    #print(angle)
+    #print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
+    print(angle)
     time.sleep(sampleRate)
     os.system('clear')
 
