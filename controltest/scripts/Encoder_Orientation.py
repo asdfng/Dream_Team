@@ -9,8 +9,8 @@ try:
     while True:
         encoders = a_star.read_encoders()
         print(encoders[0], encoders[1])
-        right_encoder = encoders[0]
-        left_encoder = encoders[1]
+        right_encoder = int(encoders[0])
+        left_encoder = int(encoders[1])
         displacement(right_encoder,left_encoder) 
         time.sleep(.1)
         os.system('clear')
