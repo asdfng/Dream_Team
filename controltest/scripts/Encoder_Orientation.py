@@ -7,26 +7,27 @@ a_star.motors(50,-50)
 
 theta_initial = 0.0
 
-def displacement(self,right_encoder,left_encoder): #velocity: ft/s, position: ft
+def displacement(right_encoder,left_encoder): #velocity: ft/s, position: 
+    global theta_initial
     pi = math.pi
     dist_between_wheels = 0.541339
-    self.right_wheel_rotations = right_encoder/1440                  #converts encoder counts to rotations
-    self.left_wheel_rotations = left_encoder/1440                    
-    self.right_displacement = self.right_wheel_rotations*2*pi*.114829     #calculates displacement of right, left and center wheels
-    self.left_displacement = self.left_wheel_rotations*2*pi*.114829
-    self.center_displacement = (self.right_displacement + self.left_displacement)/2
-    self.alpha_left_turn_radians = (self.right_displacement - self.left_displacement)/dist_between_wheels  #calculates the change of the angle by a turn
-    self.alpha_left_turn_degrees = self.alpha_left_turn_radians * 180/pi                              #converts to degrees
-    self.theta_new = self.theta_initial + self.alpha_left_turn_degrees                                     #appends initial theta to new theta
-    if  self.theta_new >= 360:
-        self.theta_new = self.theta_new - 360
-        self.theta_initial = self.theta_new
-    elif self.theta_new <= 0:
-        self.theta_new = 360 + self.theta_new
-        self.theta_initial = self.theta_new
+    right_wheel_rotations = right_encoder/1440                  #converts encoder counts to rotations
+    left_wheel_rotations = left_encoder/1440                    
+    right_displacement = right_wheel_rotations*2*pi*.114829     #calculates displacement of right, left and center wheels
+    left_displacement = left_wheel_rotations*2*pi*.114829
+    center_displacement = (right_displacement + left_displacement)/2
+    alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels  #calculates the change of the angle by a turn
+    alpha_left_turn_degrees = alpha_left_turn_radians * 180/pi                              #converts to degrees
+    theta_new = theta_initial + alpha_left_turn_degrees                                     #appends initial theta to new theta
+    if  theta_new >= 360:
+        theta_new = theta_new - 360
+        theta_initial = theta_new
+    elif theta_new <= 0:
+        theta_new = 360 + theta_new
+        theta_initial = theta_new
     else:
-        self.theta_initial = self.theta_new #saves the new theta as the initial theta for next execution
-    print("orientation = %s degrees",self.theta_new)                               #prints angle every 100ms
+        theta_initial = theta_new #saves the new theta as the initial theta for next execution
+    print("orientation = %s degrees",theta_new)                               #prints angle every 100ms
 
 try:
     while True:
