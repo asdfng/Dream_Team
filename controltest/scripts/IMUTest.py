@@ -36,8 +36,8 @@ while True:
     angle = imu.g.z*sampleRate
 
     #Gyro is in degrees per second while accel is in g
-    #print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
-    print(angle)
+    print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
+    #print(angle)
     time.sleep(sampleRate)
     os.system('clear')
 
