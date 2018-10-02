@@ -23,7 +23,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     if  theta_new >= 360:
         theta_new = theta_new - 360
         theta_initial = theta_new
-    elif theta_new <= 0:
+    elif theta_new < 0:
         theta_new = 360 + theta_new
         theta_initial = theta_new
     else:
