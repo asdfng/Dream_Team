@@ -27,7 +27,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
         theta_initial = theta_new
     else:
         theta_initial = theta_new #saves the new theta as the initial theta for next execution
-    print("orientation = %s degrees",theta_new)                               #prints angle every 100ms
+    print("orientation = %s degrees" theta_new)                               #prints angle every 100ms
 
 try:
     while True:
