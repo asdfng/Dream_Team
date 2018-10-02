@@ -23,7 +23,7 @@ i = 0
 
 while True:
     total = 0
-
+    angle = 0
     #Find the offset and remove it
     while i<=10:
          total += imu.g.z
