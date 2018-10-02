@@ -16,7 +16,7 @@ imu.enable()
 accelSensitivity = 0.061
 accelRatio = .001 #Converting from milligrams to grams
 gyroSensitivity = 0.035
-
+sampleRate = .01 #100Hz
 #Change this to rospy.is_shutdown() to use this in ros 
 while True:
     
@@ -33,8 +33,11 @@ while True:
         "az": imu.a.z*accelSensitivity*accelRatio
     }
 
+    angle = imu.g.z*sampleRate
+
     #Gyro is in degrees per second while accel is in g
-    print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
-    time.sleep(.2)
+    #print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
+    print(angle)
+    time.sleep(sampleRate)
     os.system('clear')
 
