@@ -35,6 +35,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
 
 encoders = a_star.read_encoders()
 oldright_encoder = encoders[0]
+print(oldright_encoder)
 oldleft_encoder = encoders[1]
 
 try:
