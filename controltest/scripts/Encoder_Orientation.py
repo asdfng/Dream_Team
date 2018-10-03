@@ -3,7 +3,7 @@ import os
 import math
 from a_star import AStar
 a_star = AStar()
-a_star.motors(-25,25)
+a_star.motors(25,-25)
 
 theta_initial = 0.0
 theta_new = 0.0
