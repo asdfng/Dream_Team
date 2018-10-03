@@ -13,8 +13,8 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     global theta_new
     pi = math.pi
     dist_between_wheels = 0.541339
-    right_wheel_rotations = right_encoder/1440                  #converts encoder counts to rotations
-    left_wheel_rotations = left_encoder/1440
+    right_wheel_rotations = right_encoder/float(1440)                  #converts encoder counts to rotations
+    left_wheel_rotations = left_encoder/float(1440)
     print("rightrotations = %s degrees" % right_wheel_rotations)                   
     right_displacement = right_wheel_rotations*2*pi*.114829     #calculates displacement of right, left and center wheels
     left_displacement = left_wheel_rotations*2*pi*.114829
