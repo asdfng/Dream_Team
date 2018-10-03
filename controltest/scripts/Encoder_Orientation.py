@@ -34,9 +34,8 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     print("orientation = %s degrees" % theta_new)                               #prints angle every 100ms
 
 encoders = a_star.read_encoders()
-oldright_encoder = encoders[0]
-print(oldright_encoder)
-oldleft_encoder = encoders[1]
+oldright_encoder = encoders[1]
+oldleft_encoder = encoders[0]
 
 try:
     while True:
