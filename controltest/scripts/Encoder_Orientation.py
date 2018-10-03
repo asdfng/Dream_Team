@@ -40,6 +40,7 @@ oldleft_encoder = encoders[1]
 try:
     while True:
 
+        encoders = a_star.read_encoders()
         print(encoders[0], encoders[1])
 
         right_encoder = encoders[1]
