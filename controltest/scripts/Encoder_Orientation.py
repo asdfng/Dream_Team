@@ -3,7 +3,7 @@ import os
 import math
 from a_star import AStar
 a_star = AStar()
-a_star.motors(50,-50)
+a_star.motors(-50,50)
 
 theta_initial = 0.0
 theta_new = 0.0
@@ -17,11 +17,11 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     left_wheel_rotations = left_encoder/float(1440)
     print("rightrotations = %s rotations" % right_wheel_rotations)  
     print("leftrotations = %s rotations" % left_wheel_rotations)                   
-    right_displacement = right_wheel_rotations*2*pi*.114829     #calculates displacement of right, left and center wheels
-    left_displacement = left_wheel_rotations*2*pi*.114829
-    center_displacement = (right_displacement + left_displacement)/2
+    right_displacement = right_wheel_rotations*float(2)*pi*.114829     #calculates displacement of right, left and center wheels
+    left_displacement = left_wheel_rotations*float(2)*pi*.114829
+    center_displacement = (right_displacement + left_displacement)/float(2)
     alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels  #calculates the change of the angle by a turn
-    alpha_left_turn_degrees = alpha_left_turn_radians * 180/pi                              #converts to degrees
+    alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi                              #converts to degrees
     theta_new = theta_initial + alpha_left_turn_degrees                                     #appends initial theta to new theta
     if  theta_new >= 360:
         theta_new = theta_new - 360
