@@ -23,11 +23,11 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels  #calculates the change of the angle by a turn
     alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi                              #converts to degrees
     theta_new = theta_initial + alpha_left_turn_degrees                                     #appends initial theta to new theta
-    if  theta_new >= 360:
-        theta_new = theta_new - 360
+    if  theta_new >= float(360):
+        theta_new = theta_new - float(360)
         theta_initial = theta_new
-    elif theta_new < 0:
-        theta_new = 360 + theta_new
+    elif theta_new < float(0):
+        theta_new = float(360) + theta_new
         theta_initial = theta_new
     else:
         theta_initial = theta_new #saves the new theta as the initial theta for next execution
