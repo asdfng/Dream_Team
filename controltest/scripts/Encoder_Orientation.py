@@ -42,8 +42,8 @@ try:
         encoders = a_star.read_encoders()
         print(encoders[0], encoders[1])
 
-        right_encoder = encoders[0]
-        left_encoder = encoders[1]
+        right_encoder = encoders[1]
+        left_encoder = encoders[0]
 
         passRight = right_encoder - oldright_encoder
         passLeft = left_encoder - oldleft_encoder
