@@ -15,7 +15,8 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     dist_between_wheels = 0.541339
     right_wheel_rotations = right_encoder/float(1440)                  #converts encoder counts to rotations
     left_wheel_rotations = left_encoder/float(1440)
-    print("rightrotations = %s degrees" % right_wheel_rotations)                   
+    print("rightrotations = %s rotations" % right_wheel_rotations)  
+    print("leftrotations = %s rotations" % left_wheel_rotations)                   
     right_displacement = right_wheel_rotations*2*pi*.114829     #calculates displacement of right, left and center wheels
     left_displacement = left_wheel_rotations*2*pi*.114829
     center_displacement = (right_displacement + left_displacement)/2
