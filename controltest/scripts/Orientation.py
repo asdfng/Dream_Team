@@ -19,6 +19,7 @@ sampleRate = .001 #100Hz
 
 i = 0
 angle = 0.0
+angle_Gyro = 0.0
 total = 0.0
 
 #Starting values for the encoders
@@ -70,6 +71,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
         #saves the new theta as the initial theta for next execution
         theta_initial = theta_new 
     
+    return theta_new
     #prints angle every 100ms, not needed for the final iteration
     #print("orientation = %s degrees" % theta_new)                               
 
@@ -77,18 +79,22 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
 
 def  talker():
 
-    global angle, total, i 
+    global angle, angle_Gyro, total, i 
 
     #Setup for the encoders
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
 
+    oldangle_Encoder = 0.0
+    oldangle_Gyro = 0.0
+
     pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
     rospy.init_node('Encoder_Orientation', anonymous=True)
     rate = rospy.Rate(100)
 
     while not rospy.is_shutdown():
+        Threshold = 0.125
 
         #Read the encoders
         encoders = a_star.read_encoders()
@@ -103,8 +109,8 @@ def  talker():
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
 
-        displacement(passRight,passLeft) 
-
+        angle_Encoder = displacement(passRight,passLeft)
+    
         #Find the offset of the gyro and remove it
         while i<=10:
             total += imu.g.z
@@ -112,8 +118,18 @@ def  talker():
 
         offsetGZ = total/10
 
-        angle += imu.g.z*gyroSensitivity*sampleRate
+        angle_Gyro += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
 
+        dGyro = angle_Gyro - oldangle_Gyro
+        dEncoder = angle_Encoder - oldangle_Encoder
+
+        oldangle_Encoder = angle_Encoder 
+        oldangle_Gyro = angle_Gyro
+
+        if abs(dGyro - dEncoder) > Threshold:
+            angle += dGyro
+        else:
+            angle += dEncoder
         
 
         rate.sleep()
