@@ -45,7 +45,7 @@ def callback(msg):
 #Setting up the subscriber node
 def listener():
     rospy.init_node('MotorController', anonymous=True)
-    rospy.subscriber("/cmd_vel", Twist, callback)
+    rospy.Subscriber("/cmd_vel", Twist, callback)
     rospy.spin()
 
 if __name__ == '__main__':
