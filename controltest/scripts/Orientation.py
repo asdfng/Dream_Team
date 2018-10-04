@@ -6,11 +6,12 @@ import math
 from lms6 import LSM6
 from a_star import AStar
 
-a_star.motors(-50,50)
 #Initialize all objects
 a_star = AStar()
 imu = LSM6()
 imu.enable()
+
+a_star.motors(-50,50)
 
 #Starting values and data for the imu
 accelSensitivity = 0.061
