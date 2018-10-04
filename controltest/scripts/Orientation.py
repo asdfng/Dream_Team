@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import rospy
+#import rospy
 import time 
 import os
 import math
@@ -89,9 +89,9 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
-    rospy.init_node('Encoder_Orientation', anonymous=True)
-    rate = rospy.Rate(100)
+    #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
+    #rospy.init_node('Encoder_Orientation', anonymous=True)
+    #rate = rospy.Rate(100)
 
     while not rospy.is_shutdown():
         Threshold = 0.125
@@ -132,11 +132,13 @@ def  talker():
             angle += dEncoder
         
 
-        rate.sleep()
+        #rate.sleep()
+        time.sleep(.001)
+        print(angle)
         os.system('clear')
 
 if __name__ == '__main__':
     try:
         talker()
-    except rospy.ROSInterruptException:
+    except KeyboardInterrupt:
         pass
