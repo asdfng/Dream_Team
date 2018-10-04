@@ -29,6 +29,17 @@ def callback(msg):
     spLeft = spLinear + spAngular
     spRight = spLinear - spAngular
 
+    #Keep the number in an allowable range
+
+    if spLeft > 400:
+        spLeft = 400
+    if spLeft < -400:
+        spLeft = -400
+    if spRight > 400:
+        spRight = 400
+    if spRight < -400:
+        spRight = -400
+
     a_star.motors(spLeft,spRight)
 
 #Setting up the subscriber node
