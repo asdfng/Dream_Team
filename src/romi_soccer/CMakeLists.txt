@@ -176,7 +176,7 @@ catkin_install_python(
   scripts/mapper
   scripts/jsongwriter
   nodes/json_team_grabber.py
-  nodes/tf_world_team.py
+  nodes/tf_map_odom.py
   nodes/json_corner_grabber.py
   nodes/homography_calibrater.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

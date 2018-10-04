@@ -23,12 +23,18 @@ def json_team_grabber():
         rover.pose.position.x = center_shape['X']
         rover.pose.position.y = center_shape['Y']
         th = shape['Orientation']
-        x = center_shape['X']
-        y = center_shape['Y']
         # 2D Rotation uses JSON data for now as placeholder, will replace with
         # IMU data later
-        rover.pose.orientation.x = x*math.cos(th)-y*math.sin(th)
-        rover.pose.orientation.y = x*math.sin(th)+y*math.cos(th)
+        # x = center_shape['X']
+        # y = center_shape['Y']
+        # rover.pose.orientation.x = x*math.cos(th)-y*math.sin(th)
+        # rover.pose.orientation.y = x*math.sin(th)+y*math.cos(th)
+        angle = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+        rover.pose.orientation.x = angle[0]
+        rover.pose.orientation.y = angle[1]
+        rover.pose.orientation.z = angle[2]
+        rover.pose.orientation.w = angle[3]
+
         pub.publish(rover)
         rospy.loginfo('Done.')
         rate.sleep()
