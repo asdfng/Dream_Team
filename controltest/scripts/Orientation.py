@@ -95,7 +95,7 @@ def  talker():
     #rospy.init_node('Encoder_Orientation', anonymous=True)
     #rate = rospy.Rate(100)
 
-    while not rospy.is_shutdown():
+    while True:
         Threshold = 0.125
 
         #Read the encoders
