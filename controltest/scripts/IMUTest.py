@@ -32,7 +32,7 @@ while True:
     
     offsetGZ = total/10
 
-    angle += imu.g.z.gyroSensitivity*sampleRate
+    angle += imu.g.z*gyroSensitivity*sampleRate
 
     time.sleep(sampleRate)
     os.system('clear')

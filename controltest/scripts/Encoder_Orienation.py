@@ -1,15 +1,9 @@
-#!/usr/bin/env python
-import rospy
 import time 
 import os
 import math
-from lms6 import LSM6
 from a_star import AStar
-
-#
 a_star = AStar()
-imu = LSM6()
-imu.enable()
+a_star.motors(25,-25)
 
 theta_initial = 0.0
 theta_new = 0.0
@@ -43,12 +37,9 @@ encoders = a_star.read_encoders()
 oldright_encoder = encoders[1]
 oldleft_encoder = encoders[0]
 
-def  talker():
-    pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
-    rospy.init_node('Encoder_Orientation', anonymous=True)
-    rate = rospy.Rate(100)
+try:
+    while True:
 
-    while not rospy.is_shutdown():
         encoders = a_star.read_encoders()
         print(encoders[0], encoders[1])
 
@@ -64,9 +55,5 @@ def  talker():
         displacement(passRight,passLeft) 
         time.sleep(.1)
         os.system('clear')
-
-if __name__ = '__main__':
-    try:
-        talker()
-    except rospy.ROSInterruptException:
-        pass
+except KeyboardInterrupt:
+    a_star.motors(0,0)
