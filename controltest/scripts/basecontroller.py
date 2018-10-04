@@ -40,6 +40,9 @@ def callback(msg):
     if spRight < -400:
         spRight = -400
 
+    print(spLeft)
+    print(spRight)
+
     a_star.motors(spLeft,spRight)
 
 #Setting up the subscriber node
