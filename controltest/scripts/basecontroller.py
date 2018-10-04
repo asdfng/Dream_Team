@@ -20,8 +20,8 @@ def callback(msg):
     #Calculated max velocity to be 0.78508 ft/s
     #fitting -400 to 400 in the range of -0.78508 to 0.78508
 
-    spLinear = int(((velXL + 0.78508)*(400 - (-400))/(.78508 - (-.78508))) - .78508)
-    spAngular = int(((velZA + 0.78508)*(400 - (-400))/(.78508 - (-.78508))) - .78508)
+    spLinear = int(((velXL + 0.78508)*(400 - (-400))/(.78508 - (-.78508))) - 400)
+    spAngular = int(((velZA + 0.78508)*(400 - (-400))/(.78508 - (-.78508))) - 400)
 
     #the angular data is special it has to be converted to values
     #for the left and right motors, this will depend on the sign of the value
