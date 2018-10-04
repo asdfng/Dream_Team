@@ -12,7 +12,7 @@ def json_corner_grabber():
         data = json.loads(source.decode())
         rospy.loginfo('It connected!')
         rospy.loginfo('Publishing raw data coordinates to topic...')
-        map.header.time = rospy.Time.now()
+        map.header.stamp = rospy.Time.now()
         map.header.frame_id = 'world'
         #Corners data parsing
         corners = data['Corners']

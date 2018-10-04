@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   robot_state_publisher
   roscpp
   rospy
+  sensor_msgs
   std_msgs
   tf
 )
@@ -83,6 +84,7 @@ generate_messages(
   DEPENDENCIES
   geometry_msgs
   nav_msgs
+  sensor_msgs
   std_msgs
 )
 
@@ -118,7 +120,7 @@ generate_messages(
 catkin_package(
  # INCLUDE_DIRS include
 #  LIBRARIES romi_soccer
- CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs std_msgs
+ CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs std_msgs sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -174,9 +176,10 @@ include_directories(
 catkin_install_python(
   PROGRAMS
   scripts/mapper
+  scripts/finder
   scripts/jsongwriter
-  nodes/json_team_grabber.py
   nodes/tf_map_odom.py
+  nodes/json_team_grabber.py
   nodes/json_corner_grabber.py
   nodes/homography_calibrater.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

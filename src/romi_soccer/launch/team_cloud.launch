@@ -1,0 +1,38 @@
+<launch>
+     <include file="$(find romi_soccer)/launch/cloud_one.launch">
+          <arg name="team" value="red"/>
+          <arg name="shape" value="circle"/>
+          <arg name="cloud_num" value="0"/>
+     </include>
+
+     <include file="$(find romi_soccer)/launch/cloud_one.launch">
+          <arg name="team" value="red"/>
+          <arg name="shape" value="square"/>
+          <arg name="cloud_num" value="1"/>
+     </include>
+
+     <include file="$(find romi_soccer)/launch/cloud_one.launch">
+          <arg name="team" value="red"/>
+          <arg name="shape" value="triangle"/>
+          <arg name="cloud_num" value="2"/>
+     </include>
+
+     <include file="$(find romi_soccer)/launch/cloud_one.launch">
+          <arg name="team" value="blue"/>
+          <arg name="shape" value="circle"/>
+          <arg name="cloud_num" value="3"/>
+     </include>
+
+     <include file="$(find romi_soccer)/launch/cloud_one.launch">
+          <arg name="team" value="blue"/>
+          <arg name="shape" value="square"/>
+          <arg name="cloud_num" value="4"/>
+     </include>
+
+     <include file="$(find romi_soccer)/launch/cloud_one.launch">
+          <arg name="team" value="blue"/>
+          <arg name="shape" value="triangle"/>
+          <arg name="cloud_num" value="5"/>
+     </include>
+
+</launch>

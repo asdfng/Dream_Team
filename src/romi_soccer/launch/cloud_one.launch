@@ -1,0 +1,15 @@
+<launch>
+     <arg name='team'/>
+     <arg name='shape'/>
+     <arg name='cloud_num'/>
+     <param
+          name = "~cloud_num"
+          value = "$(arg cloud_num)"
+     />
+     <node
+          name="romi_finder"
+          pkg="romi_soccer"
+          type="finder"
+          ns="$(arg team)_$(arg shape)"
+     />
+</launch>

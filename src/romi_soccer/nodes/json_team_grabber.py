@@ -4,7 +4,7 @@ import urllib2
 import geometry_msgs.msg
 
 def json_team_grabber():
-    rover = Rover()
+    rover = geometry_msgs.msg.PoseStamped()
     rate = rospy.Rate(10)  # 10 Hz
     while not rospy.is_shutdown():
         response = urllib2.urlopen('http://172.16.0.1:8001/FieldData/GetData')
@@ -16,19 +16,15 @@ def json_team_grabber():
         #Shape data parsing
         shape = team['%s' % shape_name]
         center_shape = shape['Object Center']
-        rospy.loginfo('Received %s %s coordinates from JSON.' % team_name % shape_name)
+        rospy.loginfo('Received %s %s coordinates from JSON.' % (team_name,shape_name))
         rospy.loginfo('Publishing raw data coordinates to topic...')
-        rover.header.time = rospy.Time.now()
+        rover.header.stamp = rospy.Time.now()
         rover.header.frame_id = 'world'
         rover.pose.position.x = center_shape['X']
         rover.pose.position.y = center_shape['Y']
-        th = shape['Orientation']
         # 2D Rotation uses JSON data for now as placeholder, will replace with
         # IMU data later
-        # x = center_shape['X']
-        # y = center_shape['Y']
-        # rover.pose.orientation.x = x*math.cos(th)-y*math.sin(th)
-        # rover.pose.orientation.y = x*math.sin(th)+y*math.cos(th)
+        th = shape['Orientation']
         angle = tf_conversions.transformations.quaternion_from_euler(0,0,th)
         rover.pose.orientation.x = angle[0]
         rover.pose.orientation.y = angle[1]
@@ -41,9 +37,12 @@ def json_team_grabber():
 
 if __name__ == '__main__':
     rospy.init_node('json_team_grabber')
-    team_name = rospy.get_param('~team')
-    shape_name = rospy.get_param('~shape')
-    pub = rospy.Publisher('mapper/raw_data/%s/%s' %team_name %shape_name, geometry_msgs.msg.PoseStamped, queue_size=10)
+    team_name_lc = rospy.get_param('~team')
+    team_name = team_name_lc.capitalize()
+    shape_name_lc = rospy.get_param('~shape')
+    shape_name = shape_name_lc.capitalize()
+    # pub = rospy.Publisher('mapper/raw_data/%s/%s' %(team_name_lc,shape_name_lc), geometry_msgs.msg.PoseStamped, queue_size=10)
+    pub = rospy.Publisher('mapper/raw_data', geometry_msgs.msg.PoseStamped, queue_size=10)
     try:
         json_team_grabber()
     except rospy.ROSInterruptException:
