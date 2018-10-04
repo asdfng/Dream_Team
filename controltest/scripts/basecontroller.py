@@ -26,8 +26,8 @@ def callback(msg):
     #the angular data is special it has to be converted to values
     #for the left and right motors, this will depend on the sign of the value
 
-    spLeft = spLinear + spAngular
-    spRight = spLinear - spAngular
+    spLeft = spLinear - spAngular
+    spRight = spLinear + spAngular
 
     #Keep the number in an allowable range
 
