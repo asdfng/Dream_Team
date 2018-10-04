@@ -32,23 +32,8 @@ while True:
     
     offsetGZ = total/10
 
-#Create a dictionary of converted values, use sensitivety data from the spec sheet
-    imudata = {
-        "gx": imu.g.x*gyroSensitivity,
-        "gy": imu.g.y*gyroSensitivity,
-        "gz": imu.g.z*gyroSensitivity - offsetGZ,
-        "ax": imu.a.x*accelSensitivity*accelRatio,  
-        "ay": imu.a.y*accelSensitivity*accelRatio,
-        "az": imu.a.z*accelSensitivity*accelRatio
-    }
-    #read the IMU, print and wait
-    imu.read()
+    angle += imu.g.z.gyroSensitivity*sampleRate
 
-    angle += imudata['gz']*sampleRate
-
-    #Gyro is in degrees per second while accel is in g
-    #print("G - x: %(gx).2f y:%(gy).2f z:%(gz).2f \nA - x:%(ax).2f y:%(ay).2f z:%(az).2f" % imudata)
-    print(angle)
     time.sleep(sampleRate)
     os.system('clear')
 

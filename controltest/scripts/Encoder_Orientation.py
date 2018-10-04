@@ -3,8 +3,13 @@ import rospy
 import time 
 import os
 import math
+from lms6 import LSM6
 from a_star import AStar
+
+#
 a_star = AStar()
+imu = LSM6()
+imu.enable()
 
 theta_initial = 0.0
 theta_new = 0.0
