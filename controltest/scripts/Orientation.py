@@ -127,8 +127,9 @@ def  talker():
 
         offsetGZ = total/10
 
-        angle_Gyro += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
-        print('gyro: %s' % (angle_Gyro % 360))
+        angle_Gyro_unbounded += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
+        angle_Gyro = angle_Gyro_unbounded % 360
+        print('gyro: %s' % angle_Gyro)
 
         dGyro = angle_Gyro - oldangle_Gyro
         print('Delta gyro: %s' % dGyro)
