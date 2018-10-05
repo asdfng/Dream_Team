@@ -22,7 +22,7 @@ sampleRate = .001 #100Hz
 
 i = 0
 angle = 0.0
-angle_Gyro = 0.0
+angle_Gyro_unbounded = 0.0
 total = 0.0
 
 #Starting values for the encoders
