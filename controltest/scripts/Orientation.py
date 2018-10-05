@@ -136,7 +136,7 @@ def  talker():
         
 
         #rate.sleep()
-        time.sleep(.001)
+        time.sleep(sampleRate)
         print(angle)
         os.system('clear')
 
