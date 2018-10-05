@@ -18,7 +18,7 @@ a_star.motors(-25,25)
 accelSensitivity = 0.061
 accelRatio = 0.001 # Converting from milligrams to gram
 gyroSensitivity = 0.035
-sampleRate = .01 #100Hz
+sampleRate = .1 #100Hz
 
 i = 0
 angle = 0.0
