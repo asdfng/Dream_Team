@@ -112,7 +112,7 @@ def  talker():
         oldleft_encoder = left_encoder
 
         angle_Encoder = displacement(passRight,passLeft)
-        print(angleEncoder)
+        print(angle_Encoder)
     
         #Find the offset of the gyro and remove it
         while i<=10:
