@@ -148,9 +148,9 @@ def  talker():
         
 
         #rate.sleep()
-        time.sleep(sampleRate)
         print(angle)
-
+        time.sleep(sampleRate)
+        
         sampleRate = timeit.default_timer() - start_time
         
         os.system('clear')
