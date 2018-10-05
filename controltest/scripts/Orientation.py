@@ -27,12 +27,12 @@ total = 0.0
 
 #Starting values for the encoders
 theta_initial = 0.0
-theta_new = 0.0
+theta_new_unbounded = 0.0
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: 
     
     global theta_initial
-    global theta_new
+    global theta_new_unbounded
 
     pi = math.pi
     dist_between_wheels = 0.4791667
@@ -57,22 +57,9 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi
 
     #appends initial theta to new theta
-    theta_new = theta_initial + alpha_left_turn_degrees                                     
-    
-    if  theta_new >= float(360):
-
-        theta_new = theta_new - float(360)
-        theta_initial = theta_new
-
-    elif theta_new < float(0):
-
-        theta_new = float(360) + theta_new
-        theta_initial = theta_new
-
-    else:
-        
-        #saves the new theta as the initial theta for next execution
-        theta_initial = theta_new 
+    theta_new_unbounded = theta_initial + alpha_left_turn_degrees 
+    theta_new = theta_new_unbounded % 360                                   
+    theta_initial = theta_new 
     
     return theta_new
     #prints angle every 100ms, not needed for the final iteration
