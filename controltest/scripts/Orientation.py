@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #import rospy
-import time 
+import time
+import timeit 
 import os
 import math
 from lms6 import LSM6
@@ -96,6 +97,8 @@ def  talker():
     #rate = rospy.Rate(100)
 
     while True:
+        start_time = timeit.default_timer()
+
         Threshold = 0.125
 
         #Read the encoder and imu
@@ -146,6 +149,8 @@ def  talker():
         #rate.sleep()
         time.sleep(sampleRate)
         print(angle)
+        elapsed = timeit.default_timer() - start_time
+        print(elapsed)
         os.system('clear')
 
 if __name__ == '__main__':
