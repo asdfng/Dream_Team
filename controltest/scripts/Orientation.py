@@ -122,12 +122,17 @@ def  talker():
         offsetGZ = total/10
 
         angle_Gyro += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
+        print(angle_Gyro)
 
         dGyro = angle_Gyro - oldangle_Gyro
+        print(dGyro)
         dEncoder = angle_Encoder - oldangle_Encoder
+        print(dEncoder)
 
-        oldangle_Encoder = angle_Encoder 
+        oldangle_Encoder = angle_Encoder
+        print(oldangle_Encoder)
         oldangle_Gyro = angle_Gyro
+        print(oldangle_Gyro)
 
         if abs(dGyro - dEncoder) > Threshold:
             angle += dGyro
