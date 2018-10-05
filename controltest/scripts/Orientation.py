@@ -82,7 +82,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
 
 def  talker():
 
-    global angle, angle_Gyro, total, i, sampleRate
+    global angle, angle_Gyro_unbounded, total, i, sampleRate
 
     #Setup for the encoders
     encoders = a_star.read_encoders()
