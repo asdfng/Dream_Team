@@ -149,8 +149,9 @@ def  talker():
         #rate.sleep()
         time.sleep(sampleRate)
         print(angle)
-        elapsed = timeit.default_timer() - start_time
-        print(elapsed)
+
+        sampleRate = timeit.default_timer() - start_time
+        
         os.system('clear')
 
 if __name__ == '__main__':
