@@ -12,13 +12,13 @@ a_star = AStar()
 imu = LSM6()
 imu.enable()
 
-a_star.motors(25,-25)
+a_star.motors(-25,25)
 
 #Starting values and data for the imu
 accelSensitivity = 0.061
 accelRatio = 0.001 # Converting from milligrams to gram
 gyroSensitivity = 0.035
-sampleRate = .001 #100Hz
+sampleRate = .01 #100Hz
 
 i = 0
 angle = 0.0
