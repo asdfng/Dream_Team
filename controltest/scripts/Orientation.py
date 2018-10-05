@@ -85,6 +85,8 @@ def  talker():
 
     while True:
 
+        start_time = timeit.default_timer()
+
         Threshold = 0.125
 
         #Read the encoder and imu
@@ -136,9 +138,10 @@ def  talker():
         #rate.sleep()
         print(angle)
         print(sampleRate)
-        time.sleep(sampleRate)
+        time.sleep(0.01) #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
         
-        
+        sampleRate = timeit.default_timer() - start_time
+
         os.system('clear')
 
 if __name__ == '__main__':
