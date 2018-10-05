@@ -12,7 +12,7 @@ a_star = AStar()
 imu = LSM6()
 imu.enable()
 
-a_star.motors(-50,50)
+a_star.motors(-25,25)
 
 #Starting values and data for the imu
 accelSensitivity = 0.061
