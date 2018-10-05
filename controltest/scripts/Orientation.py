@@ -112,7 +112,7 @@ def  talker():
         oldleft_encoder = left_encoder
 
         angle_Encoder = displacement(passRight,passLeft)
-        print(angle_Encoder)
+        print('Encoder: %s' % angle_Encoder)
     
         #Find the offset of the gyro and remove it
         while i<=10:
@@ -122,17 +122,17 @@ def  talker():
         offsetGZ = total/10
 
         angle_Gyro += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
-        print(angle_Gyro)
+        print('gyro: %s' % angle_Gyro)
 
         dGyro = angle_Gyro - oldangle_Gyro
-        print(dGyro)
+        print('Delta gyro: %s' % dGyro)
         dEncoder = angle_Encoder - oldangle_Encoder
-        print(dEncoder)
+        print('Delta Encoder: %s' % dEncoder)
 
         oldangle_Encoder = angle_Encoder
-        print(oldangle_Encoder)
+        print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro
-        print(oldangle_Gyro)
+        print('old gyro: %s' % oldangle_Gyro)
 
         if abs(dGyro - dEncoder) > Threshold:
             angle += dGyro
