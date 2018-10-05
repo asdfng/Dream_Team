@@ -25,10 +25,13 @@ total = 0.0
 
 while True:
     
+    imu.read()
+
     #Find the offset and remove it
     while i<=10:
-         total += imu.g.z
-         i += 1
+        imu.read()
+        total += imu.g.z
+        i += 1
     
     offsetGZ = total/10
 

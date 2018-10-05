@@ -98,8 +98,9 @@ def  talker():
     while True:
         Threshold = 0.125
 
-        #Read the encoders
+        #Read the encoder and imu
         encoders = a_star.read_encoders()
+        imu.read()
         #print(encoders[0], encoders[1])
 
         right_encoder = encoders[1]
@@ -116,6 +117,8 @@ def  talker():
     
         #Find the offset of the gyro and remove it
         while i<=10:
+            
+            imu.read()
             total += imu.g.z
             i += 10
 
@@ -149,4 +152,4 @@ if __name__ == '__main__':
     try:
         talker()
     except KeyboardInterrupt:
-        pass
+        a_star.motors(0,0)
