@@ -12,7 +12,7 @@ a_star = AStar()
 imu = LSM6()
 imu.enable()
 
-a_star.motors(-25,25)
+a_star.motors(25,-25)
 
 #Starting values and data for the imu
 accelSensitivity = 0.061
@@ -84,7 +84,6 @@ def  talker():
     #rate = rospy.Rate(100)
 
     while True:
-        start_time = timeit.default_timer()
 
         Threshold = 0.125
 
