@@ -36,7 +36,7 @@ class RomiFinder:
     def callback(self,data):
         if (self.grabbed):
             cloud = sensor_msgs.msg.PointCloud()
-            cloud.header.stmap = rospy.Time.now()
+            cloud.header.stamp = rospy.Time.now()
             cloud.header.frame_id = 'table_frame'
             cloud.points.resize(7)
 
