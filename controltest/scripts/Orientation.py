@@ -122,10 +122,10 @@ def  talker():
 
         angle_Encoder = displacement(passRight,passLeft)
         desired_orientation = point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, angle_Encoder) #uses encoder angle to correct based on calculated angle
-        print('Encoder: %s' % desired_orientation)
+        print('desiredEncoder: %s' % desired_orientation)
         while True:
             a_star.motors(-25,25)
-            print('Encoder: %s' % angle_Encoder)
+            print('moving Encoder: %s' % angle_Encoder)
             if angle_Encoder - 5 >= desired_orientation and angle_Encoder + 5 <= desired_orientation:
                 a_star.motors(0,0)                                                                                         #stops after reaching orientation
                 break
