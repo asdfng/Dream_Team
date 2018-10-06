@@ -71,7 +71,8 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     dist_y = our_point_y - desired_point_y
     mag = math.sqrt(dist_x** 2 + dist_y**2)
     angle = math.atan(dist_y / dist_x)
-    orientation_input = current_orientation + angle
+    angle_degrees = angle * 180/(math.pi)
+    orientation_input = current_orientation + angle_degrees
     return orientation_input                                                                         # returns the new orientation
     
     
