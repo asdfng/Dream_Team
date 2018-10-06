@@ -66,15 +66,17 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     #print("orientation = %s degrees" % theta_new)
 
 
-def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y): #calculates the angle between the two points to figure out the correction
+def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_angle): #calculates the angle between the two points to figure out the correction
     dist_x = our_point_x - desired_point_x 
     dist_y = our_point_y - desired_point_y
     mag = math.sqrt(dist_x** 2 + dist_y**2)
     angle = math.atan(dist_y / dist_x)
     angle_degrees = angle * 180/(math.pi)
     print('angle = %s' % angle_degrees)
-    orientation_input = angle_degrees
+    orientation_input = angle_degrees + original_angle
     return orientation_input                                                                         # returns the new orientation
+
+
     
     
 
@@ -97,7 +99,7 @@ def  talker():
     #rate = rospy.Rate(100)
 
     while True:
-        a_star.motors(0,0)
+        a_star.motors(-25,25)
         start_time = timeit.default_timer()
 
         Threshold = 0.125
@@ -122,15 +124,6 @@ def  talker():
         oldleft_encoder = left_encoder
 
         angle_Encoder = displacement(passRight,passLeft)
-        desired_orientation = point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y) #uses encoder angle to correct based on calculated angle
-        print('desiredEncoder: %s' % desired_orientation)
-        while True:
-            a_star.motors(-25,25)
-            print('moving Encoder: %s' % angle_Encoder)
-            if angle_Encoder - 5 >= desired_orientation and angle_Encoder + 5 <= desired_orientation:
-                a_star.motors(0,0)                                                                                         #stops after reaching orientation
-                break
-
         
     
         #Find the offset of the gyro and remove it
@@ -170,6 +163,15 @@ def  talker():
         sampleRate = timeit.default_timer() - start_time
 
         os.system('clear')
+
+def orient_robot(orientation_input, current_orientation):
+    while True:
+        if current_orientation - 5 >= orientation_input  or current_orientation + 5 <= orientation_input:
+            a_star.motors(0,0)
+            break
+        else:
+            a_star.motors(-25,25)
+
 
 if __name__ == '__main__':
     try:
