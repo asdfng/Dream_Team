@@ -12,8 +12,6 @@ class OdomCalc:
         self.grabbed_pose = False
         self.vel = Twist()
         self.pose = PoseStamped()
-        self.team = rospy.get_param('~team')
-        self.shape = rospy.get_param('~shape')
         rospy.Subscriber('pose',PoseStamped,self.poseCallback)
         rospy.Subscriber('cmd_vel',Twist,self.callback)
         rospy.spin()
@@ -51,8 +49,8 @@ class OdomCalc:
 
         odom_trans = TransformStamped()
         odom_trans.header.stamp = self.current_time
-        odom_trans.header.frame_id = 'odom_%s_%s' %(self.team,self.shape)
-        odom_trans.child_frame_id = 'base_link_%s_%s' %(self.team,self.shape)
+        odom_trans.header.frame_id = 'odom'
+        odom_trans.child_frame_id = 'base_link'
 
         odom_trans.transform.translation.x = x
         odom_trans.transform.translation.y = y
@@ -64,14 +62,14 @@ class OdomCalc:
 
         odom = Odometry()
         odom.header.stamp = current_time
-        odom.header.frame_id = 'odom_%s_%s' %(self.team,self.shape)
+        odom.header.frame_id = 'odom'
 
         odom.pose.pose.position.x = x
         odom.pose.pose.position.y = y
         odom.pose.pose.position.z = 0
         odom.pose.pose.orientation = tf_conversions.transformations.quaternion_from_euler(0,0,th)
 
-        odom.child_frame_id = 'base_link_%s_%s' %(self.team,self.shape)
+        odom.child_frame_id = 'base_link'
         odom.twist.twist.linear.x = vx
         odom.twist.twist.linear.y = vy
         odom.twist.twist.angular.z = vth

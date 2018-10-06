@@ -1,17 +1,10 @@
 <launch>
      <arg name='team'/>
      <arg name='shape'/>
-     <param
-          name = "~team"
-          value = "$(arg team)"
-     />
-     <param
-          name = "~shape"
-          value = "$(arg shape)"
-     />
      <node
-          name='odom_calc_$(arg team)_$(arg shape)'
+          name='odom_calc'
           pkg='romi_soccer'
           type='odom_calculator'
+          ns="$(arg team)_$(arg shape)"
      />
 </launch>
