@@ -29,7 +29,7 @@ total = 0.0
 theta_initial = 0.0
 theta_new_unbounded = 0.0
 
-def displacement(right_encoder,left_encoder): #velocity: ft/s, position: 
+def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     
     global theta_initial
     global theta_new_unbounded
@@ -63,7 +63,18 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     
     return theta_new
     #prints angle every 100ms, not needed for the final iteration
-    #print("orientation = %s degrees" % theta_new)                               
+    #print("orientation = %s degrees" % theta_new)
+
+
+def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, current_orientation): #calculates the angle between the two points to figure out the correction
+    dist_x = our_point_x - desired_point_x 
+    dist_y = our_point_y - desired_point_y
+    mag = math.sqrt(dist_x** 2 + dist_y**2)
+    angle = math.atan(dist_y / dist_x)
+    orientation_input = current_orientation + angle
+    return orientation_input                                                                         # returns the new orientation
+    
+    
 
 
 
@@ -89,6 +100,11 @@ def  talker():
 
         Threshold = 0.125
 
+        our_point_x = 1.1
+        our_point_y = 1.2
+        desired_point_x = 4.3
+        desired_point_y = 4.5
+
         #Read the encoder and imu
         encoders = a_star.read_encoders()
         imu.read()
@@ -104,7 +120,16 @@ def  talker():
         oldleft_encoder = left_encoder
 
         angle_Encoder = displacement(passRight,passLeft)
-        print('Encoder: %s' % angle_Encoder)
+        desired_orientation = point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, angle_Encoder) #uses encoder angle to correct based on calculated angle
+        print('Encoder: %s' % desired_orientation)
+        while True:
+            a_star.motors(-25,25)
+            print('Encoder: %s' % angle_Encoder)
+            if angle_Encoder - 5 >= desired_orientation and angle_Encoder + 5 <= desired_orientation:
+                a_star.motors(0,0)                                                                                         #stops after reaching orientation
+                break
+
+        
     
         #Find the offset of the gyro and remove it
         while i<=10:
