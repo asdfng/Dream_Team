@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import rospy, sys
 sys.path.append('../src/romi_soccer/src/romi_soccer')
-from romi_soccer.romi_poser import RomiPoser
+from romi_soccer.odom_calculator import OdomCalc
 if __name__ == '__main__':
-    rospy.init_node('romi_poser')
+    rospy.init_node('odom_calculator')
     try:
         rospy.loginfo('Initializing node...')
-        romi_poser = RomiPoser()
+        odom_calculator = OdomCalc()
     except rospy.ROSInterruptException:
             pass

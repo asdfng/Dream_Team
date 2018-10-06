@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy, roslib, numpy, tf2_ros, tf_conversions
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped, TransformStamped
 from romi_soccer.msg import Homography
 
 class RomiPoser:
@@ -53,7 +53,7 @@ class RomiPoser:
 
     def tf_broadcaster(self,new_pose):
         br = tf2_ros.TransformBroadcaster()
-        opt_prime = geometry_msgs.msg.TransformStamped()
+        opt_prime = TransformStamped()
         opt_prime.header.frame_id('map')
         opt_prime.child_frame_id(new_pose.header.frame_id)
         opt_prime.transform.translation.x = new_pose.pose.position.x

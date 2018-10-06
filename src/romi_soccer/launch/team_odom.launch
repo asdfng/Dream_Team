@@ -3,32 +3,32 @@
           name = "robot_description"
           textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
           
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/odom_calc.launch">
           <arg name="team" value="red"/>
           <arg name="shape" value="circle"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/odom_calc.launch">
           <arg name="team" value="red"/>
           <arg name="shape" value="square"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/odom_calc.launch">
           <arg name="team" value="red"/>
           <arg name="shape" value="triangle"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/odom_calc.launch">
           <arg name="team" value="blue"/>
           <arg name="shape" value="circle"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/odom_calc.launch">
           <arg name="team" value="blue"/>
           <arg name="shape" value="square"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/odom_calc.launch">
           <arg name="team" value="blue"/>
           <arg name="shape" value="triangle"/>
      </include>
