@@ -4,7 +4,7 @@
 
      <rosparam file="$(find romi_soccer)/config/diffdrive.yaml"
                command="load"
-               ns = "/$(arg robot_name)"/>
+               ns = "/$(arg robot_name)"/>     
      <node
           name   = "spawn_urdf"
           pkg    = "gazebo_ros"
@@ -13,11 +13,16 @@
      />
 
      <node
-          name   = "robot_state_publisher"
           pkg    = "robot_state_publisher"
-          type   = "robot_state_publisher"
-          output = "screen"
-          />
+          type   = "state_publisher"
+          name   = "rob_st_pub" >
+             <remap
+                  from = "robot_description"
+                  to   = "$(arg robot_name)" />
+             <remap
+                  from = "joint_states"
+                  to   = "$(arg robot_name)/joint_states" />
+    </node>
 
      <node
           name   = "controller_node"

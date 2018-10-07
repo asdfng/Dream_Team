@@ -1,0 +1,27 @@
+<launch>
+     <arg name='subject'/>
+     <arg name='opp_team'/>
+     <!-- Team - Different -->
+     <!-- Shape - Circle -->
+     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">
+          <arg name="number" value="0"/>
+          <arg name="object" value="$(arg opp_team)_circle"/>
+          <arg name="subject" value="$(arg subject)"/>
+     </include>
+
+     <!-- Team - Different -->
+     <!-- Shape - Square -->
+     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">
+          <arg name="number" value="1"/>
+          <arg name="object" value="$(arg opp_team)_square"/>
+          <arg name="subject" value="$(arg subject)"/>
+     </include>
+
+     <!-- Team - Different -->
+     <!-- Shape - Triangle -->
+     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">
+          <arg name="number" value="2"/>
+          <arg name="object" value="$(arg opp_team)_triangle"/>
+          <arg name="subject" value="$(arg subject)"/>
+     </include>
+</launch>

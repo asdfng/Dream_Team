@@ -1,0 +1,5 @@
+<launch>
+     <arg name='team'/>
+     <arg name='shape'/>
+     <include file="$(find romi_soccer)/launch/fake_sensor/$(arg team)_$(arg shape)_sensor.launch"/>
+</launch>
