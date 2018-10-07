@@ -74,17 +74,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     print('angle = %s' % angle_degrees)
     orientation_input = angle_degrees + 360 - original_orientation
     return orientation_input
-
-def orient_robot(orientation_input, current_orientation): #orients the rover to the proper direction
-    while True:                                 #current orientation should just be angle of encoder or gyro
-        if current_orientation - 5 >= orientation_input  or current_orientation + 5 <= orientation_input:
-            a_star.motors(0,0)
-            break
-        else:
-            a_star.motors(-25,25)
-
-    
-    
+   
 
 
 
@@ -99,6 +89,8 @@ def  talker():
 
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
+
+    orientation_input = point_orientation(0,0,3,3,angle)
 
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
     #rospy.init_node('Encoder_Orientation', anonymous=True)
@@ -156,6 +148,11 @@ def  talker():
             angle += dEncoder
         
 
+                                #current orientation should just be angle of encoder or gyro
+        if angle - 5 >= orientation_input  or angle + 5 <= orientation_input:
+            a_star.motors(0,0)
+        else:
+            a_star.motors(-25,25)
         #rate.sleep()
         print(angle)
         print(sampleRate)
