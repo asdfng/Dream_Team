@@ -97,7 +97,10 @@ def  talker():
     #rate = rospy.Rate(100)
 
     while True:
-        a_star.motors(-25,25)
+        if angle - 5 >= orientation_input  or angle + 5 <= orientation_input: #current orientation should just be angle of encoder or gyro
+            a_star.motors(0,0)
+        else:
+            a_star.motors(-25,25)
         start_time = timeit.default_timer()
 
         Threshold = 0.125
@@ -147,12 +150,6 @@ def  talker():
         else:
             angle += dEncoder
         
-
-                                #current orientation should just be angle of encoder or gyro
-        if angle - 5 >= orientation_input  or angle + 5 <= orientation_input:
-            a_star.motors(0,0)
-        else:
-            a_star.motors(-25,25)
         #rate.sleep()
         print(angle)
         print(sampleRate)
