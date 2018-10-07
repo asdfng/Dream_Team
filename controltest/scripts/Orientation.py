@@ -65,18 +65,18 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     #prints angle every 100ms, not needed for the final iteration
     #print("orientation = %s degrees" % theta_new)
                                                                 
-def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_angle): #calculates the angle between the two points to figure out the correction
-    dist_x = our_point_x - desired_point_x 
+def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
+    dist_x = our_point_x - desired_point_x #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
     dist_y = our_point_y - desired_point_y
     mag = math.sqrt(dist_x** 2 + dist_y**2)
     angle = math.atan(dist_y / dist_x)
     angle_degrees = angle * 180/(math.pi)       #try for loop to only execute once
     print('angle = %s' % angle_degrees)
-    orientation_input = angle_degrees + original_angle
+    orientation_input = angle_degrees + 360 - original_orientation
     return orientation_input
 
-def orient_robot(orientation_input, current_orientation):
-    while True:
+def orient_robot(orientation_input, current_orientation): #orients the rover to the proper direction
+    while True:                                 #current orientation should just be angle of encoder or gyro
         if current_orientation - 5 >= orientation_input  or current_orientation + 5 <= orientation_input:
             a_star.motors(0,0)
             break
