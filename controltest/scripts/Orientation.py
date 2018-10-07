@@ -91,6 +91,7 @@ def  talker():
     oldangle_Gyro = 0.0
 
     orientation_input = point_orientation(0,0,3,3,angle)
+    print('orientation_input = %s' % orientation_input)
 
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
     #rospy.init_node('Encoder_Orientation', anonymous=True)
