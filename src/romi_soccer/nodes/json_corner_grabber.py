@@ -34,7 +34,8 @@ def json_corner_grabber():
 
 if __name__ == '__main__':
     rospy.init_node('json_corner_grabber')
-    pub = rospy.Publisher('mapper/raw_data/corners', Map, queue_size=10)
+    subject = rospy.get_param('~subject')
+    pub = rospy.Publisher('corners/raw_pose', Map, queue_size=10)
     try:
         json_corner_grabber()
     except rospy.ROSInterruptException:

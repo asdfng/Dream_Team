@@ -1,0 +1,23 @@
+<launch>
+     <arg name='~number'/>
+     <arg name='~obj_team'/>
+     <arg name='~obj_shape'/>
+     <arg name='~subject'/>
+     <param
+          name = "~number"
+          value = "$(arg number)"
+     />
+     <param
+          name = "~object"
+          value = "$(arg obj_team)_$(arg obj_shape)"
+     />
+     <param
+          name = "~subject"
+          value = "$(arg subject)"
+     />
+     <node
+          name="fake_sensor_$(arg number)"
+          pkg="romi_soccer"
+          type="finder"
+     />
+</launch>

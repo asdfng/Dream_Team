@@ -16,10 +16,12 @@ class RomiFinder:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
-        self.pub = rospy.Publisher('cloudy_meatballs',PointCloud,queue_size=10)
-        rospy.Subscriber('mapper/homography',Homography, self.matCallback)
-        rospy.Subscriber('mapper/raw_data',PoseStamped, self.callback)
         self.cloud_num = rospy.get_param('~number')
+        object = rospy.get_param('~object')
+        subject = rospy.get_param('~subject')
+        self.pub = rospy.Publisher('%s/cloudy_meatballs' % subject,PointCloud,queue_size=10)
+        rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
+        rospy.Subscriber('%s/raw_pose' % object,PoseStamped, self.callback)
 
     def matCallback(self,matrix):
         self.q11 = matrix.q11
@@ -37,7 +39,7 @@ class RomiFinder:
         if (self.grabbed):
             cloud = sensor_msgs.msg.PointCloud()
             cloud.header.stamp = rospy.Time.now()
-            cloud.header.frame_id = 'table_frame'
+            cloud.header.frame_id = 'sensor_frame'
             cloud.points.resize(7)
 
             # cloud.channels.resize(1)

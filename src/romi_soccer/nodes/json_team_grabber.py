@@ -42,7 +42,7 @@ if __name__ == '__main__':
     shape_name_lc = rospy.get_param('~shape')
     shape_name = shape_name_lc.capitalize()
     # pub = rospy.Publisher('mapper/raw_data/%s/%s' %(team_name_lc,shape_name_lc), geometry_msgs.msg.PoseStamped, queue_size=10)
-    pub = rospy.Publisher('mapper/raw_data', geometry_msgs.msg.PoseStamped, queue_size=10)
+    pub = rospy.Publisher('raw_pose', geometry_msgs.msg.PoseStamped, queue_size=10)
     try:
         json_team_grabber()
     except rospy.ROSInterruptException:

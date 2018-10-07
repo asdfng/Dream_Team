@@ -15,10 +15,11 @@ class RomiPoser:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
-        rospy.Subscriber('mapper/homography',Homography, self.matCallback)
-        rospy.Subscriber('mapper/raw_data',PoseStamped, self.callback)
+        self.subject = rospy.get_param('~subject')
+        rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
+        rospy.Subscriber('%s/raw_pose' % self.subject,PoseStamped, self.callback)
+        self.pub = rospy.Publisher('%s/pose' % self.subject,PoseStamped, queue_size=10)
         rospy.spin()
-        self.pub = rospy.Publisher('pose',PoseStamped, queue_size=10)
 
     def matCallback(self,matrix):
         self.q11 = matrix.q11
@@ -36,7 +37,7 @@ class RomiPoser:
         u = data.pose.position.x
         v = data.pose.position.y
         new_pose = PoseStamped()
-        new_pose.header.frame_id = 'odom'
+        new_pose.header.frame_id = 'odom_%s' % self.subject
         new_pose.header.stamp = rospy.Time.now()
         new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
         new_pose.pose.position.y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))

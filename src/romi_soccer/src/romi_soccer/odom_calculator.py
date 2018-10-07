@@ -7,13 +7,15 @@ class OdomCalc:
     def __init__(self):
         self.current_time = rospy.Time.now()
         self.last_time = rospy.Time.now()
-        self.pub = rospy.Publisher('odom',Odometry,queue_size=10)
         self.grabbed_vel = False
         self.grabbed_pose = False
         self.vel = Twist()
         self.pose = PoseStamped()
-        rospy.Subscriber('pose',PoseStamped,self.poseCallback)
-        rospy.Subscriber('cmd_vel',Twist,self.callback)
+        self.subject = rospy.get_param('~subject')
+        self.robot_name = rospy.get_param('~robot_name')
+        self.pub = rospy.Publisher('%s/odom' % self.subject,Odometry,queue_size=10)
+        rospy.Subscriber('%s/pose' % self.subject,PoseStamped,self.poseCallback)
+        rospy.Subscriber('/%s/romi_controller/cmd_vel' % self.robot_name,Twist,self.callback)
         rospy.spin()
 
     def callback(self,data):
@@ -49,8 +51,8 @@ class OdomCalc:
 
         odom_trans = TransformStamped()
         odom_trans.header.stamp = self.current_time
-        odom_trans.header.frame_id = 'odom'
-        odom_trans.child_frame_id = 'base_link'
+        odom_trans.header.frame_id = 'odom_%s' % self.subject
+        odom_trans.child_frame_id = 'base_link_%s' % self.subject
 
         odom_trans.transform.translation.x = x
         odom_trans.transform.translation.y = y
@@ -62,14 +64,14 @@ class OdomCalc:
 
         odom = Odometry()
         odom.header.stamp = current_time
-        odom.header.frame_id = 'odom'
+        odom.header.frame_id = 'odom_%s' % self.subject
 
         odom.pose.pose.position.x = x
         odom.pose.pose.position.y = y
         odom.pose.pose.position.z = 0
         odom.pose.pose.orientation = tf_conversions.transformations.quaternion_from_euler(0,0,th)
 
-        odom.child_frame_id = 'base_link'
+        odom.child_frame_id = 'base_link_%s' % self.subject
         odom.twist.twist.linear.x = vx
         odom.twist.twist.linear.y = vy
         odom.twist.twist.angular.z = vth
