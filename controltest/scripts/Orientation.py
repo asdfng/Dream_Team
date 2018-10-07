@@ -70,7 +70,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     dist_y = our_point_y - desired_point_y
     mag = math.sqrt(dist_x** 2 + dist_y**2)
     angle = math.atan(dist_y / dist_x)
-    angle_degrees = angle * 180/(math.pi)
+    angle_degrees = angle * 180/(math.pi)       #try for loop to only execute once
     print('angle = %s' % angle_degrees)
     orientation_input = angle_degrees + original_angle
     return orientation_input
