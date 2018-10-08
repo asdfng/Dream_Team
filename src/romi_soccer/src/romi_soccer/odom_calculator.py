@@ -21,14 +21,14 @@ class OdomCalc:
 
     def callback(self,data):
         self.vel = data
-        self.grabbed_pose = True
-        if (self.grabbed_vel):
+        self.grabbed_vel = True
+        if (self.grabbed_pose):
             self.broadcaster()
 
     def poseCallback(self,data):
         self.pose = data
-        self.grabbed_vel = True
-        if (self.grabbed_pose):
+        self.grabbed_pose = True
+        if (self.grabbed_vel):
             self.broadcaster()
 
     def broadcaster(self):
