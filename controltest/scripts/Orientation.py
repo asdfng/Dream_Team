@@ -164,7 +164,7 @@ def  talker():
             a_star.motors(-50,50)
         
         #rate.sleep()
-        print(angle)
+        print('angle = %s' % angle)
         print(sampleRate)
         time.sleep(0.01) #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
         
