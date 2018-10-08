@@ -47,8 +47,10 @@ def callback(msg):
 
 #Setting up the subscriber node
 def listener():
-    rospy.init_node('MotorController', anonymous=True)
-    rospy.Subscriber("/cmd_vel", Twist, callback)
+    rospy.init_node('motor_control', anonymous=True)
+    team_name = rospy.get_param('~team')
+    shape_name = rospy.get_param('~shape')
+    rospy.Subscriber("%s/%s/cmd_vel" %team_name %shape_name, Twist, callback)
     rospy.spin()
 
 if __name__ == '__main__':
