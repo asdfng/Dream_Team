@@ -166,6 +166,7 @@ def  talker():
         else:
             a_star.motors(-50,50)
         
+        print('angle_degrees = %s' % angle_degrees)
         #rate.sleep()
         print('angle = %s' % angle)
         print(sampleRate)
