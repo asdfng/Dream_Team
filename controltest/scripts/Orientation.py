@@ -158,10 +158,10 @@ def  talker():
         else:
             angle += dEncoder
         
-        #if angle - 5 >= orientation_input  or angle + 5 <= orientation_input: #current orientation should just be angle of encoder or gyro
-            #a_star.motors(0,0)
-        #else:
-            #a_star.motors(-25,25)
+        if angle - 5 >= orientation_input  or angle + 5 <= orientation_input: #current orientation should just be angle of encoder or gyro
+            a_star.motors(0,0)
+        else:
+            a_star.motors(-50,50)
         
         #rate.sleep()
         print(angle)
