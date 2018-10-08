@@ -21,8 +21,8 @@ class RomiFinder:
         subject = rospy.get_param('subject')
         self.pub = rospy.Publisher('%s/cloudy_meatballs' % subject,PointCloud,queue_size=10)
         rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
-        if rospy.has_param('robot_name'):
-            robot_name = rospy.get_param('robot_name')
+        if rospy.has_param('~robot_name'):
+            robot_name = rospy.get_param('~robot_name')
             rospy.Subscriber('/%s/%s/raw_pose' % (object,robot_name),PoseStamped, self.callback)
         else:
             rospy.Subscriber('/%s/raw_pose' % object,PoseStamped, self.callback)
