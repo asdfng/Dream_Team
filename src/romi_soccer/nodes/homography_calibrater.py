@@ -105,6 +105,6 @@ def callback(corner):
 
 if __name__ == '__main__':
     rospy.init_node('homography_calibrater')
-    pub = rospy.Publisher('mapper/homography',Homography,queue_size=10)
-    rospy.Subscriber('mapper/raw_data/corners',Map, callback)
+    pub = rospy.Publisher('/mapper/homography',Homography,queue_size=10)
+    rospy.Subscriber('/mapper/raw_data/corners',Map, callback)
     rospy.spin()

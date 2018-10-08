@@ -1,34 +1,42 @@
 <launch>
+     <arg name="home_team"/>
+     <arg name="visiting_team"/>
+     <arg name='romi_circle'/>
+     <arg name='romi_square'/>
+     <arg name='romi_triangle'/>
      <param
           name = "robot_description"
           textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
-          
+
      <include file="$(find romi_soccer)/launch/tracker.launch">
-          <arg name="team" value="red"/>
+          <arg name="team" value="$(arg home_team)"/>
           <arg name="shape" value="circle"/>
+          <arg name="robot_name" value="$(arg romi_circle)"/>
      </include>
 
      <include file="$(find romi_soccer)/launch/tracker.launch">
-          <arg name="team" value="red"/>
+          <arg name="team" value="$(arg home_team)"/>
           <arg name="shape" value="square"/>
+          <arg name="robot_name" value="$(arg romi_square)"/>
      </include>
 
      <include file="$(find romi_soccer)/launch/tracker.launch">
-          <arg name="team" value="red"/>
+          <arg name="team" value="$(arg home_team)"/>
           <arg name="shape" value="triangle"/>
+          <arg name="robot_name" value="$(arg romi_triangle)"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/tracker_general.launch">
           <arg name="team" value="blue"/>
           <arg name="shape" value="circle"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/tracker_general.launch">
           <arg name="team" value="blue"/>
           <arg name="shape" value="square"/>
      </include>
 
-     <include file="$(find romi_soccer)/launch/tracker.launch">
+     <include file="$(find romi_soccer)/launch/tracker_general.launch">
           <arg name="team" value="blue"/>
           <arg name="shape" value="triangle"/>
      </include>

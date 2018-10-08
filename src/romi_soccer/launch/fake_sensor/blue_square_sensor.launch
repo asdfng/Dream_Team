@@ -1,5 +1,9 @@
 <launch>
      <arg name='subject' value="blue_square"/>
+     <arg name='romi_circle'/>
+     <arg name='romi_square'/>
+     <arg name='romi_triangle'/>
+
      <!-- Team - Different -->
      <!-- Shape - Circle -->
      <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">
@@ -26,18 +30,20 @@
 
      <!-- Team - Same -->
      <!-- Shape - Different 1 -->
-     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">
+     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor_same_team.launch">
           <arg name="number" value="3"/>
           <arg name="object" value="blue_circle"/>
           <arg name="subject" value="$(arg subject)"/>
+          <arg name="robot_name" value="$(arg romi_circle)"/>
      </include>
 
      <!-- Team - Same -->
      <!-- Shape - Different 2 -->
-     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">
+     <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor_same_team.launch">
           <arg name="number" value="4"/>
           <arg name="object" value="blue_triangle"/>
           <arg name="subject" value="$(arg subject)"/>
+          <arg name="robot_name" value="$(arg romi_triangle)"/>
      </include>
 
      <!-- Ball -->

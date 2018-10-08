@@ -41,8 +41,11 @@ if __name__ == '__main__':
     team_name = team_name_lc.capitalize()
     shape_name_lc = rospy.get_param('~shape')
     shape_name = shape_name_lc.capitalize()
-    # pub = rospy.Publisher('mapper/raw_data/%s/%s' %(team_name_lc,shape_name_lc), geometry_msgs.msg.PoseStamped, queue_size=10)
-    pub = rospy.Publisher('raw_pose', geometry_msgs.msg.PoseStamped, queue_size=10)
+    if rospy.has_param('~robot_name'):
+        robot_name = rospy.get_param('~robot_name')
+        pub = rospy.Publisher('/%s_%s/%s/raw_pose' % (team_name_lc,shape_name_lc,robot_name), geometry_msgs.msg.PoseStamped, queue_size=10)
+    else:
+        pub = rospy.Publisher('/%s_%s/raw_pose' % (team_name_lc,shape_name_lc), geometry_msgs.msg.PoseStamped, queue_size=10)
     try:
         json_team_grabber()
     except rospy.ROSInterruptException:

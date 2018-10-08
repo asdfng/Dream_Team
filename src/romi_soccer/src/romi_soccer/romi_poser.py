@@ -15,10 +15,11 @@ class RomiPoser:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
-        self.robot_name = rospy.get_param('robot_name')
+        robot_name = rospy.get_param('robot_name')
+        subject = rospy.get_param('~subject')
         rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
-        rospy.Subscriber('/%s/raw_pose' % self.robot_name,PoseStamped, self.callback)
-        self.pub = rospy.Publisher('/%s/romi_controller/pose' % self.robot_name,PoseStamped, queue_size=10)
+        rospy.Subscriber('/%s/%s/raw_pose' % (subject,robot_name),PoseStamped, self.callback)
+        self.pub = rospy.Publisher('/%s/%s/romi_controller/pose' % (subject,robot_name),PoseStamped, queue_size=10)
         rospy.spin()
 
     def matCallback(self,matrix):

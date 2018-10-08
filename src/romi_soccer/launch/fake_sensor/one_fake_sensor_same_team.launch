@@ -1,0 +1,27 @@
+<launch>
+     <arg name='number'/>
+     <arg name='subject'/>
+     <arg name='object'/>
+     <arg name='robot_name'/>
+     <param
+          name = "~number"
+          value = "$(arg number)"
+     />
+     <param
+          name = "~object"
+          value = "$(arg object)"
+     />
+     <param
+          name = "~subject"
+          value = "$(arg subject)"
+     />
+     <param
+          name = "~robot_name"
+          value = "$(arg robot_name)"
+     />
+     <node
+          name="fake_sensor_$(arg number)"
+          pkg="romi_soccer"
+          type="finder"
+     />
+</launch>

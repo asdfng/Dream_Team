@@ -1,7 +1,6 @@
 <launch>
      <arg name='team'/>
      <arg name='shape'/>
-     <arg name='robot_name'/>
      <param
           name = "~team"
           value = "$(arg team)"
@@ -10,14 +9,10 @@
           name = "~shape"
           value = "$(arg shape)"
      />
-     <param
-          name = "~robot_name"
-          value = "$(arg robot_name)"
-     />
      <node
           name="json_grabber"
           pkg="romi_soccer"
           type="json_team_grabber.py"
-          ns="/$(arg team)_$(arg shape)/$(arg robot_name)"
+          ns="/$(arg team)_$(arg shape)"
      />
 </launch>
