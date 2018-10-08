@@ -14,33 +14,44 @@ class OdomCalc:
         # self.subject = rospy.get_param('~subject')
         self.robot_name = rospy.get_param('robot_name')
         self.pub_odom = rospy.Publisher('/%s/romi_controller/odom' % self.robot_name,Odometry,queue_size=10)
-        # self.pub_tf = rospy.Publisher("/tf", tf2_msgs.msg.TFMessage, queue_size=1)
-        rospy.Subscriber('/%s/romi_controller/pose' % self.robot_name,PoseStamped,self.poseCallback)
-        rospy.Subscriber('/%s/romi_controller/cmd_vel' % self.robot_name,Twist,self.callback)
-        rospy.spin()
-
-    def callback(self,data):
-        self.vel = data
-        self.grabbed_vel = True
-        if (self.grabbed_pose):
+        # rospy.Subscriber('/%s/romi_controller/pose' % self.robot_name,PoseStamped,self.poseCallback)
+        # rospy.Subscriber('/%s/romi_controller/cmd_vel' % self.robot_name,Twist,self.callback)
+        # rospy.spin()
+        rate = rospy.Rate(10)
+        while not rospy.is_shutdown():
             self.broadcaster()
+            rate.sleep()
 
-    def poseCallback(self,data):
-        self.pose = data
-        self.grabbed_pose = True
-        if (self.grabbed_vel):
-            self.broadcaster()
+
+    # def callback(self,data):
+    #     self.vel = data
+    #     self.grabbed_vel = True
+    #     if (self.grabbed_pose):
+    #         self.broadcaster()
+    #
+    # def poseCallback(self,data):
+    #     self.pose = data
+    #     self.grabbed_pose = True
+    #     if (self.grabbed_vel):
+    #         self.broadcaster()
 
     def broadcaster(self):
         self.current_time = rospy.Time.now()
-        x = self.pose.pose.position.x
-        y = self.pose.pose.position.y
-        z = self.pose.pose.position.z
-        th = self.pose.pose.orientation.z
-
-        vx = self.vel.linear.x
-        vy = self.vel.linear.y
-        vth = self.vel.angular.z
+        # x = self.pose.pose.position.x
+        # y = self.pose.pose.position.y
+        # z = self.pose.pose.position.z
+        # th = self.pose.pose.orientation.z
+        #
+        # vx = self.vel.linear.x
+        # vy = self.vel.linear.y
+        # vth = self.vel.angular.z
+        x = 1
+        y = -1
+        z = 0
+        th = 0
+        vx = 5
+        vy = 0
+        vth = 0
         dt = (self.current_time - self.last_time).to_sec()
         delta_x = (vx * math.cos(th) - vy * math.sin(th)) * dt
         delta_y = (vx * math.sin(th) + vy * math.cos(th)) * dt
@@ -58,7 +69,8 @@ class OdomCalc:
         odom_trans.transform.translation.x = x
         odom_trans.transform.translation.y = y
         odom_trans.transform.translation.z = 0
-        odom_trans.transform.rotation = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+        odom_trans_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+        odom_trans.transform.rotation = Quaternion(*odom_trans_quat)
 
         br = tf2_ros.TransformBroadcaster()
         br.sendTransform(odom_trans)
@@ -72,7 +84,7 @@ class OdomCalc:
         odom.pose.pose.position.y = y
         odom.pose.pose.position.z = 0
         odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
-        odom.pose.pose.orientation.x = Quaternion(*odom_quat)
+        odom.pose.pose.orientation = Quaternion(*odom_quat)
 
         odom.child_frame_id = 'base_link_%s' % self.robot_name
         odom.twist.twist.linear.x = vx
