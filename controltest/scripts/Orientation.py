@@ -72,7 +72,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     angle = math.atan((dist_y) / (dist_x))
     angle_degrees = angle * float(180)/math.pi
     orientation_input = angle_degrees + float(360) - float(original_orientation)
-    return orientation_input
+    return angle_degrees
    
 #def __init__(self)
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
