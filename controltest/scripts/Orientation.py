@@ -76,7 +76,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     else:
         orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
     orientation_input = orientation_input_unbounded % 360
-    return orientation_input
+    return orientation_input, angle_degrees
    
 #def __init__(self)
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
@@ -109,8 +109,8 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
-    angle_degrees = point_orientation(0,0,3,3,angle) 
+    orientation_input, angle_degrees = point_orientation(0,0,3,3,angle) #dummy coordinates for now
+
     while True:
         start_time = timeit.default_timer()
 
