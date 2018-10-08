@@ -66,13 +66,12 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     #print("orientation = %s degrees" % theta_new)
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
-    dist_x = desired_point_x - our_point_x #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
-    dist_y = desired_point_y - desired_point_y
-    mag = math.sqrt(dist_x** 2 + dist_y**2)
-    angle = math.atan(dist_y / dist_x)
-    angle_degrees = angle * 180/(math.pi)       #try for loop to only execute once
-    print('angle = %s' % angle_degrees)
-    orientation_input = angle_degrees + 360 - original_orientation
+    dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
+    dist_y = float(desired_point_y) - float(desired_point_y)
+    mag = math.sqrt((dist_x)** float(2) + (dist_y)**float(2))
+    angle = math.atan((dist_y) / (dist_x))
+    angle_degrees = angle * float(180)/math.pi
+    orientation_input = angle_degrees + float(360) - float(original_orientation)
     return orientation_input
    
 #def __init__(self)
