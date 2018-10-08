@@ -13,7 +13,7 @@
                ns = "/$(arg team)_$(arg shape)/$(arg robot_name)"/>
      <!-- Starting a parameter server to hold the value of the subject -->
      <param
-          name = "~subject"
+          name = "subject"
           value = "$(arg team)_$(arg shape)"/>
           <!-- Starting a parameter server to hold the value of the subject -->
      <param

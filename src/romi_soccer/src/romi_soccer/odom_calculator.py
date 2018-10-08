@@ -11,8 +11,8 @@ class OdomCalc:
         self.grabbed_pose = False
         self.vel = Twist()
         self.pose = PoseStamped()
-        self.subject = rospy.get_param('~subject')
-        self.robot_name = rospy.get_param('~robot_name')
+        self.subject = rospy.get_param('subject')
+        self.robot_name = rospy.get_param('robot_name')
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
         # rospy.Subscriber('/%s/%s/romi_controller/pose' % (self.subject,self.robot_name),PoseStamped,self.poseCallback)
         # rospy.Subscriber('/%s/%s/romi_controller/cmd_vel' % (self.subject,self.robot_name),Twist,self.callback)
