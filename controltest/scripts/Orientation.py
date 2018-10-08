@@ -12,8 +12,6 @@ a_star = AStar()
 imu = LSM6()
 imu.enable()
 
-a_star.motors(-25,25)
-
 #Starting values and data for the imu
 accelSensitivity = 0.061
 accelRatio = 0.001 # Converting from milligrams to gram
@@ -99,7 +97,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 def  talker():
 
     global angle, angle_Gyro_unbounded, total, i, sampleRate
-
+    a_star.motors(-25,25)
     #Setup for the encoders
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
@@ -108,7 +106,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    orientation_input = point_orientation(0,0,3,6,angle) #dummy coordinates for now
+    orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
