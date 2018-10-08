@@ -151,7 +151,7 @@ def  talker():
         print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro
         print('old gyro: %s' % oldangle_Gyro)
-        print('angle = %s' % orientation_input)
+        print('angle = %s' % math.atan(1))
         if abs(dGyro - dEncoder) < Threshold:
             angle += dGyro
         else:
