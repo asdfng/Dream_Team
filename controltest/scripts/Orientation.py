@@ -108,7 +108,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
+    orientation_input = point_orientation(0,0,3,6,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
