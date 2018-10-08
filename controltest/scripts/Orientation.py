@@ -107,7 +107,6 @@ def  talker():
     oldangle_Gyro = 0.0
 
     orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
-    print('orientation_input = %s' % orientation_input)
 
     while True:
         start_time = timeit.default_timer()
@@ -153,7 +152,7 @@ def  talker():
         print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro
         print('old gyro: %s' % oldangle_Gyro)
-
+        print('orientation_input = %s' % orientation_input)
         if abs(dGyro - dEncoder) < Threshold:
             angle += dGyro
         else:
