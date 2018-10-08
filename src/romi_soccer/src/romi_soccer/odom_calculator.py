@@ -14,7 +14,7 @@ class OdomCalc:
         # self.subject = rospy.get_param('~subject')
         self.robot_name = rospy.get_param('robot_name')
         self.pub_odom = rospy.Publisher('/%s/romi_controller/odom' % self.robot_name,Odometry,queue_size=10)
-        self.pub_tf = rospy.Publisher("/tf", tf2_msgs.msg.TFMessage, queue_size=1)
+        # self.pub_tf = rospy.Publisher("/tf", tf2_msgs.msg.TFMessage, queue_size=1)
         rospy.Subscriber('/%s/romi_controller/pose' % self.robot_name,PoseStamped,self.poseCallback)
         rospy.Subscriber('/%s/romi_controller/cmd_vel' % self.robot_name,Twist,self.callback)
         rospy.spin()
@@ -41,7 +41,7 @@ class OdomCalc:
         vx = self.vel.linear.x
         vy = self.vel.linear.y
         vth = self.vel.angular.z
-        dt = (self.current_time - self.last_time).toSec()
+        dt = (self.current_time - self.last_time).to_sec()
         delta_x = (vx * math.cos(th) - vy * math.sin(th)) * dt
         delta_y = (vx * math.sin(th) + vy * math.cos(th)) * dt
         delta_th = vth * dt
@@ -60,18 +60,19 @@ class OdomCalc:
         odom_trans.transform.translation.z = 0
         odom_trans.transform.rotation = tf_conversions.transformations.quaternion_from_euler(0,0,th)
 
-        # br = tf2_ros.TransformBroadcaster()
-        # br.sendTransform(odom_trans)
-        tfm = tf2_msgs.msg.TFMessage([odom_trans])
-        self.pub_tf.publish(tfm)
+        br = tf2_ros.TransformBroadcaster()
+        br.sendTransform(odom_trans)
+        # tfm = tf2_msgs.msg.TFMessage([odom_trans])
+        # self.pub_tf.publish(tfm)
         odom = Odometry()
-        odom.header.stamp = current_time
+        odom.header.stamp = self.current_time
         odom.header.frame_id = 'odom_%s' % self.robot_name
 
         odom.pose.pose.position.x = x
         odom.pose.pose.position.y = y
         odom.pose.pose.position.z = 0
-        odom.pose.pose.orientation = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+        odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+        odom.pose.pose.orientation.x = Quaternion(*odom_quat)
 
         odom.child_frame_id = 'base_link_%s' % self.robot_name
         odom.twist.twist.linear.x = vx
