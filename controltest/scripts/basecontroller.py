@@ -50,7 +50,7 @@ def listener():
     rospy.init_node('motor_control', anonymous=True)
     team_name = rospy.get_param('~team')
     shape_name = rospy.get_param('~shape')
-    rospy.Subscriber("%s/%s/cmd_vel" %team_name %shape_name, Twist, callback)
+    rospy.Subscriber("%s/%s/cmd_vel" % (team_name, shape_name), Twist, callback)
     rospy.spin()
 
 if __name__ == '__main__':
