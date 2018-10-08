@@ -110,7 +110,7 @@ def  talker():
     oldangle_Gyro = 0.0
 
     orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
-
+    angle_degrees = point_orientation(0,0,3,3,angle) 
     while True:
         start_time = timeit.default_timer()
 
