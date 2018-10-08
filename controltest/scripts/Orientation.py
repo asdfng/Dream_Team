@@ -106,7 +106,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
+    orientation_input = point_orientation(0,0,3,6,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
@@ -158,7 +158,7 @@ def  talker():
         else:
             angle += dEncoder
         
-        if angle - 10 <= orientation_input <= angle + 10: #current orientation should just be angle of encoder or gyro
+        if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
             a_star.motors(0,0)
         else:
             a_star.motors(-50,50)
