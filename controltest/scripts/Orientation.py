@@ -97,7 +97,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 def  talker():
 
     global angle, angle_Gyro_unbounded, total, i, sampleRate
-    a_star.motors(-25,25)
+    a_star.motors(-50,50)
     #Setup for the encoders
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
