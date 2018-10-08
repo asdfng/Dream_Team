@@ -75,7 +75,23 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     orientation_input = angle_degrees + 360 - original_orientation
     return orientation_input
    
-
+#def __init__(self)
+    #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
+    #rospy.init_node('Encoder_Orientation', anonymous=True)
+    #rate = rospy.Rate(100)
+    #rospy.Suscriber('mapper/new_data/red/triangle',Rover,queue_size=10)
+    #rospy.Suscriber('mapper/new_data/red/square',Rover,queue_size=10)
+    #rospy.Suscriber('mapper/new_data/red/circle',Rover,queue_size=10)
+    #rospy.Suscriber('mapper/new_data/ball',Rover,queue_size=10)
+#callback?
+    #playerRCX=player_rc.center.x
+    #playerRCY=player_rc.center.y
+    #playerRSX=player_rs.center.x
+    #playerRSY=player_rs.center.y
+    #playerRTX=player_rt.center.x
+    #playerRTY=player_rt.center.y
+    #ballX=ball.x
+    #ballY=ball.y
 
 
 def  talker():
@@ -90,12 +106,8 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    orientation_input = point_orientation(0,0,3,3,angle)
+    orientation_input = point_orientation(0,0,3,3,angle) #dummy coordinates for now
     print('orientation_input = %s' % orientation_input)
-
-    #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
-    #rospy.init_node('Encoder_Orientation', anonymous=True)
-    #rate = rospy.Rate(100)
 
     while True:
         start_time = timeit.default_timer()
