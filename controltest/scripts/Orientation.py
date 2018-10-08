@@ -69,12 +69,12 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     pi = math.pi
     atan = math.atan
     dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
-    dist_y = float(desired_point_y) - float(desired_point_y)
+    dist_y = float(desired_point_y) - float(our_point_y)
     mag = math.sqrt((dist_x)** float(2) + (dist_y)**float(2))
     angle = atan((dist_y) / (dist_x))
     angle_degrees = angle * float(180)/pi 
     orientation_input = angle_degrees + float(360) - float(original_orientation)
-    return dist_x
+    return angle
    
 #def __init__(self)
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
