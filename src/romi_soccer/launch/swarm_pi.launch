@@ -32,5 +32,5 @@
           respawn = "false"
      />
 
-     <include file="$(find romi_soccer)/launch/three_romi.launch"/>
+     <include file="$(find romi_soccer)/launch/red_circle_romi.launch"/>
 </launch>

@@ -15,10 +15,10 @@ class RomiPoser:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
-        self.subject = rospy.get_param('~subject')
+        self.robot_name = rospy.get_param('robot_name')
         rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
-        rospy.Subscriber('%s/raw_pose' % self.subject,PoseStamped, self.callback)
-        self.pub = rospy.Publisher('%s/pose' % self.subject,PoseStamped, queue_size=10)
+        rospy.Subscriber('/%s/raw_pose' % self.robot_name,PoseStamped, self.callback)
+        self.pub = rospy.Publisher('/%s/romi_controller/pose' % self.robot_name,PoseStamped, queue_size=10)
         rospy.spin()
 
     def matCallback(self,matrix):
@@ -36,21 +36,22 @@ class RomiPoser:
     def callback(self,data):
         u = data.pose.position.x
         v = data.pose.position.y
-        new_pose = PoseStamped()
-        new_pose.header.frame_id = 'odom_%s' % self.subject
-        new_pose.header.stamp = rospy.Time.now()
-        new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
-        new_pose.pose.position.y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
-        new_pose.pose.position.z = 0
-        # Save this for when IMU data is parsed
-        # th = angle from IMU
-        # angle = tf_conversions.transformations.quaternion_from_euler(0,0,th)
-        # new_pose.pose.orientation.x = angle[0]
-        # new_pose.pose.orientation.y = angle[1]
-        # new_pose.pose.orientation.z = angle[2]
-        # new_pose.pose.orientation.w = angle[3]
-        self.tf_broadcaster(new_pose)
-        self.pub.publish(new_pose)
+        if (self.grabbed):
+            new_pose = PoseStamped()
+            new_pose.header.frame_id = 'odom_%s' % self.robot_name
+            new_pose.header.stamp = rospy.Time.now()
+            new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
+            new_pose.pose.position.y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
+            new_pose.pose.position.z = 0
+            # Save this for when IMU data is parsed
+            # th = angle from IMU
+            # angle = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+            # new_pose.pose.orientation.x = angle[0]
+            # new_pose.pose.orientation.y = angle[1]
+            # new_pose.pose.orientation.z = angle[2]
+            # new_pose.pose.orientation.w = angle[3]
+            self.tf_broadcaster(new_pose)
+            self.pub.publish(new_pose)
 
     def tf_broadcaster(self,new_pose):
         br = tf2_ros.TransformBroadcaster()

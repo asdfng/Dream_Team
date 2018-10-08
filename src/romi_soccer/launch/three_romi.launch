@@ -7,6 +7,7 @@
           textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
 
      <group ns="romi_pink">
+          <param name="tf_prefix" value="romi_pink_tf" />
           <include file="$(find romi_soccer)/launch/one_romi.launch">
                <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
                <arg name="robot_name" value="romi_pink"/>
@@ -19,6 +20,7 @@
      </group>
 
      <group ns="romi_red">
+          <param name="tf_prefix" value="romi_red_tf" />
           <include file="$(find romi_soccer)/launch/one_romi.launch">
                <arg name="init_pose" value="-x -1 -y 1 -z 0"/>
                <arg name="robot_name" value="romi_red"/>
@@ -31,15 +33,16 @@
      </group>
 
      <group ns="romi_white">
-     <include file="$(find romi_soccer)/launch/one_romi.launch">
-          <arg name="init_pose" value="-x 0 -y 1 -z 0"/>
-          <arg name="robot_name" value="romi_white"/>
-          <arg name="team" value="red"/>
-          <arg name="shape" value="square"/>
-          <!-- <arg name='opp_team' value="blue"/>
-          <arg name='opp_shape1' value="triangle"/>
-          <arg name='opp_shape2' value="circle"/> -->
-     </include>
+          <param name="tf_prefix" value="romi_white_tf" />
+          <include file="$(find romi_soccer)/launch/one_romi.launch">
+               <arg name="init_pose" value="-x 0 -y 1 -z 0"/>
+               <arg name="robot_name" value="romi_white"/>
+               <arg name="team" value="red"/>
+               <arg name="shape" value="square"/>
+               <!-- <arg name='opp_team' value="blue"/>
+               <arg name='opp_shape1' value="triangle"/>
+               <arg name='opp_shape2' value="circle"/> -->
+          </include>
      </group>
 
 </launch>

@@ -15,6 +15,13 @@
      <param
           name = "~subject"
           value = "$(arg team)_$(arg shape)"/>
+     <param
+          name = "robot_name"
+          value = "$(arg robot_name)"/>
+     <!-- Starting a parameter server to hold the value of the subject -->
+     <!-- <param
+          name = "~robot_name"
+          value = "$(arg robot_name)"/> -->
      <!-- Spawn model of the robot from the URDF -->
      <node
           name   = "spawn_urdf"
@@ -22,17 +29,18 @@
           type   = "spawn_model"
           args   = "-param /robot_description -urdf $(arg init_pose) -model $(arg robot_name)"/>
      <!-- Start up the robot state publisher for all the links in the URDF -->
-     <node
+     <!-- <node
           pkg    = "robot_state_publisher"
           type   = "state_publisher"
-          name   = "rob_st_pub" >
-             <remap
-                  from = "robot_description"
-                  to   = "$(arg robot_name)" />
-             <remap
-                  from = "joint_states"
-                  to   = "$(arg robot_name)/joint_states" />
-    </node>
+          name   = "robot_state_publisher"
+          ns     = "/$(arg robot_name)">
+          <remap
+               from = "robot_description"
+               to   = "$(arg robot_name)" />
+          <remap
+               from = "joint_states"
+               to   = "$(arg robot_name)/joint_states" />
+    </node> -->
     <!-- Start up all the fake point cloud sensors for this robot -->
     <include file="$(find romi_soccer)/launch/fake_sensor/romi_fake_sensor_complete.launch">
          <arg name="team" value="$(arg team)"/>
@@ -46,9 +54,8 @@
          name="odom_node"
          pkg="romi_soccer"
          type="odom_calculator"
-         output="screen">
-         <param name="robot_name" value="$(arg robot_name)"/>
-    </node>
+         output="screen"
+         ns     = "/$(arg robot_name)"/>
      <!-- Start the transform broadcaster from map->odom -->
     <node
          name="tf_map_odom"
