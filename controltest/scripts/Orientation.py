@@ -88,7 +88,7 @@ def run(mag):
 
 
     #Set the motors
-    a_star.motors(50,50)
+    a_star.motors(100,100)
 
     while displacement_current < mag:
 
@@ -114,9 +114,11 @@ def run(mag):
 
         print('center_displacement = %s' % displacement_current)
         print('change in displacement = %s' % dDis)
+        print('displacement = %s' % CurrentDis )
         print('right_displacement = %s' % right_displacement2)
         print('left_displacement = %s' % left_displacement2)
         print('mag = %s' % mag)
+        os.system('clear')
 
 
 def  talker():
