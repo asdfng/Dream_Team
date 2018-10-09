@@ -6,10 +6,10 @@
           name = "robot_description"
           textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
 
-     <arg name="team" value="red"/>
-     <arg name="romi_circle" value="romi_pink"/>
-     <arg name="romi_square" value="romi_white"/>
-     <arg name="romi_triangle" value="romi_red"/>
+     <arg name="team"/>
+     <arg name="romi_circle"/>
+     <arg name="romi_square"/>
+     <arg name="romi_triangle"/>
 
      <group ns="/$(arg team)_circle/$(arg romi_circle)">
           <param name="tf_prefix" value="$(arg romi_circle)_tf" />

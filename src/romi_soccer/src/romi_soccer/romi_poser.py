@@ -5,7 +5,8 @@ from romi_soccer.msg import Homography
 
 class RomiPoser:
     def __init__(self):
-        self.grabbed = False
+        self.grabbed_mat = False
+        self.grabbed_pose = False
         self.q11 = 0
         self.q12 = 0
         self.q13 = 0
@@ -15,12 +16,17 @@ class RomiPoser:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
-        robot_name = rospy.get_param('robot_name')
+        self.robot_name = rospy.get_param('robot_name')
         subject = rospy.get_param('subject')
         rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
-        rospy.Subscriber('/%s/%s/raw_pose' % (subject,robot_name),PoseStamped, self.callback)
-        self.pub = rospy.Publisher('/%s/%s/romi_controller/pose' % (subject,robot_name),PoseStamped, queue_size=10)
+        rospy.Subscriber('/%s/%s/raw_pose' % (subject,self.robot_name),PoseStamped, self.callback)
+        self.pub = rospy.Publisher('/%s/%s/romi_controller/pose' % (subject,self.robot_name),PoseStamped, queue_size=10)
         rospy.spin()
+        # rate = rospy.Rate(10)
+        # while not rospy.is_shutdown():
+        #     if (self.grabbed_mat and self.grabbed_pose):
+        #         self.tf_broadcaster()
+        #     rate.sleep()
 
     def matCallback(self,matrix):
         self.q11 = matrix.q11
@@ -32,12 +38,12 @@ class RomiPoser:
         self.q31 = matrix.q31
         self.q32 = matrix.q32
         self.q33 = matrix.q33
-        self.grabbed = True
+        self.grabbed_mat = True
 
     def callback(self,data):
         u = data.pose.position.x
         v = data.pose.position.y
-        if (self.grabbed):
+        if (self.grabbed_mat):
             new_pose = PoseStamped()
             new_pose.header.frame_id = 'odom_%s' % self.robot_name
             new_pose.header.stamp = rospy.Time.now()
@@ -52,13 +58,15 @@ class RomiPoser:
             # new_pose.pose.orientation.z = angle[2]
             # new_pose.pose.orientation.w = angle[3]
             self.tf_broadcaster(new_pose)
+            self.grabbed_pose = True
             self.pub.publish(new_pose)
 
     def tf_broadcaster(self,new_pose):
         br = tf2_ros.TransformBroadcaster()
         opt_prime = TransformStamped()
-        opt_prime.header.frame_id('map')
-        opt_prime.child_frame_id(new_pose.header.frame_id)
+        opt_prime.header.frame_id = "map"
+        opt_prime.header.stamp = rospy.Time.now()
+        opt_prime.child_frame_id = new_pose.header.frame_id
         opt_prime.transform.translation.x = new_pose.pose.position.x
         opt_prime.transform.translation.y = new_pose.pose.position.y
         opt_prime.transform.translation.z = new_pose.pose.position.z
@@ -66,4 +74,8 @@ class RomiPoser:
         # opt_prime.transform.rotation.y = new_pose.pose.orientation.y
         # opt_prime.transform.rotation.z = new_pose.pose.orientation.z
         # opt_prime.transform.rotation.w = new_pose.pose.orientation.w
+        opt_prime.transform.rotation.x = 0
+        opt_prime.transform.rotation.y = 0
+        opt_prime.transform.rotation.z = 0
+        opt_prime.transform.rotation.w = 1
         br.sendTransform(opt_prime)

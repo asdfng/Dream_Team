@@ -14,44 +14,45 @@ class OdomCalc:
         self.subject = rospy.get_param('subject')
         self.robot_name = rospy.get_param('robot_name')
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
-        # rospy.Subscriber('/%s/%s/romi_controller/pose' % (self.subject,self.robot_name),PoseStamped,self.poseCallback)
-        # rospy.Subscriber('/%s/%s/romi_controller/cmd_vel' % (self.subject,self.robot_name),Twist,self.callback)
+        rospy.Subscriber('/%s/%s/romi_controller/pose' % (self.subject,self.robot_name),PoseStamped,self.poseCallback)
+        rospy.Subscriber('/%s/%s/romi_controller/cmd_vel' % (self.subject,self.robot_name),Twist,self.callback)
         # rospy.spin()
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
-            self.broadcaster()
+            if (self.grabbed_vel and self.grabbed_pose):
+                self.broadcaster()
             rate.sleep()
 
 
-    # def callback(self,data):
-    #     self.vel = data
-    #     self.grabbed_vel = True
-    #     if (self.grabbed_pose):
-    #         self.broadcaster()
-    #
-    # def poseCallback(self,data):
-    #     self.pose = data
-    #     self.grabbed_pose = True
-    #     if (self.grabbed_vel):
-    #         self.broadcaster()
+    def callback(self,data):
+        self.vel = data
+        self.grabbed_vel = True
+        if (self.grabbed_pose):
+            self.broadcaster()
+
+    def poseCallback(self,data):
+        self.pose = data
+        self.grabbed_pose = True
+        if (self.grabbed_vel):
+            self.broadcaster()
 
     def broadcaster(self):
         self.current_time = rospy.Time.now()
-        # x = self.pose.pose.position.x
-        # y = self.pose.pose.position.y
-        # z = self.pose.pose.position.z
-        # th = self.pose.pose.orientation.z
-        #
-        # vx = self.vel.linear.x
-        # vy = self.vel.linear.y
-        # vth = self.vel.angular.z
-        x = 1
-        y = -1
-        z = 0
-        th = 0
-        vx = 5
-        vy = 0
-        vth = 0
+        x = self.pose.pose.position.x
+        y = self.pose.pose.position.y
+        z = self.pose.pose.position.z
+        th = self.pose.pose.orientation.z
+
+        vx = self.vel.linear.x
+        vy = self.vel.linear.y
+        vth = self.vel.angular.z
+        # x = 1
+        # y = -1
+        # z = 0
+        # th = 0
+        # vx = 5
+        # vy = 0
+        # vth = 0
         dt = (self.current_time - self.last_time).to_sec()
         delta_x = (vx * math.cos(th) - vy * math.sin(th)) * dt
         delta_y = (vx * math.sin(th) + vy * math.cos(th)) * dt

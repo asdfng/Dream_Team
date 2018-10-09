@@ -27,17 +27,17 @@
      </include>
 
      <include file="$(find romi_soccer)/launch/tracker_general.launch">
-          <arg name="team" value="blue"/>
+          <arg name="team" value="$(arg visiting_team)"/>
           <arg name="shape" value="circle"/>
      </include>
 
      <include file="$(find romi_soccer)/launch/tracker_general.launch">
-          <arg name="team" value="blue"/>
+          <arg name="team" value="$(arg visiting_team)"/>
           <arg name="shape" value="square"/>
      </include>
 
      <include file="$(find romi_soccer)/launch/tracker_general.launch">
-          <arg name="team" value="blue"/>
+          <arg name="team" value="$(arg visiting_team)"/>
           <arg name="shape" value="triangle"/>
      </include>
 </launch>

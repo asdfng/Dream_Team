@@ -19,6 +19,12 @@
      <param
           name = "robot_name"
           value = "$(arg robot_name)"/>
+     <!-- Spawn model of the robot from the URDF -->
+     <node
+          name   = "spawn_urdf"
+          pkg    = "gazebo_ros"
+          type   = "spawn_model"
+          args   = "-param /robot_description -urdf $(arg init_pose) -model $(arg robot_name)"/>
      <!-- Start up the robot state publisher for all the links in the URDF -->
      <!-- <node
           pkg    = "robot_state_publisher"
@@ -53,6 +59,13 @@
          pkg="romi_soccer"
          type="poser"
          output="screen"/>
+     <!-- Start the controller node for sending cmd_vel commands -->
+     <node
+          name   = "controller_node"
+          pkg    = "controller_manager"
+          type   = "spawner"
+          args   = "--namespace=/$(arg team)_$(arg shape)/$(arg robot_name)
+                    romi_controller"/>
      <!-- Start up the rqt GUI for setting cmd_vel commands                     -->
      <node
           name   = "rqt_robot_steering"

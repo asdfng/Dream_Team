@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy, roslib, numpy
-from romi_soccer.msg import Homography
+from romi_soccer.msg import Homography, Map
 
 def callback(corner):
     # Initialize publisher

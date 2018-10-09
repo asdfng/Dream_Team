@@ -2,6 +2,7 @@
      <arg name='number'/>
      <arg name='subject'/>
      <arg name='object'/>
+     <arg name='subject_robot'/>
      <param
           name = "~number"
           value = "$(arg number)"
@@ -13,6 +14,10 @@
      <param
           name = "~subject"
           value = "$(arg subject)"
+     />
+     <param
+          name = "~subject_robot"
+          value = "$(arg subject_robot)"
      />
      <node
           name="fake_sensor_$(arg number)"
