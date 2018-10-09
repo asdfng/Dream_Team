@@ -1,6 +1,6 @@
 local_costmap:
-  global_frame: odom_romi_pink
-  robot_base_frame: base_link_romi_pink
+  global_frame: odom_romi_white
+  robot_base_frame: base_link_romi_white
   update_frequency: 5.0
   publish_frequency: 2.0
   static_map: false
