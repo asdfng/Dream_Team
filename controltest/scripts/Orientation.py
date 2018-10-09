@@ -73,45 +73,33 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 
 #This code will find the distance it needs to move in order to get to the point
 def run(mag):
+
     #Read the Encoders
     encoders_run = a_star.read_encoders()
-    right_encoder2 = encoders_run[1]
-    left_encoder2 = encoders_run[0]
-
-    #Find the starting displacement since the last time the code ran
-    angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
-
-    oldDis = right_displacement2 - left_displacement2
-
-    #Initialize the displacement to be zero at the start of each run
-    displacement_current = 0.0
-
+    oldEnc = encoders_run[1]
+    
+    #Convert the magnitude to an encoder count
+    targetcount = int((mag/(float(2)*math.pi*.114829))*1440)
+    currentcount = 0
 
     #Set the motors
     a_star.motors(100,100)
 
-    while displacement_current < mag:
+    while currentcount < targetcount:
 
-        #Read the Encoders
+        #Read the Encoders get the current encoder value
         encoders_run = a_star.read_encoders()
-        right_encoder2 = encoders_run[1]
-        left_encoder2 = encoders_run[0]
-
-        #Find the displacement since the last time the code ran
-        angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
-
-        #Get the correct center displacement
-        CurrentDis = right_displacement2 - left_displacement2
-
-        #find the change in the displacement
-        dDis = abs(CurrentDis - oldDis)
-
-        oldDis = CurrentDis
+        curEnc = encoders_run[1]
         
-        #Add the displacement to the current displacement
-        displacement_current += abs(dDis)
-        
+        #Find the difference in counts
+        dEnc = curEnc - oldEnc
 
+        #Reset the old count
+        oldEnc = curEnc
+        
+        #update the current count
+        currentcount += dEnc
+    
         print('center_displacement = %s' % displacement_current)
         print('change in displacement = %s' % dDis)
         print('displacement = %s' % CurrentDis )
