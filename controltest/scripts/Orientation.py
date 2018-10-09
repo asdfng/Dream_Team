@@ -99,6 +99,9 @@ def run(mag):
         
         #update the current count
         currentcount += dEnc
+
+        if currentcount < 0:
+            currentcount = 0.0
     
         print('mag = %s' % mag)
         print('target count = %s' % targetcount)
@@ -146,7 +149,7 @@ def  talker():
         Threshold = 0.125
 
         #Read the encoder and imu
-        encoders = a_star.read_encoders()
+        encoders = a_star.read_encoders()  
         imu.read()
 
         right_encoder = encoders[1]
