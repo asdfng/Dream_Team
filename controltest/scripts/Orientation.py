@@ -54,7 +54,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
     
-    return theta_new, center_displacement
+    return theta_new, center_displacement, right_displacement, left_displacement
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
     pi = math.pi
@@ -123,7 +123,7 @@ def  talker():
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
 
-        angle_Encoder, center_displacement = displacement(passRight,passLeft)
+        angle_Encoder, center_displacement, right_displacement, left_displacement = displacement(passRight,passLeft)
         
         
     
@@ -161,8 +161,10 @@ def  talker():
             encoders2 = a_star.read_encoders()
             right_encoder2 = encoders2[1]
             left_encoder2 = encoders2[0]
-            angle_Encoder2, center_displacement2 = displacement(right_encoder2,left_encoder2)
+            angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
             print('center_displacement = %s' % center_displacement2)
+            print('right_displacement = %s' % right_displacement2)
+            print('left_displacement = %s' % left_displacement2)
             center_velocity = center_displacement2 / float(.02)
             time_delay = math.fabs(mag / center_velocity) #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
             print('mag = %s' % mag)
