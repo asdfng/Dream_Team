@@ -112,7 +112,7 @@ def run(mag):
         displacement_current += abs(dDis)
         
 
-        print('center_displacement = %s' % CurrentDis)
+        print('center_displacement = %s' % displacement_current)
         print('change in displacement = %s' % dDis)
         print('right_displacement = %s' % right_displacement2)
         print('left_displacement = %s' % left_displacement2)
