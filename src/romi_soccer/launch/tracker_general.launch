@@ -1,0 +1,18 @@
+<launch>
+     <arg name='team'/>
+     <arg name='shape'/>
+     <param
+          name = "~team"
+          value = "$(arg team)"
+     />
+     <param
+          name = "~shape"
+          value = "$(arg shape)"
+     />
+     <node
+          name="json_grabber"
+          pkg="romi_soccer"
+          type="json_team_grabber.py"
+          ns="/$(arg team)_$(arg shape)"
+     />
+</launch>

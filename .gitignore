@@ -52,5 +52,8 @@ qtcreator-*
 # Catkin custom files
 CATKIN_IGNORE
 
+# View frames data
+frames.gv
+frames.pdf
 #vccode files
 .vscode

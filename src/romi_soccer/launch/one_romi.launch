@@ -1,0 +1,66 @@
+<launch>
+     <arg name   = "robot_name"/>
+     <arg name   = "team"/>
+     <arg name   = "shape"/>
+     <arg name   = "init_pose"/>
+     <arg name   = "romi_circle"/>
+     <arg name   = "romi_square"/>
+     <arg name   = "romi_triangle"/>
+
+     <!-- Loading the configuration file for the differential drive Gazebo plug-in -->
+     <rosparam file="$(find romi_soccer)/config/diffdrive.yaml"
+               command="load"
+               ns = "/$(arg team)_$(arg shape)/$(arg robot_name)"/>
+     <!-- Starting a parameter server to hold the value of the subject -->
+     <param
+          name = "subject"
+          value = "$(arg team)_$(arg shape)"/>
+          <!-- Starting a parameter server to hold the value of the subject -->
+     <param
+          name = "robot_name"
+          value = "$(arg robot_name)"/>
+     <!-- Start up the robot state publisher for all the links in the URDF -->
+     <!-- <node
+          pkg    = "robot_state_publisher"
+          type   = "state_publisher"
+          name   = "robot_state_publisher"
+          ns     = "/$(arg robot_name)">
+          <remap
+               from = "robot_description"
+               to   = "$(arg robot_name)" />
+          <remap
+               from = "joint_states"
+               to   = "$(arg robot_name)/joint_states" />
+    </node> -->
+    <!-- Start up all the fake point cloud sensors for this robot -->
+    <include file="$(find romi_soccer)/launch/fake_sensor/romi_fake_sensor_complete.launch">
+         <arg name="team" value="$(arg team)"/>
+         <arg name="shape" value="$(arg shape)"/>
+         <arg name="romi_circle" value="$(arg romi_circle)"/>
+         <arg name="romi_square" value="$(arg romi_square)"/>
+         <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+    </include>
+    <!-- Start the odom calculator -->
+    <node
+         name="odom_node"
+         pkg="romi_soccer"
+         type="odom_calculator"
+         output="screen"
+         ns     = "/$(arg team)_$(arg shape)/$(arg robot_name)"/>
+     <!-- Start the transform broadcaster from map->odom -->
+    <node
+         name="tf_map_odom"
+         pkg="romi_soccer"
+         type="poser"
+         output="screen"/>
+     <!-- Start up the rqt GUI for setting cmd_vel commands                     -->
+     <node
+          name   = "rqt_robot_steering"
+          pkg    = "rqt_robot_steering"
+          type   = "rqt_robot_steering">
+     <param
+          name   = "default_topic"
+          value  = "/$(arg team)_$(arg shape)/$(arg robot_name)/romi_controller/cmd_vel"/>
+     </node>
+
+</launch>

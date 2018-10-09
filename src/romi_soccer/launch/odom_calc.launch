@@ -1,0 +1,10 @@
+<launch>
+     <arg name='team'/>
+     <arg name='shape'/>
+     <node
+          name='odom_calc'
+          pkg='romi_soccer'
+          type='odom_calculator'
+          ns="$(arg team)_$(arg shape)"
+     />
+</launch>

@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+import rospy, sys
+sys.path.append('../src/romi_soccer/src/romi_soccer')
+from romi_soccer.romi_finder import RomiFinder
+if __name__ == '__main__':
+    rospy.init_node('romi_finder')
+    try:
+        rospy.loginfo('Initializing node...')
+        romi_finder = RomiFinder()
+    except rospy.ROSInterruptException:
+            pass

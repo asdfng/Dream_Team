@@ -1,30 +1,34 @@
 <launch>
-     <rosparam file="$(find romi_soccer)/config/diffdrive.yaml"
-               command="load"/>
+     <arg name = "paused" value = "true"/>
+     <arg name = "use_sim_time" value = "true"/>
+     <arg name = "home_team" value = "red"/>
+     <arg name = "visiting_team" value = "blue"/>
+     <arg name = "romi_circle" value="romi_pink"/>
+     <arg name = "romi_square" value="romi_white"/>
+     <arg name = "romi_triangle" value="romi_red"/>
 
-     <param
-          name = "robot_description"
-          textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
-
-     <group ns="romi_pink">
-          <include file="$(find romi_soccer)/launch/romi_one.launch">
-               <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
-               <arg name="robot_name" value="romi_pink"/>
-          </include>
-     </group>
-
-     <group ns="romi_red">
-          <include file="$(find romi_soccer)/launch/romi_one.launch">
-               <arg name="init_pose" value="-x -1 -y 1 -z 0"/>
-               <arg name="robot_name" value="romi_red"/>
-          </include>
-     </group>
-
-     <group ns="romi_white">
-     <include file="$(find romi_soccer)/launch/romi_one.launch">
-          <arg name="init_pose" value="-x 0 -y 1 -z 0"/>
-          <arg name="robot_name" value="romi_white"/>
+     <include file="$(find romi_soccer)/launch/team_tracker.launch">
+          <arg name="home_team" value="$(arg home_team)"/>
+          <arg name="visiting_team" value="$(arg visiting_team)"/>
+          <arg name="romi_circle" value="$(arg romi_circle)"/>
+          <arg name="romi_square" value="$(arg romi_square)"/>
+          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
      </include>
-     </group>
 
+     <include file="$(find romi_soccer)/launch/three_romi.launch">
+          <arg name="team" value="$(arg home_team)"/>
+          <arg name="romi_circle" value="$(arg romi_circle)"/>
+          <arg name="romi_square" value="$(arg romi_square)"/>
+          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+     </include>
+
+     <node
+          name="homography_node"
+          pkg="romi_soccer"
+          type="homography_calibrater.py"/>
+
+     <node
+          name="corner_tracker"
+          pkg="romi_soccer"
+          type="json_corner_grabber.py"/>
 </launch>

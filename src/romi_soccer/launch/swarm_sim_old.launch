@@ -1,0 +1,36 @@
+<launch>
+     <arg
+          name = "paused"
+          value = "true"
+     />
+     <arg
+          name = "use_sim_time"
+          value = "true"
+     />
+     <arg
+          name = "gui"
+          default = "false"
+     />
+     <arg
+          name = "headless"
+          value = "true"
+     />
+     <arg
+          name = "debug"
+          value = "false"
+     />
+     <arg
+          name = "world_name"
+          value = "$(find romi_soccer)/worlds/rc_car.world"
+     />
+
+     <node
+          name = "gazebo"
+          pkg = "gazebo_ros"
+          type = "gazebo"
+          args = "$(arg world_name)"
+          respawn = "false"
+     />
+
+     <include file="$(find romi_soccer)/launch/romi_three.launch"/>
+</launch>

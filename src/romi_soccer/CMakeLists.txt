@@ -17,9 +17,11 @@ find_package(catkin REQUIRED COMPONENTS
   robot_state_publisher
   roscpp
   rospy
+  sensor_msgs
   std_msgs
   tf
 )
+find_package(OpenCV REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -57,6 +59,7 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
+  Homography.msg
   Map.msg
   Rover.msg
   Vector2.msg
@@ -81,6 +84,7 @@ generate_messages(
   DEPENDENCIES
   geometry_msgs
   nav_msgs
+  sensor_msgs
   std_msgs
 )
 
@@ -116,7 +120,7 @@ generate_messages(
 catkin_package(
  # INCLUDE_DIRS include
 #  LIBRARIES romi_soccer
- CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs std_msgs
+ CATKIN_DEPENDS geometry_msgs message_runtime nav_msgs std_msgs sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -127,7 +131,6 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -144,7 +147,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/romi_soccer_node.cpp)
+# add_executable(tf_world_to_map src/romi_soccer/tf_world_map.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -160,7 +163,7 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-
+# target_link_libraries(tf_world_to_map ${catkin_LIBRARIES})
 #############
 ## Install ##
 #############
@@ -173,8 +176,13 @@ include_directories(
 catkin_install_python(
   PROGRAMS
   scripts/mapper
+  scripts/finder
   scripts/jsongwriter
-  nodes/json_team_grabber
+  scripts/odom_calculator
+  scripts/poser
+  nodes/json_team_grabber.py
+  nodes/json_corner_grabber.py
+  nodes/homography_calibrater.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 ## Mark executables and/or libraries for installation

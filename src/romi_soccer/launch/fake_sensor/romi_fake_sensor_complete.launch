@@ -1,0 +1,12 @@
+<launch>
+     <arg name='team'/>
+     <arg name='shape'/>
+     <arg name='romi_circle'/>
+     <arg name='romi_square'/>
+     <arg name='romi_triangle'/>
+     <include file="$(find romi_soccer)/launch/fake_sensor/$(arg team)_$(arg shape)_sensor.launch">
+          <arg name="romi_circle" value="$(arg romi_circle)"/>
+          <arg name="romi_square" value="$(arg romi_square)"/>
+          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+     </include>
+</launch>
