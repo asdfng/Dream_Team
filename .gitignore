@@ -55,3 +55,5 @@ CATKIN_IGNORE
 # View frames data
 frames.gv
 frames.pdf
+#vccode files
+.vscode
