@@ -71,7 +71,21 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, angle_degrees, mag
    
-#def __init__(self)
+def  talker():
+
+    global angle, angle_Gyro_unbounded, total, i, sampleRate
+    a_star.motors(-50,50)
+
+    #Setup for the encoders
+    encoders = a_star.read_encoders()
+    oldright_encoder = encoders[1]
+    oldleft_encoder = encoders[0]
+
+    oldangle_Encoder = 0.0
+    oldangle_Gyro = 0.0
+
+    #Ros stuff needs to be in the talker function as per:http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
     #rospy.init_node('Encoder_Orientation', anonymous=True)
     #rate = rospy.Rate(100)
@@ -79,7 +93,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     #rospy.Suscriber('mapper/new_data/red/square',Rover,queue_size=10)
     #rospy.Suscriber('mapper/new_data/red/circle',Rover,queue_size=10)
     #rospy.Suscriber('mapper/new_data/ball',Rover,queue_size=10)
-#callback?
+    #callback?
     #playerRCX=player_rc.center.x
     #playerRCY=player_rc.center.y
     #playerRSX=player_rs.center.x
@@ -88,19 +102,6 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     #playerRTY=player_rt.center.y
     #ballX=ball.x
     #ballY=ball.y
-
-
-def  talker():
-
-    global angle, angle_Gyro_unbounded, total, i, sampleRate
-    a_star.motors(-50,50)
-    #Setup for the encoders
-    encoders = a_star.read_encoders()
-    oldright_encoder = encoders[1]
-    oldleft_encoder = encoders[0]
-
-    oldangle_Encoder = 0.0
-    oldangle_Gyro = 0.0
 
     orientation_input, angle_degrees, mag = point_orientation(0,0,2,math.pi,angle) #dummy coordinates for now
 
