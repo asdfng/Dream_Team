@@ -159,7 +159,7 @@ def  talker():
             center_velocity = center_displacement / float(.02)
             time_delay = mag / center_velocity
             print('time_delay = %s',time_delay)
-            time.sleep(time_delay)
+            time.sleep(float(time_delay))
             a_star.motors(0,0)  
         else:
             a_star.motors(-50,50)
