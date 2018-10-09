@@ -70,7 +70,38 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
         orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, angle_degrees, mag
-   
+
+#This code will find the distance it needs to move in order to get to the point
+def run(mag):
+
+    #Initialize the displacement to be zero at the start of each run
+    displacement_current = 0.0
+
+    #Set the motors
+    a_star.motors(50,50)
+
+    while displacement_current < mag:
+
+         #Read the Encoders
+        encoders_run = a_star.read_encoders()
+        right_encoder2 = encoders_run[1]
+        left_encoder2 = encoders_run[0]
+
+        #Find the displacement since the last time the code ran
+        angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
+
+        #Get the correct center displacement
+        correct_center_displacement = right_displacement2 - left_displacement2
+
+        #Add the displacement to the current displacement
+        displacement_current += abs(correct_center_displacement)
+        print('center_displacement = %s' % correct_center_displacement)
+        print('right_displacement = %s' % right_displacement2)
+        print('left_displacement = %s' % left_displacement2)
+        
+        print('mag = %s' % mag)
+
+
 def  talker():
 
     global angle, angle_Gyro_unbounded, total, i, sampleRate
@@ -156,23 +187,7 @@ def  talker():
             angle += dEncoder
         
         if ((angle - 5 <= orientation_input) and (orientation_input <= angle + 5)): #current orientation should just be angle of encoder or gyro
-            lp_start = timeit.default_timer()
-            a_star.motors(50,50)
-            encoders2 = a_star.read_encoders()
-            right_encoder2 = encoders2[1]
-            left_encoder2 = encoders2[0]
-            angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
-            correct_center_displacement = right_displacement2 - left_displacement2
-            print('center_displacement = %s' % correct_center_displacement)
-            print('right_displacement = %s' % right_displacement2)
-            print('left_displacement = %s' % left_displacement2)
-            elapsed_lp = timeit.default_timer() - lp_start
-            center_velocity = correct_center_displacement / float(elapsed_lp)
-            time_delay = mag / center_velocity #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
-            print('mag = %s' % mag)
-            print('center_velocity = %s' % center_velocity)
-            print('time_delay = %s' % time_delay)
-            time.sleep(float(abs(time_delay)))
+            run(mag)
             a_star.motors(0,0)  
         else:
             a_star.motors(-50,50)
