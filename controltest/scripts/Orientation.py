@@ -61,7 +61,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     atan2 = math.atan2
     dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
     dist_y = float(desired_point_y) - float(our_point_y)
-    mag = float(math.sqrt(dist_x** float(2) + dist_y**float(2)))
+    mag = float(math.sqrt(dist_x**float(2) + dist_y**float(2)))
     angle = atan2(dist_y , dist_x) #can return [-pi,pi]
     angle_degrees = angle * float(180)/pi
     if angle_degrees >= 0:
@@ -156,6 +156,7 @@ def  talker():
         
         if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
             a_star.motors(50,50)
+            time.sleep(.02)
             center_velocity = center_displacement / float(.02)
             time_delay = mag / center_velocity
             print('mag = %s' % mag)
