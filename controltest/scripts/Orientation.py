@@ -170,18 +170,18 @@ def  talker():
 
         angle_Gyro_unbounded += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
         angle_Gyro = angle_Gyro_unbounded % 360
-        print('gyro: %s' % angle_Gyro)
+        #print('gyro: %s' % angle_Gyro)
 
         dGyro = angle_Gyro - oldangle_Gyro
-        print('Delta gyro: %s' % dGyro)
+        #print('Delta gyro: %s' % dGyro)
         dEncoder = angle_Encoder - oldangle_Encoder
-        print('Delta Encoder: %s' % dEncoder)
+        #print('Delta Encoder: %s' % dEncoder)
 
         oldangle_Encoder = angle_Encoder
-        print('old encoder: %s' % oldangle_Encoder)
+        #print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro                                      
-        print('old gyro: %s' % oldangle_Gyro)
-        print('orientation_input = %s' % orientation_input)
+        #print('old gyro: %s' % oldangle_Gyro)
+        #print('orientation_input = %s' % orientation_input)
         if abs(dGyro - dEncoder) < Threshold:
             angle += dGyro
         else:
@@ -193,10 +193,10 @@ def  talker():
         else:
             a_star.motors(-50,50)
         
-        print('angle_degrees = %s' % angle_degrees)
+        #print('angle_degrees = %s' % angle_degrees)
         #rate.sleep()
-        print('angle = %s' % angle)
-        print(sampleRate)
+        #print('angle = %s' % angle)
+        #print(sampleRate)
 
         #Add a time.sleep under this line if you think there should be one here
         
