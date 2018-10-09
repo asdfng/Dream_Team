@@ -157,7 +157,6 @@ def  talker():
         
         if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
             a_star.motors(50,50)
-            time.sleep(.01)
             encoders2 = a_star.read_encoders()
             right_encoder2 = encoders2[1]
             left_encoder2 = encoders2[0]
