@@ -61,7 +61,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     atan2 = math.atan2
     dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
     dist_y = float(desired_point_y) - float(our_point_y)
-    mag = math.sqrt(math.pow(dist_x,2) + math.pow(dist_y,2))
+    mag = float(math.sqrt(math.pow(dist_x,2) + math.pow(dist_y,2)))
     angle = atan2(dist_y , dist_x) #can return [-pi,pi]
     angle_degrees = angle * float(180)/pi
     if angle_degrees >= 0:
