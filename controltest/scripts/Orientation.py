@@ -39,15 +39,10 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     right_wheel_rotations = right_encoder/float(1440)                  
     left_wheel_rotations = left_encoder/float(1440)
 
-    #Prints the number of rotations, not needed for final iteration
-    #print("rightrotations = %s rotations" % right_wheel_rotations)  
-    #print("leftrotations = %s rotations" % left_wheel_rotations)
-
     #calculates displacement of right, left and center wheels                    
     right_displacement = right_wheel_rotations*float(2)*pi*.114829     
     left_displacement = left_wheel_rotations*float(2)*pi*.114829
     center_displacement = (right_displacement + left_displacement)/float(2)
-
     #calculates the change of the angle by a turn
     alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels
 
@@ -59,16 +54,14 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
     
-    return theta_new
-    #prints angle every 100ms, not needed for the final iteration
-    #print("orientation = %s degrees" % theta_new)
+    return theta_new, center_displacement
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
     pi = math.pi
     atan2 = math.atan2
     dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
     dist_y = float(desired_point_y) - float(our_point_y)
-    mag = math.sqrt((dist_x)** float(2) + (dist_y)**float(2))
+    mag = float(math.sqrt(dist_x** float(2) + dist_y**float(2)))
     angle = atan2(dist_y , dist_x) #can return [-pi,pi]
     angle_degrees = angle * float(180)/pi
     if angle_degrees >= 0:
@@ -76,7 +69,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     else:
         orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
     orientation_input = orientation_input_unbounded % 360
-    return orientation_input, angle_degrees
+    return orientation_input, angle_degrees, mag
    
 #def __init__(self)
     #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
@@ -109,7 +102,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    orientation_input, angle_degrees = point_orientation(0,0,2,math.pi,angle) #dummy coordinates for now
+    orientation_input, angle_degrees, mag = point_orientation(0,0,2,math.pi,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
@@ -119,7 +112,6 @@ def  talker():
         #Read the encoder and imu
         encoders = a_star.read_encoders()
         imu.read()
-        #print(encoders[0], encoders[1])
 
         right_encoder = encoders[1]
         left_encoder = encoders[0]
@@ -130,7 +122,7 @@ def  talker():
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
 
-        angle_Encoder = displacement(passRight,passLeft)
+        angle_Encoder, center_displacement = displacement(passRight,passLeft)
         
     
         #Find the offset of the gyro and remove it
@@ -163,6 +155,13 @@ def  talker():
         
         if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
             a_star.motors(0,0)
+            time.sleep(.01)
+            a_star.motors(50,50)
+            time.sleep(.01)
+            center_velocity = center_displacement / float(.02)
+            time_delay = mag / center_velocity
+            time.sleep(time_delay)
+            a_star.motors(0,0)  
         else:
             a_star.motors(-50,50)
         
