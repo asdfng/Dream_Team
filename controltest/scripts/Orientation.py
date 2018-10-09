@@ -74,8 +74,14 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 #This code will find the distance it needs to move in order to get to the point
 def run(mag):
 
+    #Find the starting displacement since the last time the code ran
+    angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
+
+    oldDis = right_displacement2 - left_displacement2
+
     #Initialize the displacement to be zero at the start of each run
     displacement_current = 0.0
+
 
     #Set the motors
     a_star.motors(50,50)
@@ -91,8 +97,13 @@ def run(mag):
         angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
 
         #Get the correct center displacement
-        correct_center_displacement = right_displacement2 - left_displacement2
+        CurrentDis = right_displacement2 - left_displacement2
 
+        #find the change in the displacement
+        dDis = abs(CurrentDis - oldDis)
+
+        oldDis = CurrentDis
+        
         #Add the displacement to the current displacement
         displacement_current += abs(correct_center_displacement)
         
