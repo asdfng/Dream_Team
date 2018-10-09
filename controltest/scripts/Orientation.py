@@ -103,7 +103,7 @@ def  talker():
     #ballX=ball.x
     #ballY=ball.y
 
-    orientation_input, angle_degrees, mag = point_orientation(0,0,2,math.pi,angle) #dummy coordinates for now
+    orientation_input, angle_degrees, mag = point_orientation(0,0,3,3,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
