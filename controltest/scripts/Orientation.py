@@ -100,12 +100,9 @@ def run(mag):
         #update the current count
         currentcount += dEnc
     
-        print('center_displacement = %s' % displacement_current)
-        print('change in displacement = %s' % dDis)
-        print('displacement = %s' % CurrentDis )
-        print('right_displacement = %s' % right_displacement2)
-        print('left_displacement = %s' % left_displacement2)
         print('mag = %s' % mag)
+        print('target count = %s' % targetcount)
+        print('current count = %s' % currentcount)
         os.system('clear')
 
 
