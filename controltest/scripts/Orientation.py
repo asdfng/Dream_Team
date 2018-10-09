@@ -95,10 +95,11 @@ def run(mag):
 
         #Add the displacement to the current displacement
         displacement_current += abs(correct_center_displacement)
+        
+
         print('center_displacement = %s' % correct_center_displacement)
         print('right_displacement = %s' % right_displacement2)
         print('left_displacement = %s' % left_displacement2)
-        
         print('mag = %s' % mag)
 
 
@@ -186,7 +187,7 @@ def  talker():
         else:
             angle += dEncoder
         
-        if ((angle - 5 <= orientation_input) and (orientation_input <= angle + 5)): #current orientation should just be angle of encoder or gyro
+        if ((angle - 10 <= orientation_input) and (orientation_input <= angle + 10)): #current orientation should just be angle of encoder or gyro
             run(mag)
             a_star.motors(0,0)  
         else:
