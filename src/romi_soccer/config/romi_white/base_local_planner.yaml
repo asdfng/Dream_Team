@@ -9,6 +9,6 @@ TrajectoryPlannerROS:
 #Acceleration
   acc_lim_theta: 0.2286
   acc_lim_x: -0.2286
-  acc_lim_y: 
+  acc_lim_y: 0.2286
 
   holonomic_robot: true
