@@ -166,7 +166,7 @@ def  talker():
             print('center_displacement = %s' % correct_center_displacement)
             print('right_displacement = %s' % right_displacement2)
             print('left_displacement = %s' % left_displacement2)
-            elapsed_lp = timeit.default_timer - lp_start
+            elapsed_lp = timeit.default_timer() - lp_start
             center_velocity = correct_center_displacement / float(elapsed_lp)
             time_delay = mag / center_velocity #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
             print('mag = %s' % mag)
