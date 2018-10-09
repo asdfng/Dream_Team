@@ -201,6 +201,8 @@ def  talker():
         
         sampleRate = timeit.default_timer() - start_time
 
+        os.system('clear')
+
 
 
 if __name__ == '__main__':
