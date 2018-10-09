@@ -146,7 +146,7 @@ def  talker():
 
         oldangle_Encoder = angle_Encoder
         print('old encoder: %s' % oldangle_Encoder)
-        oldangle_Gyro = angle_Gyro
+        oldangle_Gyro = angle_Gyro                                      
         print('old gyro: %s' % oldangle_Gyro)
         print('orientation_input = %s' % orientation_input)
         if abs(dGyro - dEncoder) < Threshold:
@@ -158,7 +158,7 @@ def  talker():
             a_star.motors(50,50)
             print('center_displacement = %s' % center_displacement)
             center_velocity = center_displacement / float(.02)
-            time_delay = mag / center_velocity
+            time_delay = mag / center_velocity #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
             print('mag = %s' % mag)
             print('center_velocity = %s' % center_velocity)
             print('time_delay = %s' % time_delay)
