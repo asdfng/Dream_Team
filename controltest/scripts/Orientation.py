@@ -73,6 +73,10 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 
 #This code will find the distance it needs to move in order to get to the point
 def run(mag):
+    #Read the Encoders
+    encoders_run = a_star.read_encoders()
+    right_encoder2 = encoders_run[1]
+    left_encoder2 = encoders_run[0]
 
     #Find the starting displacement since the last time the code ran
     angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
@@ -88,7 +92,7 @@ def run(mag):
 
     while displacement_current < mag:
 
-         #Read the Encoders
+        #Read the Encoders
         encoders_run = a_star.read_encoders()
         right_encoder2 = encoders_run[1]
         left_encoder2 = encoders_run[0]
