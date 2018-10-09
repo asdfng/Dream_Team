@@ -54,7 +54,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
     
-    return theta_new, center_displacement, right_displacement, left_displacement
+    return theta_new, center_displacement
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
     pi = math.pi
@@ -123,7 +123,8 @@ def  talker():
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
 
-        angle_Encoder, center_displacement, right_encoder_dis, left_encoder_dis = displacement(passRight,passLeft)
+        angle_Encoder, center_displacement = displacement(passRight,passLeft)
+        
         
     
         #Find the offset of the gyro and remove it
@@ -156,12 +157,12 @@ def  talker():
         
         if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
             a_star.motors(50,50)
-            time.sleep(1)
-            angle_Encoder2, center_displacement2, right_encoder_dis2, left_encoder_dis2 = displacement(passRight,passLeft)
+            encoders = a_star.read_encoders()
+            right_encoder = encoders[1]
+            left_encoder = encoders[0]
+            angle_Encoder2, center_displacement2 = displacement(right_encoder,left_encoder)
             orientation_input2, angle_degrees2, mag2 = point_orientation(0,0,3,3,angle) #dummy coordinates for now
             print('center_displacement = %s' % center_displacement2)
-            print('right_displacement = %s' % right_encoder_dis2)
-            print('left_displacement = %s' % left_encoder_dis2)
             center_velocity = center_displacement2 / float(.02)
             time_delay = mag2 / center_velocity #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
             print('mag = %s' % mag2)
