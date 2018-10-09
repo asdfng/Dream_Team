@@ -155,10 +155,7 @@ def  talker():
             angle += dEncoder
         
         if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
-            a_star.motors(0,0)
-            time.sleep(.01)
             a_star.motors(50,50)
-            time.sleep(.01)
             center_velocity = center_displacement / float(.02)
             time_delay = mag / center_velocity
             time.sleep(time_delay)
@@ -170,7 +167,8 @@ def  talker():
         #rate.sleep()
         print('angle = %s' % angle)
         print(sampleRate)
-        time.sleep(0.01) #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
+
+        #Add a time.sleep under this line if you think there should be one here
         
         sampleRate = timeit.default_timer() - start_time
 
