@@ -37,7 +37,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     
     #converts encoder counts to rotations
     right_wheel_rotations = right_encoder/float(1440)                  
-    left_wheel_rotations = 1440 - left_encoder/float(1440)
+    left_wheel_rotations = left_encoder/float(1440)
 
     #calculates displacement of right, left and center wheels                    
     right_displacement = right_wheel_rotations*float(2)*pi*.114829     
@@ -162,10 +162,11 @@ def  talker():
             right_encoder2 = encoders2[1]
             left_encoder2 = encoders2[0]
             angle_Encoder2, center_displacement2, right_displacement2, left_displacement2 = displacement(right_encoder2,left_encoder2)
-            print('center_displacement = %s' % center_displacement2)
+            correct_center_displacement = right_displacement2 - left_displacement2
+            print('center_displacement = %s' % correct_center_displacement)
             print('right_displacement = %s' % right_displacement2)
             print('left_displacement = %s' % left_displacement2)
-            center_velocity = center_displacement2 / float(.02)
+            center_velocity = correct_center_displacement / float(.02)
             time_delay = math.fabs(mag / center_velocity) #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
             print('mag = %s' % mag)
             print('center_velocity = %s' % center_velocity)
