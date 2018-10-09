@@ -1,0 +1,53 @@
+<launch>
+     <rosparam file="$(find romi_soccer)/config/diffdrive.yaml"
+               command="load"/>
+
+     <param
+          name = "robot_description"
+          textfile = "$(find romi_soccer)/models/romi/romi.urdf"/>
+
+     <arg name="team"/>
+     <arg name="romi_circle"/>
+     <arg name="romi_square"/>
+     <arg name="romi_triangle"/>
+
+     <group ns="/$(arg team)_circle/$(arg romi_circle)">
+          <param name="tf_prefix" value="$(arg romi_circle)_tf" />
+          <include file="$(find romi_soccer)/launch/one_romi_sim.launch">
+               <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
+               <arg name="robot_name" value="$(arg romi_circle)"/>
+               <arg name="team" value="$(arg team)"/>
+               <arg name="shape" value="circle"/>
+               <arg name="romi_circle" value="$(arg romi_circle)"/>
+               <arg name="romi_square" value="$(arg romi_square)"/>
+               <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+          </include>
+     </group>
+
+     <group ns="/$(arg team)_triangle/$(arg romi_triangle)">
+          <param name="tf_prefix" value="$(arg romi_triangle)_tf" />
+          <include file="$(find romi_soccer)/launch/one_romi_sim.launch">
+               <arg name="init_pose" value="-x -1 -y 1 -z 0"/>
+               <arg name="robot_name" value="$(arg romi_triangle)"/>
+               <arg name="team" value="$(arg team)"/>
+               <arg name="shape" value="triangle"/>
+               <arg name="romi_circle" value="$(arg romi_circle)"/>
+               <arg name="romi_square" value="$(arg romi_square)"/>
+               <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+          </include>
+     </group>
+
+     <group ns="/$(arg team)_square/$(arg romi_square)">
+          <param name="tf_prefix" value="$(arg romi_square)_tf" />
+          <include file="$(find romi_soccer)/launch/one_romi_sim.launch">
+               <arg name="init_pose" value="-x 0 -y 1 -z 0"/>
+               <arg name="robot_name" value="$(arg romi_square)"/>
+               <arg name="team" value="$(arg team)"/>
+               <arg name="shape" value="square"/>
+               <arg name="romi_circle" value="$(arg romi_circle)"/>
+               <arg name="romi_square" value="$(arg romi_square)"/>
+               <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+          </include>
+     </group>
+
+</launch>
