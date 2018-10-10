@@ -1,33 +1,25 @@
 <launch>
      <arg name = "paused" value = "true"/>
      <arg name = "use_sim_time" value = "true"/>
-     <!-- <arg name = "gui" default = "false"/>
+     <arg name = "gui" default = "false"/>
      <arg name = "headless" value = "true"/>
      <arg name = "debug" value = "false"/>
-     <arg name = "world_name" value = "$(find romi_soccer)/worlds/rc_car.world"/> -->
+     <arg name = "world_name" value = "$(find romi_soccer)/worlds/rc_car.world"/>
      <arg name = "home_team" value = "red"/>
      <arg name = "visiting_team" value = "blue"/>
      <arg name = "romi_circle" value="romi_pink"/>
      <arg name = "romi_square" value="romi_white"/>
      <arg name = "romi_triangle" value="romi_red"/>
 
-     <!-- <node
+     <node
           name = "gazebo"
           pkg = "gazebo_ros"
           type = "gazebo"
           args = "$(arg world_name)"
           respawn = "false"
-     /> -->
+     />
 
-     <include file="$(find romi_soccer)/launch/team_tracker.launch">
-          <arg name="home_team" value="$(arg home_team)"/>
-          <arg name="visiting_team" value="$(arg visiting_team)"/>
-          <arg name="romi_circle" value="$(arg romi_circle)"/>
-          <arg name="romi_square" value="$(arg romi_square)"/>
-          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
-     </include>
-
-     <include file="$(find romi_soccer)/launch/three_romi.launch">
+     <include file="$(find romi_soccer)/launch/three_romi_sim.launch">
           <arg name="team" value="$(arg home_team)"/>
           <arg name="romi_circle" value="$(arg romi_circle)"/>
           <arg name="romi_square" value="$(arg romi_square)"/>

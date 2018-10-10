@@ -1,0 +1,11 @@
+global_costmap:
+    global_frame: odom_romi_white #Cannot be the same as robot base
+    robot_base_frame: base_link_romi_white
+    update_frequency: 5.0 #Hz
+    static_map: false #If false, rolling_window must be true
+    rolling_window: true #must be opposite of static_map?
+                        #if rolling_window is true. Must define W,H,Resol
+
+    width: 4.8768
+    height: 2.4384
+    resolution: 0.1524

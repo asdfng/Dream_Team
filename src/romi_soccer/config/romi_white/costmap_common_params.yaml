@@ -1,0 +1,24 @@
+#obstacle_range: 2.5
+#raytrace_range: 3.0
+# footprint: [[x0, y0], [x1, y1], ... [xn, yn]]
+#robot_radius: 0.2032
+#inflation_radius: 0.0508
+
+#observation_sources: fake_sensor_0 fake_sensor_1 fake_sensor_2 fake_sensor_3 fake_sensor_4 fake_sensor_5
+
+#point_cloud_sensor: {sensor_frame: sensor_frame, data_type: PointCloud, topic: red_circle/cloudy_meatballs, marking: true, clearing: true}
+
+obstacle_range: 2.5 # meters
+raytrace_ragne:
+robot_radius: .185 # meters
+inflation_radius: .2032 #meters
+
+oberservation_sources: fake_sensor_0 fake_sensor_1 fake_sensor_2 fake_sensor_3 fake_sensor_4 fake_sensor_5
+
+fake_sensor_0: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
+fake_sensor_1: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
+fake_sensor_2: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
+fake_sensor_3: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
+fake_sensor_4: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
+fake_sensor_5: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
+fake_sensor_6: {sensor_frame: sensor_frame, PointCloud, /red_square/romi_white/cloudy_meatballs marking: true clearing: true}
