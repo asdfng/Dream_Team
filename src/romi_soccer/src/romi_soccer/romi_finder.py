@@ -45,19 +45,12 @@ class RomiFinder:
         if (self.grabbed):
             cloud = PointCloud()
             cloud.header.stamp = rospy.Time.now()
-            cloud.header.frame_id = 'sensor_frame'
-            # cloud.points.resize(7)
+            cloud.header.frame_id = 'sensor_frame_%s' % self.cloud_num
             cloud.points = [None] * 7
 
-            # cloud.channels.resize(1)
-            # cloud.channels[0].name = 'obstacles'
-            # cloud.channels[0].values.resize(7);
             u = data.pose.position.x
             v = data.pose.position.y
             x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
             y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
-            # cloud.points[self.cloud_num].x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
-            # cloud.points[self.cloud_num].y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
-            # cloud.points[self.cloud_num].z = 0
             cloud.points[self.cloud_num] = Point32(x,y,0)
         else: rospy.loginfo('Waiting for homography calibration...')

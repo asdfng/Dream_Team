@@ -46,13 +46,6 @@ class OdomCalc:
         vx = self.vel.linear.x
         vy = self.vel.linear.y
         vth = self.vel.angular.z
-        # x = 1
-        # y = -1
-        # z = 0
-        # th = 0
-        # vx = 5
-        # vy = 0
-        # vth = 0
         dt = (self.current_time - self.last_time).to_sec()
         delta_x = (vx * math.cos(th) - vy * math.sin(th)) * dt
         delta_y = (vx * math.sin(th) + vy * math.cos(th)) * dt

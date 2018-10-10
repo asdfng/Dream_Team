@@ -9,4 +9,9 @@
           <arg name="romi_square" value="$(arg romi_square)"/>
           <arg name="romi_triangle" value="$(arg romi_triangle)"/>
      </include>
+     <include file="$(find romi_soccer)/launch/fake_sensor/sensor_transforms.launch">
+          <arg name="romi_circle" value="$(arg romi_circle)"/>
+          <arg name="romi_square" value="$(arg romi_square)"/>
+          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+     </include>
 </launch>
