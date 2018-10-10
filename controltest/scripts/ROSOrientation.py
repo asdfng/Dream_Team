@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-#import rospy
+import rospy
 import time
 import timeit 
 import os
 import math
+import tf_conversions
 from lms6 import LSM6
 from a_star import AStar
+from geometry_msgs.msg import Quaternion
 
 #Initialize all objects
 a_star = AStar()
@@ -79,9 +81,11 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
 
-    #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
-    #rospy.init_node('Encoder_Orientation', anonymous=True)
-    #rate = rospy.Rate(100)
+    robot_name = rospy.get_param('robot_name')
+    subject = rospy.get_param('subject')
+    pub = rospy.Publisher('/%s/%s/raw_po' % (subject,robot_name), Quaternion, queue_size=10)
+    rospy.init_node('/%s/%s/Encoder_Orientation' % (subject,robot_name), anonymous=True)
+    rate = rospy.Rate(100)
 
     while True:
 
@@ -134,15 +138,18 @@ def  talker():
         else:
             angle += dEncoder
         
+        Q = tf_conversions.transformations.quaternion_from_euler(0,0,angle)
+        angle_msg = Quaternion(*Q)
 
-        #rate.sleep()
-        print(angle)
+
+        print(angle_msg)
         print(sampleRate)
-        time.sleep(0.01) #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
+        pub.publish()
+        rate.sleep() #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
         
         sampleRate = timeit.default_timer() - start_time
 
-        os.system('clear')
+        
 
 if __name__ == '__main__':
     try:
