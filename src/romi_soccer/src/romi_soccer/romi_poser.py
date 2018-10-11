@@ -52,6 +52,7 @@ class RomiPoser:
             new_pose.pose.position.z = 0
             # Save this for when IMU data is parsed
             # th = angle from IMU
+            new_pose.pose.orientation = data.pose.orientation
             # angle = tf_conversions.transformations.quaternion_from_euler(0,0,th)
             # new_pose.pose.orientation.x = angle[0]
             # new_pose.pose.orientation.y = angle[1]
@@ -70,12 +71,12 @@ class RomiPoser:
         opt_prime.transform.translation.x = new_pose.pose.position.x
         opt_prime.transform.translation.y = new_pose.pose.position.y
         opt_prime.transform.translation.z = new_pose.pose.position.z
-        # opt_prime.transform.rotation.x = new_pose.pose.orientation.x
-        # opt_prime.transform.rotation.y = new_pose.pose.orientation.y
-        # opt_prime.transform.rotation.z = new_pose.pose.orientation.z
-        # opt_prime.transform.rotation.w = new_pose.pose.orientation.w
-        opt_prime.transform.rotation.x = 0
-        opt_prime.transform.rotation.y = 0
-        opt_prime.transform.rotation.z = 0
-        opt_prime.transform.rotation.w = 1
+        opt_prime.transform.rotation.x = new_pose.pose.orientation.x
+        opt_prime.transform.rotation.y = new_pose.pose.orientation.y
+        opt_prime.transform.rotation.z = new_pose.pose.orientation.z
+        opt_prime.transform.rotation.w = new_pose.pose.orientation.w
+        # opt_prime.transform.rotation.x = 0
+        # opt_prime.transform.rotation.y = 0
+        # opt_prime.transform.rotation.z = 0
+        # opt_prime.transform.rotation.w = 1
         br.sendTransform(opt_prime)

@@ -54,7 +54,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
     
-    return theta_new, center_displacement
+    return theta_new, center_displacement, right_displacement, left_displacement
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
     pi = math.pi
@@ -70,7 +70,45 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
         orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, angle_degrees, mag
-   
+
+#This code will find the distance it needs to move in order to get to the point
+def run(mag):
+
+    #Read the Encoders
+    encoders_run = a_star.read_encoders()
+    oldEnc = encoders_run[1]
+    
+    #Convert the magnitude to an encoder count
+    targetcount = int((mag/(float(2)*math.pi*.114829))*1440)
+    currentcount = 0
+
+    #Set the motors
+    a_star.motors(100,100)
+
+    while currentcount < targetcount:
+
+        #Read the Encoders get the current encoder value
+        encoders_run = a_star.read_encoders()
+        curEnc = encoders_run[1]
+        
+        #Find the difference in counts
+        dEnc = curEnc - oldEnc
+
+        #Reset the old count
+        oldEnc = curEnc
+        
+        #update the current count
+        currentcount += dEnc
+
+        if currentcount < 0:
+            currentcount = 0.0
+    
+        print('mag = %s' % mag)
+        print('target count = %s' % targetcount)
+        print('current count = %s' % currentcount)
+        os.system('clear')
+
+
 def  talker():
 
     global angle, angle_Gyro_unbounded, total, i, sampleRate
@@ -111,7 +149,7 @@ def  talker():
         Threshold = 0.125
 
         #Read the encoder and imu
-        encoders = a_star.read_encoders()
+        encoders = a_star.read_encoders()  
         imu.read()
 
         right_encoder = encoders[1]
@@ -123,7 +161,8 @@ def  talker():
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
 
-        angle_Encoder, center_displacement = displacement(passRight,passLeft)
+        angle_Encoder, center_displacement, right_displacement, left_displacement = displacement(passRight,passLeft)
+        
         
     
         #Find the offset of the gyro and remove it
@@ -137,46 +176,39 @@ def  talker():
 
         angle_Gyro_unbounded += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
         angle_Gyro = angle_Gyro_unbounded % 360
-        print('gyro: %s' % angle_Gyro)
+        #print('gyro: %s' % angle_Gyro)
 
         dGyro = angle_Gyro - oldangle_Gyro
-        print('Delta gyro: %s' % dGyro)
+        #print('Delta gyro: %s' % dGyro)
         dEncoder = angle_Encoder - oldangle_Encoder
-        print('Delta Encoder: %s' % dEncoder)
+        #print('Delta Encoder: %s' % dEncoder)
 
         oldangle_Encoder = angle_Encoder
-        print('old encoder: %s' % oldangle_Encoder)
+        #print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro                                      
-        print('old gyro: %s' % oldangle_Gyro)
-        print('orientation_input = %s' % orientation_input)
+        #print('old gyro: %s' % oldangle_Gyro)
+        #print('orientation_input = %s' % orientation_input)
         if abs(dGyro - dEncoder) < Threshold:
             angle += dGyro
         else:
             angle += dEncoder
         
-        if angle - 5 <= orientation_input <= angle + 5: #current orientation should just be angle of encoder or gyro
-            a_star.motors(50,50)
-            print('center_displacement = %s' % center_displacement)
-            center_velocity = center_displacement / float(.02)
-            time_delay = mag / center_velocity #problem is center displacement isn't for correct encoder values, try executing function again in if statement?
-            print('mag = %s' % mag)
-            print('center_velocity = %s' % center_velocity)
-            print('time_delay = %s' % time_delay)
-            time.sleep(float(time_delay))
+        if ((angle - 5 <= orientation_input) and (orientation_input <= angle + 5)): #current orientation should just be angle of encoder or gyro
+            run(mag)
             a_star.motors(0,0)  
         else:
             a_star.motors(-50,50)
         
-        print('angle_degrees = %s' % angle_degrees)
+        #print('angle_degrees = %s' % angle_degrees)
         #rate.sleep()
-        print('angle = %s' % angle)
-        print(sampleRate)
+        #print('angle = %s' % angle)
+        #print(sampleRate)
 
         #Add a time.sleep under this line if you think there should be one here
         
         sampleRate = timeit.default_timer() - start_time
 
-        os.system('clear')
+
 
 
 if __name__ == '__main__':

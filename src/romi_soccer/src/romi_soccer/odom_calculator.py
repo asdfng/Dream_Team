@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-import rospy, roslib, numpy, math, tf_conversions, tf2_ros, tf2_msgs
+import rospy, roslib, numpy, math, tf_conversions, tf2_ros, tf2_msgs, time, timeit, os,
+from a_star import AStar
+from lms6 import LSM6
 from geometry_msgs.msg import PoseStamped, Twist, Quaternion, TransformStamped
 from nav_msgs.msg import Odometry
 
@@ -16,12 +18,12 @@ class OdomCalc:
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
         rospy.Subscriber('/%s/%s/romi_controller/pose' % (self.subject,self.robot_name),PoseStamped,self.poseCallback)
         rospy.Subscriber('/%s/%s/romi_controller/cmd_vel' % (self.subject,self.robot_name),Twist,self.callback)
-        # rospy.spin()
-        rate = rospy.Rate(10)
-        while not rospy.is_shutdown():
-            if (self.grabbed_vel and self.grabbed_pose):
-                self.broadcaster()
-            rate.sleep()
+        rospy.spin()
+        # rate = rospy.Rate(10)
+        # while not rospy.is_shutdown():
+        #     if (self.grabbed_vel and self.grabbed_pose):
+        #         self.broadcaster()
+        #     rate.sleep()
 
 
     def callback(self,data):
