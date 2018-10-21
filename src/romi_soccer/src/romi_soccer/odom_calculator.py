@@ -30,6 +30,8 @@ class OdomCalc:
         #Starting values for the encoders
         self.theta_initial = 0.0
         self.theta_new_unbounded = 0.0
+        # Boolean to flag whether it's starting from initial coordinates or not
+        self.initial = True
 
         # Grabs the subject name (e.g. red_circle, blue_square, etc) from the parameter server in the launch file
         self.subject = rospy.get_param('subject')
@@ -185,17 +187,25 @@ class OdomCalc:
         # th = th + delta_th
         # ==========================SAFE TO REMOVE THIS BLOCK=================================
         # Initialize the starting coordinates like this:
-        while not rospy.has_param('/%s_first_pose_x'):
-            rate.sleep()
-            continue
-        x = rospy.get_param('/%s_first_pose_x' % self.robot_name)
-        y = rospy.get_param('/%s_first_pose_y' % self.robot_name)
-        try:
-            rospy.delete_param('/%s_first_pose_x')
-            rospy.delete_param('/%s_first_pose_y')
-        except KeyError:
-            rospy.loginfo('No initial coordinates to delete.')
-
+        # If this is the first run through...
+        if (self.initial):
+            # Keep looking for the parameter until it's there
+            while not rospy.has_param('/%s_first_pose_x' % self.robot_name):
+                rate.sleep()
+                continue
+            # Store the parameters in x and y
+            x = rospy.get_param('/%s_first_pose_x' % self.robot_name)
+            y = rospy.get_param('/%s_first_pose_y' % self.robot_name)
+            try:
+                # Delete the parameters since we don't need them anymore
+                rospy.delete_param('/%s_first_pose_x')
+                rospy.delete_param('/%s_first_pose_y')
+                # Mark that we've gone through the first time now
+                self.initial = False
+            except KeyError:
+                rospy.loginfo('No initial coordinates to delete.')
+        # Noah make sure it latches onto the old coordinates when it's not first booting up
+        
         # Initializes empty TransformStamped object
         odom_trans = TransformStamped()
         # Stamps the transform with the current time
