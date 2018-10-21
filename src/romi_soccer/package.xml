@@ -21,7 +21,7 @@
   <depend>robot_state_publisher</depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
-  <depend>tf</depend>
+  <depend>tf2</depend>
   <depend>rqt_robot_steering</depend>
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
