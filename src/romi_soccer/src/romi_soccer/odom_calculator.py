@@ -155,7 +155,7 @@ class OdomCalc:
             oldangle_Gyro = angle_Gyro
             rospy.loginfo('old gyro: %s' % oldangle_Gyro)
 
-            global orientation,odom_quat = self.get_odom_quat(dGyro,dEncoder,Threshold)
+            global orientation, odom_quat = self.get_odom_quat(dGyro,dEncoder,Threshold)
             angle_msg = Quaternion(*odom_quat)
 
             # rospy.loginfo(angle_msg)
