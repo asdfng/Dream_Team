@@ -68,7 +68,7 @@ class OdomCalc:
         theta_new = self.theta_new_unbounded % 360
         theta_initial = theta_new
 
-        return theta_new, center_displacement, right_displacement, left_displacement
+        return theta_new, center_displacement
 
     def get_odom_quat(self,dGyro,dEncoder,Threshold):
         if abs(dGyro - dEncoder) < Threshold:
@@ -77,25 +77,36 @@ class OdomCalc:
             self.angle += dEncoder
         return odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,self.angle)
 
-    def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
-        pi = math.pi
-        atan2 = math.atan2
-        dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
-        dist_y = float(desired_point_y) - float(our_point_y)
-        mag = float(math.sqrt(math.pow(dist_x,2) + math.pow(dist_y,2)))
-        angle = atan2(dist_y , dist_x) #can return [-pi,pi]
-        angle_degrees = angle * float(180)/pi
-        if angle_degrees >= 0:
-            orientation_input_unbounded = angle_degrees + float(360) - float(original_orientation)
-        else:
-            orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
-        orientation_input = orientation_input_unbounded % 360
-        return orientation_input, angle_degrees, mag
+    #def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
+        #pi = math.pi
+        #atan2 = math.atan2
+        #dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
+        #dist_y = float(desired_point_y) - float(our_point_y)
+        #mag = float(math.sqrt(math.pow(dist_x,2) + math.pow(dist_y,2)))
+        #angle = atan2(dist_y , dist_x) #can return [-pi,pi]
+        #angle_degrees = angle * float(180)/pi
+        #if angle_degrees >= 0:
+            #orientation_input_unbounded = angle_degrees + float(360) - float(original_orientation)
+        #else:
+            #orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
+        #orientation_input = orientation_input_unbounded % 360
+        #return orientation_input, angle_degrees, mag
+
+    def position_calculator(initial_x_coordinate, initial_y_coordinate, displacement_of_center, orientation_used):
+        x_pose_change = displacement_of_center*math.cos(math.radians(orientation_used))
+        y_pose_change = displacement_of_center*math.sin(math.radians(orientation_used))
+        new_position_x = x_pose_change + initial_x_coordinate
+        new_position_y = y_pose_change + initial_y_coordinate
+        initial_x_coordinate = new_position_x
+        initial_y_coordinate = new_position_y
+        return new_position_x, new_position_y
 
     def talker(self):
         encoders = self.a_star.read_encoders()
         oldright_encoder = encoders[1]
         oldleft_encoder = encoders[0]
+        initial_x_position = 0 #Can't find the rover coordinates in the files to initialize to the correct coordinates
+        initial_y_position = 0
 
         oldangle_Encoder = 0.0
         oldangle_Gyro = 0.0
@@ -118,8 +129,9 @@ class OdomCalc:
             oldright_encoder = right_encoder
             oldleft_encoder = left_encoder
 
-            angle_Encoder = displacement(passRight,passLeft)
-            print('Encoder: %s' % angle_Encoder)
+            global angle_Encoder,center_rover_displacement = displacement(passRight,passLeft)
+
+            #print('Encoder: %s' % angle_Encoder)
 
             #Find the offset of the gyro and remove it
             i=10
@@ -146,6 +158,7 @@ class OdomCalc:
 
             odom_quat = self.get_odom_quat(dGyro,dEncoder,Threshold)
             angle_msg = Quaternion(*odom_quat)
+            global new_x, new_y = position_calculator(initial_x_position, initial_y_position, center_rover_displacement, odom_quat)
 
             # rospy.loginfo(angle_msg)
             rospy.loginfo(self.sampleRate)
