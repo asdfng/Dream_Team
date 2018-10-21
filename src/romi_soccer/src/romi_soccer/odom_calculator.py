@@ -75,6 +75,7 @@ class OdomCalc:
             self.angle += dGyro
         else:
             self.angle += dEncoder
+        return self.angle
         return odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,self.angle)
 
     #def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
@@ -154,7 +155,7 @@ class OdomCalc:
             oldangle_Gyro = angle_Gyro
             rospy.loginfo('old gyro: %s' % oldangle_Gyro)
 
-            odom_quat = self.get_odom_quat(dGyro,dEncoder,Threshold)
+            global orientation,odom_quat = self.get_odom_quat(dGyro,dEncoder,Threshold)
             angle_msg = Quaternion(*odom_quat)
 
             # rospy.loginfo(angle_msg)
@@ -227,7 +228,7 @@ class OdomCalc:
         odom_trans.child_frame_id = 'base_link_%s' % self.robot_name
 
         # Noah, please put math here to find the calculated new pose of the rover!!
-        new_x, new_y = position_calculator(x, y, center_rover_displacement, odom_quat)
+        new_x, new_y = position_calculator(x, y, center_rover_displacement, orientation)
         odom_trans.transform.translation.x = new_x
         odom_trans.transform.translation.y = new_y
         x = new_x
