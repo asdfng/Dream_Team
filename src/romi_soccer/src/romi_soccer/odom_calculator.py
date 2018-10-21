@@ -97,8 +97,6 @@ class OdomCalc:
         y_pose_change = displacement_of_center*math.sin(math.radians(orientation_used))
         new_position_x = x_pose_change + initial_x_coordinate
         new_position_y = y_pose_change + initial_y_coordinate
-        initial_x_coordinate = new_position_x
-        initial_y_coordinate = new_position_y
         return new_position_x, new_position_y
 
     def talker(self):
@@ -158,7 +156,6 @@ class OdomCalc:
 
             odom_quat = self.get_odom_quat(dGyro,dEncoder,Threshold)
             angle_msg = Quaternion(*odom_quat)
-            global new_x, new_y = position_calculator(initial_x_position, initial_y_position, center_rover_displacement, odom_quat)
 
             # rospy.loginfo(angle_msg)
             rospy.loginfo(self.sampleRate)
@@ -180,6 +177,7 @@ class OdomCalc:
         # make it so when it starts up, it does NOT initialize to 0,0 but instead initializes to
         # the pose from the JSON coordinates. I already did that actually, just make sure that
         # the rest of your code works with it.
+        
         # ===========================SAFE TO REMOVE THIS BLOCK================================
         # self.current_time = rospy.Time.now()
         # x = self.pose.pose.position.x
@@ -229,8 +227,11 @@ class OdomCalc:
         odom_trans.child_frame_id = 'base_link_%s' % self.robot_name
 
         # Noah, please put math here to find the calculated new pose of the rover!!
-        # odom_trans.transform.translation.x = x
-        # odom_trans.transform.translation.y = y
+        new_x, new_y = position_calculator(x, y, center_rover_displacement, odom_quat)
+        odom_trans.transform.translation.x = new_x
+        odom_trans.transform.translation.y = new_y
+        x = new_x
+        y = new_y
         odom_trans.transform.translation.z = 0
         odom_trans_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
         odom_trans.transform.rotation = Quaternion(*odom_trans_quat)
