@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import rospy, roslib, numpy, math, tf_conversions, tf2_ros, tf2_msgs, time, timeit, os,
+import rospy, roslib, numpy, math, tf_conversions, tf2_ros, tf2_msgs, time, os
 from a_star import AStar
 from lms6 import LSM6
 from geometry_msgs.msg import PoseStamped, Twist, Quaternion, TransformStamped

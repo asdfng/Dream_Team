@@ -8,8 +8,6 @@ project(romi_soccer)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  gazebo_plugins
-  gazebo_ros
   geometry_msgs
   joint_state_publisher
   message_generation
