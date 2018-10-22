@@ -11,6 +11,16 @@ from geometry_msgs.msg import Twist
 mTOft = 3.28084
 a_star = AStar()
 
+#Inspiration from robotc
+def straight(speed):
+    mLeft = speed
+    mRight = speed
+
+    error = 0
+    kp = 5 #proportionality constant used to adjust the feedback amount
+
+    
+
 #converting the linear and angular message velocities to x and y
 def callback(msg):
     #Only the angular z-axis and linear x- axis velocity are needed
@@ -42,8 +52,11 @@ def callback(msg):
 
     print(spLeft)
     print(spRight)
-
-    a_star.motors(spLeft,spRight)
+    
+    if (spLeft==spRight):
+        straight(spLeft)
+    else:
+        a_star.motors(spLeft,spRight)
 
 #Setting up the subscriber node
 def listener():
