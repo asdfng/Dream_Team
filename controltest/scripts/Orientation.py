@@ -31,7 +31,9 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     
     global theta_initial
     global theta_new_unbounded
-
+    right_displacement = 0    
+    left_displacement = 0
+    center_displacement = 0
     pi = math.pi
     dist_between_wheels = 0.4791667
     
