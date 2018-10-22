@@ -15,7 +15,7 @@
      <param
           name = "subject"
           value = "$(arg team)_$(arg shape)"/>
-          <!-- Starting a parameter server to hold the value of the subject -->
+     <!-- Starting a parameter server to hold the value of the subject -->
      <param
           name = "robot_name"
           value = "$(arg robot_name)"/>
@@ -49,7 +49,7 @@
          ns     = "/$(arg team)_$(arg shape)/$(arg robot_name)"/>
      <!-- Start the transform broadcaster from map->odom -->
     <node
-         name="tf_map_odom"
+         name="map_node"
          pkg="romi_soccer"
          type="poser"
          output="screen"/>

@@ -6,6 +6,7 @@ from romi_soccer.msg import Homography
 
 class RomiFinder:
     def __init__(self):
+        # Initializes a boolean to flag whether the homography matrix has been grabbed yet
         self.grabbed = False
         self.q11 = 0
         self.q12 = 0
@@ -19,8 +20,8 @@ class RomiFinder:
         self.cloud_num = rospy.get_param('~number')
         object = rospy.get_param('~object')
         subject = rospy.get_param('~subject')
-        subject_robot = rospy.get_param('~subject_robot')
-        self.pub = rospy.Publisher('/%s/%s/cloudy_meatballs' % (subject,subject_robot),PointCloud,queue_size=10)
+        self.subject_robot = rospy.get_param('~subject_robot')
+        self.pub = rospy.Publisher('/%s/%s/cloudy_meatballs' % (subject,self.subject_robot),PointCloud,queue_size=10)
         rospy.Subscriber('/mapper/homography',Homography, self.matCallback)
         if rospy.has_param('~robot_name'):
             robot_name = rospy.get_param('~robot_name')
@@ -45,7 +46,7 @@ class RomiFinder:
         if (self.grabbed):
             cloud = PointCloud()
             cloud.header.stamp = rospy.Time.now()
-            cloud.header.frame_id = 'sensor_frame_%s' % self.cloud_num
+            cloud.header.frame_id = 'sensor_frame_%s' % self.subject_robot
             cloud.points = [None] * 7
 
             u = data.pose.position.x

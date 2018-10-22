@@ -13,15 +13,13 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
-  <depend>gazebo_plugins</depend>
-  <depend>gazebo_ros</depend>
   <depend>geometry_msgs</depend>
   <depend>joint_state_publisher</depend>
   <depend>nav_msgs</depend>
   <depend>robot_state_publisher</depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
-  <depend>tf</depend>
+  <depend>tf2</depend>
   <depend>rqt_robot_steering</depend>
   <depend>controller_manager</depend>
   <depend>diff_drive_controller</depend>
