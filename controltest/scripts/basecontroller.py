@@ -26,7 +26,7 @@ def straight(speed):
 
     i = 0
 
-    for i < 10:
+    while (i < 10):
         #set the motors with a starting value
         a_star.motors(mLeft,sRight)
 
