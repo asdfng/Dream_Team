@@ -4,6 +4,7 @@
 #By: Nicholas Gregg
 
 import rospy
+import time
 from a_star import AStar
 from geometry_msgs.msg import Twist
 
@@ -13,13 +14,37 @@ a_star = AStar()
 
 #Inspiration from robotc
 def straight(speed):
+    #Store the master speed into values 
     mLeft = speed
-    mRight = speed
+    sRight = speed
+
+    oldencoderL = a_star.read_encoders[0]
+    oldencoderR = a_star.read_encoders[1]
 
     error = 0
     kp = 5 #proportionality constant used to adjust the feedback amount
 
-    
+    i = 0
+
+    for i < 10:
+        #set the motors with a starting value
+        a_star.motors(mLeft,sRight)
+
+        encoderL = a_star.read_encoders[0]
+        enocderR = a_star.read_encoders[1]
+
+        dL = encoderL - oldencoderL
+        dR = enocderR - oldencoderR
+
+        error = dL - dR
+        sSlave += error/kp
+
+        oldencoderL = encoderL
+        oldencoderR = enocderR
+
+        i + 1 = i
+
+        time.sleep(.05)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
