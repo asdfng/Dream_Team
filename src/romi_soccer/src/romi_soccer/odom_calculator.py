@@ -106,7 +106,6 @@ class OdomCalc:
         oldleft_encoder = encoders[0]
         initial_x_position = 0 #Can't find the rover coordinates in the files to initialize to the correct coordinates
         initial_y_position = 0
-
         oldangle_Encoder = 0.0
         oldangle_Gyro = 0.0
 
@@ -128,7 +127,7 @@ class OdomCalc:
             oldright_encoder = right_encoder
             oldleft_encoder = left_encoder
 
-            global angle_Encoder,center_rover_displacement = displacement(passRight,passLeft)
+            self.angle_Encoder,self.center_rover_displacement = displacement(passRight,passLeft)
 
             #print('Encoder: %s' % angle_Encoder)
 
