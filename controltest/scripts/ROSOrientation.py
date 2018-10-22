@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 import rospy
 import time
-import timeit 
+import timeit
 import os
 import math
-import tf_conversions
 from lms6 import LSM6
 from a_star import AStar
-from geometry_msgs.msg import Quaternion
+from controltest.msg import odata
 
 #Initialize all objects
 a_star = AStar()
 imu = LSM6()
+data = Vector3()
 imu.enable()
 
 a_star.motors(-25,25)
@@ -31,24 +31,24 @@ total = 0.0
 theta_initial = 0.0
 theta_new_unbounded = 0.0
 
-def displacement(right_encoder,left_encoder): #velocity: ft/s, position: 
-    
+def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
+
     global theta_initial
     global theta_new_unbounded
 
     pi = math.pi
     dist_between_wheels = 0.4791667
-    
+
     #converts encoder counts to rotations
-    right_wheel_rotations = right_encoder/float(1440)                  
+    right_wheel_rotations = right_encoder/float(1440)
     left_wheel_rotations = left_encoder/float(1440)
 
     #Prints the number of rotations, not needed for final iteration
-    #print("rightrotations = %s rotations" % right_wheel_rotations)  
+    #print("rightrotations = %s rotations" % right_wheel_rotations)
     #print("leftrotations = %s rotations" % left_wheel_rotations)
 
-    #calculates displacement of right, left and center wheels                    
-    right_displacement = right_wheel_rotations*float(2)*pi*.114829     
+    #calculates displacement of right, left and center wheels
+    right_displacement = right_wheel_rotations*float(2)*pi*.114829
     left_displacement = left_wheel_rotations*float(2)*pi*.114829
     center_displacement = (right_displacement + left_displacement)/float(2)
 
@@ -59,19 +59,19 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position:
     alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi
 
     #appends initial theta to new theta
-    theta_new_unbounded = theta_initial + alpha_left_turn_degrees 
-    theta_new = theta_new_unbounded % 360                                   
-    theta_initial = theta_new 
-    
-    return theta_new
+    theta_new_unbounded = theta_initial + alpha_left_turn_degrees
+    theta_new = theta_new_unbounded % 360
+    theta_initial = theta_new
+
+    return theta_new, center_displacement
     #prints angle every 100ms, not needed for the final iteration
-    #print("orientation = %s degrees" % theta_new)                               
+    #print("orientation = %s degrees" % theta_new)
 
 
 
 def  talker():
 
-    global angle, angle_Gyro_unbounded, total, i, sampleRate
+    global angle, angle_Gyro_unbounded, total, i, sampleRate, data
 
     #Setup for the encoders
     encoders = a_star.read_encoders()
@@ -104,15 +104,15 @@ def  talker():
         passRight = right_encoder - oldright_encoder
         passLeft = left_encoder - oldleft_encoder
 
-        oldright_encoder = right_encoder 
+        oldright_encoder = right_encoder
         oldleft_encoder = left_encoder
 
-        angle_Encoder = displacement(passRight,passLeft)
+        angle_Encoder, center_displacement = displacement(passRight,passLeft)
         print('Encoder: %s' % angle_Encoder)
-    
+
         #Find the offset of the gyro and remove it
-        while i<=10: 
-            
+        while i<=10:
+
             imu.read()
             total += imu.g.z
             i += 10
@@ -128,6 +128,8 @@ def  talker():
         dEncoder = angle_Encoder - oldangle_Encoder
         print('Delta Encoder: %s' % dEncoder)
 
+        aVel = math.radians(dEncoder)/sampleRate
+
         oldangle_Encoder = angle_Encoder
         print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro
@@ -137,19 +139,20 @@ def  talker():
             angle += dGyro
         else:
             angle += dEncoder
-        
-        Q = tf_conversions.transformations.quaternion_from_euler(0,0,angle)
-        angle_msg = Quaternion(*Q)
 
+        data.angle = angle
+        data.cDisplacement = center_displacement
+        data.aVel = aVel
+        data.lvel = (center_displacement/sampleRate)*(1/3.2808)
 
         print(angle_msg)
         print(sampleRate)
         pub.publish()
         rate.sleep() #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
-        
+
         sampleRate = timeit.default_timer() - start_time
 
-        
+
 
 if __name__ == '__main__':
     try:
