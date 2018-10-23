@@ -17,9 +17,11 @@ def straight(speed):
     #Store the master speed into values 
     mLeft = speed
     sRight = speed
+    sSlave = 0
 
-    oldencoderL = a_star.read_encoders[0]
-    oldencoderR = a_star.read_encoders[1]
+    encoders = a_star.read_encoders()
+    oldencoderL = encoders[0]
+    oldencoderR = encoders[1]
 
     error = 0
     kp = 5 #proportionality constant used to adjust the feedback amount
@@ -29,18 +31,19 @@ def straight(speed):
     while (i < 10):
         #set the motors with a starting value
         a_star.motors(mLeft,sRight)
+        encoders = a_star.read_encoders()
 
-        encoderL = a_star.read_encoders[0]
-        enocderR = a_star.read_encoders[1]
+        encoderL = encoders[0]
+        encoderR = encoders[1]
 
         dL = encoderL - oldencoderL
-        dR = enocderR - oldencoderR
+        dR = encoderR - oldencoderR
 
         error = dL - dR
         sSlave += error/kp
 
         oldencoderL = encoderL
-        oldencoderR = enocderR
+        oldencoderR = encoderR
 
         i = 1 + i
 
