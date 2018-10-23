@@ -42,7 +42,7 @@ def straight(speed):
         oldencoderL = encoderL
         oldencoderR = enocderR
 
-        i + 1 = i
+        i = 1 + i
 
         time.sleep(.05)
 
