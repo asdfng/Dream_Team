@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 import rospy
-import time
-import timeit
+# import time
+# import timeit
 import os
 import math
 from lms6 import LSM6
 from a_star import AStar
-from controltest.msg import odata
-
+# from controltest.msg import odata
+from geometry_msgs.msg import Pose2D, Twist
 #Initialize all objects
 a_star = AStar()
 imu = LSM6()
-data = Vector3()
+msg_pose = Pose2D()
+msg_vel = Twist()
 imu.enable()
 
 a_star.motors(-25,25)
@@ -83,13 +84,15 @@ def  talker():
 
     robot_name = rospy.get_param('robot_name')
     subject = rospy.get_param('subject')
-    pub = rospy.Publisher('/%s/%s/raw_po' % (subject,robot_name), Quaternion, queue_size=10)
+    pub_vel = rospy.Publisher('/%s/%s/pi_vel' % (subject,robot_name), Twist, queue_size=10)
+    pub_pose = rospy.Publisher('/%s/%s/pi_pose' % (subject,robot_name), Pose2D, queue_size=10)
     rospy.init_node('/%s/%s/Encoder_Orientation' % (subject,robot_name), anonymous=True)
     rate = rospy.Rate(100)
 
     while True:
 
-        start_time = timeit.default_timer()
+        # start_time = timeit.default_timer()
+        start_time = rospy.Time.now()
 
         Threshold = 0.125
 
@@ -140,18 +143,28 @@ def  talker():
         else:
             angle += dEncoder
 
-        data.angle = angle
-        data.cDisplacement = center_displacement
-        data.aVel = aVel
-        data.lvel = (center_displacement/sampleRate)*(1/3.2808)
+        # msg_pose.x = # distance covered in x direction
+        # msg_pose.y = # distance covered in y direction
+        msg_pose.theta = angle
+        msg_vel.angular.x = 0
+        msg_vel.angular.y = 0
+        msg_vel.angular.z = aVel
+        msg_vel.linear.x = (center_displacement/sampleRate)*(1/3.2808)
+        msg_vel.linear.y = 0
+        msg_vel.linear.z = 0
+        # data.angle = angle
+        # data.cDisplacement = center_displacement
+        # data.aVel = aVel
+        # data.lvel = (center_displacement/sampleRate)*(1/3.2808)
 
         print(angle_msg)
         print(sampleRate)
-        pub.publish(data)
+        pub_vel.publish(msg_vel)
+        pub_pose.publish(msg_pose)
         rate.sleep() #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
 
-        sampleRate = timeit.default_timer() - start_time
-
+        # sampleRate = timeit.default_timer() - start_time
+        sampleRate = rospy.Time.now() - start_time
 
 
 if __name__ == '__main__':
