@@ -1,29 +1,36 @@
 #!/usr/bin/env python
 import rospy, roslib, numpy, math, tf_conversions, tf2_ros, tf2_msgs, time, os
-from a_star import AStar
-from lms6 import LSM6
-from geometry_msgs.msg import PoseStamped, Twist, Quaternion, TransformStamped
+from geometry_msgs.msg import Pose2D, Twist, Quaternion, TransformStamped
 from nav_msgs.msg import Odometry
 
 class OdomCalc:
     def __init__(self):
-        # Initialize the times
-        self.current_time = rospy.Time.now()
-        self.last_time = rospy.Time.now()
-
         # Boolean to flag whether it's starting from initial coordinates or not
         self.initial = True
-        self.center_displacement = 0.0
-
+        self.grabbed_vel = False
+        self.grabbed_pose = False
+        self.odom_quat = Quaternion()
         # Grabs the subject name (e.g. red_circle, blue_square, etc) from the parameter server in the launch file
         self.subject = rospy.get_param('subject')
         # Grabs the robot name (e.g. romi_pink, romi_red, romi_white) from the parameter server in the launch file.
         self.robot_name = rospy.get_param('robot_name')
         # Initializes publisher to odom topic
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
+        rospy.Subscriber('/%s/%s/pi_vel' % (self.subject, self.robot_name), Twist, self.velCallback)
+        rospy.Subscriber('/%s/%s/pi_pose' % (self.subject, self.robot_name), Twist, self.poseCallback)
         self.new_x = 0.0
         self.new_y = 0.0
+        self.vel = Twist()
+        self.pose2D = Pose2D()
         self.rate = rospy.Rate(10)
+
+    def velCallback(self, vel):
+        self.vel = vel
+        self.grabbed_vel = True
+
+    def poseCallback(self, pose):
+        self.pose2D = pose
+        self.grabbed_pose = True
 
     def position_calculator(self,initial_x_coordinate, initial_y_coordinate, displacement_of_center, orientation_used):
         x_pose_change = displacement_of_center*math.cos(math.radians(orientation_used))
@@ -93,21 +100,22 @@ class OdomCalc:
         odom.header.frame_id = 'odom_%s' % self.robot_name
 
         self.current_time = rospy.Time.now();
-        dt = self.current_time-self.last_time
-        vx = self.center_displacement/dt
-        vth = (self.theta_new - self.theta_initial)/(self.theta_new_time - self.theta_initial_time)
+        # dt = self.current_time-self.last_time
+        # vx = self.center_displacement/dt
+        # vth = (self.theta_new - self.theta_initial)/(self.theta_new_time - self.theta_initial_time)
         odom.pose.pose.position.x = self.new_x
         odom.pose.pose.position.y = self.new_y
         odom.pose.pose.position.z = 0
-        odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+
+        th = self.pose2D.theta
+        self.odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
         odom.pose.pose.orientation = Quaternion(*self.odom_quat)
 
         odom.child_frame_id = 'base_link_%s' % self.robot_name
-        odom.twist.twist.linear.x = vx
-        odom.twist.twist.linear.y = 0
-        odom.twist.twist.angular.z = vth
+        odom.twist.twist.linear.x = self.vel.linear.x
+        odom.twist.twist.linear.y = self.vel.linear.y
+        odom.twist.twist.angular.z = self.vel.angular.z
 
         self.pub_odom.publish(odom)
-        self.last_time = self.current_time
         self.grabbed_pose = False
         self.grabbed_vel = False
