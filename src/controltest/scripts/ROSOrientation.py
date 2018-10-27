@@ -143,8 +143,10 @@ def  talker():
         else:
             angle += dEncoder
 
-        # msg_pose.x = # distance covered in x direction
-        # msg_pose.y = # distance covered in y direction
+        # Note: This is NOT the displacement in just the x direction, it's
+        # actually the magnitude of the center displacement. The x and y
+        # displacements are found in the odom calculator instead.
+        msg_pose.x = center_displacement
         msg_pose.theta = angle
         msg_vel.angular.x = 0
         msg_vel.angular.y = 0

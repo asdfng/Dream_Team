@@ -10,6 +10,7 @@ class OdomCalc:
         self.grabbed_vel = False
         self.grabbed_pose = False
         self.odom_quat = Quaternion()
+        self.center_displacement = 0.0
         # Grabs the subject name (e.g. red_circle, blue_square, etc) from the parameter server in the launch file
         self.subject = rospy.get_param('subject')
         # Grabs the robot name (e.g. romi_pink, romi_red, romi_white) from the parameter server in the launch file.
@@ -30,6 +31,7 @@ class OdomCalc:
 
     def poseCallback(self, pose):
         self.pose2D = pose
+        self.center_displacement = self.pose2D.x
         self.grabbed_pose = True
 
     def position_calculator(self,initial_x_coordinate, initial_y_coordinate, displacement_of_center, orientation_used):
