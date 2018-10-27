@@ -19,6 +19,12 @@
      <param
           name = "robot_name"
           value = "$(arg robot_name)"/>
+     <param
+          name = "/$(arg robot_name)_first_pose_x"
+          value = "0"/>
+     <param
+          name = "/$(arg robot_name)_first_pose_y"
+          value = "0"/>
      <!-- Start up the robot state publisher for all the links in the URDF -->
      <!-- <node
           pkg    = "robot_state_publisher"

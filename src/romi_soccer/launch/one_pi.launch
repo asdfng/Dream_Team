@@ -1,0 +1,20 @@
+<launch>
+     <arg name = "team" />
+     <arg name = "shape" />
+     <arg name = "color" />
+     <param
+          name = "subject"
+          value= "$(arg team)_$(arg shape)"/>
+     <param
+          name = "robot_name"
+          value = "romi_$(arg color)"/>
+     <node
+          name = "orientation_node"
+          pkg  = "controltest"
+          type = "ROSOrientation.py"/>
+
+     <node
+          name = "base_controller"
+          pkg  = "controltest"
+          type = "basecontroller.py"/>
+</launch>

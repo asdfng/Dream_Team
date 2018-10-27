@@ -52,7 +52,7 @@ class RomiPoser:
     def poseCallback(self,data):
         u = data.pose.position.x
         v = data.pose.position.y
-        if (self.grabbed_mat):
+        if (self.grabbed):
             # Initializes an empty PoseStamped object
             new_pose = PoseStamped()
             new_pose.header.frame_id = 'odom_%s' % self.robot_name
@@ -62,8 +62,8 @@ class RomiPoser:
             new_pose.pose.position.z = 0
             self.pub.publish(new_pose)
             if (self.first):
-                rospy.set_param_raw('/%s_first_pose_x' % self.robot_name, new_pose.pose.position.x)
-                rospy.set_param_raw('/%s_first_pose_y' % self.robot_name, new_pose.pose.position.y)
+                rospy.set_param('/%s_first_pose_x' % self.robot_name, '%s' % new_pose.pose.position.x)
+                rospy.set_param('/%s_first_pose_y' % self.robot_name, '%s' % new_pose.pose.position.y)
                 self.first = False
             self.tf_broadcaster(new_pose)
 

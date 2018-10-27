@@ -9,7 +9,6 @@ class OdomCalc:
         self.initial = True
         self.grabbed_vel = False
         self.grabbed_pose = False
-        self.odom_quat = Quaternion()
         self.center_displacement = 0.0
         # Grabs the subject name (e.g. red_circle, blue_square, etc) from the parameter server in the launch file
         self.subject = rospy.get_param('subject')
@@ -24,6 +23,9 @@ class OdomCalc:
         self.vel = Twist()
         self.pose2D = Pose2D()
         self.rate = rospy.Rate(10)
+        while not rospy.is_shutdown():
+            self.broadcaster()
+            self.rate.sleep()
 
     def velCallback(self, vel):
         self.vel = vel
@@ -64,60 +66,60 @@ class OdomCalc:
             # Store the parameters in x and y
             first_x = rospy.get_param('/%s_first_pose_x' % self.robot_name)
             first_y = rospy.get_param('/%s_first_pose_y' % self.robot_name)
-            x = first_x
-            y = first_y
-            try:
-                # Delete the parameters since we don't need them anymore
-                rospy.delete_param('/%s_first_pose_x')
-                rospy.delete_param('/%s_first_pose_y')
-                # Mark that we've gone through the first time now
-                self.initial = False
-            except KeyError:
-                rospy.loginfo('No initial coordinates to delete.')
+            if (first_x and first_y):
+                x = first_x
+                y = first_y
+                try:
+                    # Delete the parameters since we don't need them anymore
+                    rospy.delete_param('/%s_first_pose_x' % self.robot_name)
+                    rospy.delete_param('/%s_first_pose_y' % self.robot_name)
+                    # Mark that we've gone through the first time now
+                    self.initial = False
+                except KeyError:
+                    rospy.loginfo('No initial coordinates to delete.')
+            else:
+                self.initial = True
         else:
             # Store the last value before we change them
             x = self.new_x
             y = self.new_y
-        # Noah make sure it latches onto the old coordinates when it's not first booting up
+            # Initializes empty TransformStamped object
+            odom_trans = TransformStamped()
+            # Stamps the transform with the current time
+            odom_trans.header.stamp = rospy.Time.now()
+            # Sets the frame ID of the transform to the odom frame
+            odom_trans.header.frame_id = 'odom_%s' % self.robot_name
+            # Sets the child frame ID to base_link
+            odom_trans.child_frame_id = 'base_link_%s' % self.robot_name
 
-        # Initializes empty TransformStamped object
-        odom_trans = TransformStamped()
-        # Stamps the transform with the current time
-        odom_trans.header.stamp = self.current_time
-        # Sets the frame ID of the transform to the odom frame
-        odom_trans.header.frame_id = 'odom_%s' % self.robot_name
-        # Sets the child frame ID to base_link
-        odom_trans.child_frame_id = 'base_link_%s' % self.robot_name
+            th = self.pose2D.theta
+            odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+            self.new_x, self.new_y = self.position_calculator(x, y, self.center_displacement, th)
+            odom_trans.transform.translation.x = self.new_x
+            odom_trans.transform.translation.y = self.new_y
+            odom_trans.transform.translation.z = 0
+            odom_trans.transform.rotation = Quaternion(*odom_quat)
 
-        self.new_x, self.new_y = self.position_calculator(x, y, self.center_displacement, self.angle)
-        odom_trans.transform.translation.x = self.new_x
-        odom_trans.transform.translation.y = self.new_y
-        odom_trans.transform.translation.z = 0
-        odom_trans.transform.rotation = Quaternion(*self.odom_quat)
+            br = tf2_ros.TransformBroadcaster()
+            br.sendTransform(odom_trans)
+            odom = Odometry()
+            odom.header.stamp = rospy.Time.now()
+            odom.header.frame_id = 'odom_%s' % self.robot_name
 
-        br = tf2_ros.TransformBroadcaster()
-        br.sendTransform(odom_trans)
-        odom = Odometry()
-        odom.header.stamp = self.current_time
-        odom.header.frame_id = 'odom_%s' % self.robot_name
+            # dt = self.current_time-self.last_time
+            # vx = self.center_displacement/dt
+            # vth = (self.theta_new - self.theta_initial)/(self.theta_new_time - self.theta_initial_time)
+            odom.pose.pose.position.x = self.new_x
+            odom.pose.pose.position.y = self.new_y
+            odom.pose.pose.position.z = 0
 
-        self.current_time = rospy.Time.now();
-        # dt = self.current_time-self.last_time
-        # vx = self.center_displacement/dt
-        # vth = (self.theta_new - self.theta_initial)/(self.theta_new_time - self.theta_initial_time)
-        odom.pose.pose.position.x = self.new_x
-        odom.pose.pose.position.y = self.new_y
-        odom.pose.pose.position.z = 0
+            odom.pose.pose.orientation = Quaternion(*odom_quat)
 
-        th = self.pose2D.theta
-        self.odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
-        odom.pose.pose.orientation = Quaternion(*self.odom_quat)
+            odom.child_frame_id = 'base_link_%s' % self.robot_name
+            odom.twist.twist.linear.x = self.vel.linear.x
+            odom.twist.twist.linear.y = self.vel.linear.y
+            odom.twist.twist.angular.z = self.vel.angular.z
 
-        odom.child_frame_id = 'base_link_%s' % self.robot_name
-        odom.twist.twist.linear.x = self.vel.linear.x
-        odom.twist.twist.linear.y = self.vel.linear.y
-        odom.twist.twist.angular.z = self.vel.angular.z
-
-        self.pub_odom.publish(odom)
-        self.grabbed_pose = False
-        self.grabbed_vel = False
+            self.pub_odom.publish(odom)
+            self.grabbed_pose = False
+            self.grabbed_vel = False
