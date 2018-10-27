@@ -15,7 +15,7 @@ msg_pose = Pose2D()
 msg_vel = Twist()
 imu.enable()
 
-a_star.motors(-25,25)
+#a_star.motors(-25,25)
 
 #Starting values and data for the imu
 accelSensitivity = 0.061
