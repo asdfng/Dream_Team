@@ -42,6 +42,8 @@ class OdomCalc:
         self.robot_name = rospy.get_param('robot_name')
         # Initializes publisher to odom topic
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
+        self.new_x = 0.0
+        self.new_y = 0.0
         self.talker()
 
     def displacement(self,right_encoder,left_encoder): #velocity: ft/s, position:
@@ -168,8 +170,10 @@ class OdomCalc:
                 rate.sleep()
                 continue
             # Store the parameters in x and y
-            x = rospy.get_param('/%s_first_pose_x' % self.robot_name)
-            y = rospy.get_param('/%s_first_pose_y' % self.robot_name)
+            first_x = rospy.get_param('/%s_first_pose_x' % self.robot_name)
+            first_y = rospy.get_param('/%s_first_pose_y' % self.robot_name)
+            x = first_x
+            y = first_y
             try:
                 # Delete the parameters since we don't need them anymore
                 rospy.delete_param('/%s_first_pose_x')
@@ -178,6 +182,10 @@ class OdomCalc:
                 self.initial = False
             except KeyError:
                 rospy.loginfo('No initial coordinates to delete.')
+        else:
+            # Store the last value before we change them
+            x = self.new_x
+            y = self.new_y
         # Noah make sure it latches onto the old coordinates when it's not first booting up
 
         # Initializes empty TransformStamped object
@@ -189,10 +197,9 @@ class OdomCalc:
         # Sets the child frame ID to base_link
         odom_trans.child_frame_id = 'base_link_%s' % self.robot_name
 
-        # Noah, please put math here to find the calculated new pose of the rover!!
-        new_x, new_y = self.position_calculator(x, y, self.center_displacement, self.angle)
-        odom_trans.transform.translation.x = new_x
-        odom_trans.transform.translation.y = new_y
+        self.new_x, self.new_y = self.position_calculator(x, y, self.center_displacement, self.angle)
+        odom_trans.transform.translation.x = self.new_x
+        odom_trans.transform.translation.y = self.new_y
         odom_trans.transform.translation.z = 0
         odom_trans.transform.rotation = Quaternion(*self.odom_quat)
 
@@ -206,8 +213,8 @@ class OdomCalc:
         dt = self.current_time-self.last_time
         vx = self.center_displacement/dt
         vth = (self.theta_new - self.theta_initial)/(self.theta_new_time - self.theta_initial_time)
-        odom.pose.pose.position.x = new_x
-        odom.pose.pose.position.y = new_y
+        odom.pose.pose.position.x = self.new_x
+        odom.pose.pose.position.y = self.new_y
         odom.pose.pose.position.z = 0
         # odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
         odom.pose.pose.orientation = Quaternion(*self.odom_quat)
