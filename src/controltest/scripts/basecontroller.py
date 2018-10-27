@@ -89,9 +89,11 @@ def callback(msg):
 #Setting up the subscriber node
 def listener():
     rospy.init_node('motor_control', anonymous=True)
-    team_name = rospy.get_param('~team')
-    shape_name = rospy.get_param('~shape')
-    rospy.Subscriber("%s/%s/cmd_vel" % (team_name, shape_name), Twist, callback)
+    # team_name = rospy.get_param('team')
+    # shape_name = rospy.get_param('shape')
+    subject = rospy.get_param('subject')
+    robot_name = rospy.get_param('robot_name')
+    rospy.Subscriber("%s/%s/romi_controller/cmd_vel" % (subject, robot_name), Twist, callback)
     rospy.spin()
 
 if __name__ == '__main__':

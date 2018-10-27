@@ -86,7 +86,7 @@ def  talker():
     subject = rospy.get_param('subject')
     pub_vel = rospy.Publisher('/%s/%s/pi_vel' % (subject,robot_name), Twist, queue_size=10)
     pub_pose = rospy.Publisher('/%s/%s/pi_pose' % (subject,robot_name), Pose2D, queue_size=10)
-    rospy.init_node('/%s/%s/Encoder_Orientation' % (subject,robot_name), anonymous=True)
+    rospy.init_node('Encoder_Orientation', anonymous=True)
     rate = rospy.Rate(100)
 
     while True:
@@ -111,7 +111,7 @@ def  talker():
         oldleft_encoder = left_encoder
 
         angle_Encoder, center_displacement = displacement(passRight,passLeft)
-        print('Encoder: %s' % angle_Encoder)
+#        print('Encoder: %s' % angle_Encoder)
 
         #Find the offset of the gyro and remove it
         while i<=10:
@@ -122,21 +122,21 @@ def  talker():
 
         offsetGZ = total/10
 
-        angle_Gyro_unbounded += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
+        angle_Gyro_unbounded += (imu.g.z*gyroSensitivity-offsetGZ)*float(sampleRate)
         angle_Gyro = angle_Gyro_unbounded % 360
-        print('gyro: %s' % angle_Gyro)
+ #       print('gyro: %s' % angle_Gyro)
 
         dGyro = angle_Gyro - oldangle_Gyro
-        print('Delta gyro: %s' % dGyro)
+  #      print('Delta gyro: %s' % dGyro)
         dEncoder = angle_Encoder - oldangle_Encoder
-        print('Delta Encoder: %s' % dEncoder)
+   #     print('Delta Encoder: %s' % dEncoder)
 
         aVel = math.radians(dEncoder)/sampleRate
 
         oldangle_Encoder = angle_Encoder
-        print('old encoder: %s' % oldangle_Encoder)
+    #    print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro
-        print('old gyro: %s' % oldangle_Gyro)
+     #   print('old gyro: %s' % oldangle_Gyro)
 
         if abs(dGyro - dEncoder) < Threshold:
             angle += dGyro
@@ -159,15 +159,15 @@ def  talker():
         # data.aVel = aVel
         # data.lvel = (center_displacement/sampleRate)*(1/3.2808)
 
-        print(angle_msg)
-        print(sampleRate)
+      #  print(angle_msg)
+       # print(sampleRate)
         pub_vel.publish(msg_vel)
         pub_pose.publish(msg_pose)
         rate.sleep() #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
 
         # sampleRate = timeit.default_timer() - start_time
-        sampleRate = rospy.Time.now() - start_time
-
+        sampleRate1 = rospy.Time.now() - start_time
+	sampleRate = sampleRate1.to_sec()
 
 if __name__ == '__main__':
     try:
