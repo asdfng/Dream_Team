@@ -147,7 +147,7 @@ def  talker():
 
         print(angle_msg)
         print(sampleRate)
-        pub.publish()
+        pub.publish(data)
         rate.sleep() #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
 
         sampleRate = timeit.default_timer() - start_time
