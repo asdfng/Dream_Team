@@ -10,28 +10,7 @@ class OdomCalc:
         # Initialize the times
         self.current_time = rospy.Time.now()
         self.last_time = rospy.Time.now()
-        #Initialize all objects
-        self.a_star = AStar()
-        self.imu = LSM6()
-        self.imu.enable()
-        self.a_star.motors(-25,25)
 
-        #Starting values and data for the imu
-        self.accelSensitivity = 0.061
-        self.accelRatio = 0.001 # Converting from milligrams to gram
-        self.gyroSensitivity = 0.035
-        self.sampleRate = .1 #100Hz
-        self.odom_quat = Quaternion()
-        # self.i = 0
-        self.angle = 0.0
-        self.angle_Gyro_unbounded = 0.0
-        self.total = 0.0
-
-        #Starting values for the encoders
-        self.theta_initial = 0.0
-        self.theta_initial_time = rospy.Time.now()
-        self.theta_new_time = rospy.Time.now()
-        self.theta_new = 0.0
         # Boolean to flag whether it's starting from initial coordinates or not
         self.initial = True
         self.center_displacement = 0.0
@@ -44,40 +23,7 @@ class OdomCalc:
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
         self.new_x = 0.0
         self.new_y = 0.0
-        self.talker()
-
-    def displacement(self,right_encoder,left_encoder): #velocity: ft/s, position:
-        pi = math.pi
-        dist_between_wheels = 0.4791667
-        self.theta_new_time = rospy.Time.now()
-        #converts encoder counts to rotations
-        right_wheel_rotations = right_encoder/float(1440)
-        left_wheel_rotations = left_encoder/float(1440)
-
-        #calculates displacement of right, left and center wheels
-        right_displacement = right_wheel_rotations*float(2)*pi*.114829
-        left_displacement = left_wheel_rotations*float(2)*pi*.114829
-        self.center_displacement = (right_displacement + left_displacement)/float(2)
-        #calculates the change of the angle by a turn
-        alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels
-
-        #converts to degrees
-        alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi
-
-        #appends initial theta to new theta
-        theta_new_unbounded = self.theta_initial + alpha_left_turn_degrees
-        self.theta_new = theta_new_unbounded % 360
-        self.theta_initial = self.theta_new
-        self.theta_initial_time = self.theta_new_time;
-
-        return theta_new, self.center_displacement
-
-    def get_odom_quat(self,dGyro,dEncoder,Threshold):
-        if abs(dGyro - dEncoder) < Threshold:
-            self.angle += dGyro
-        else:
-            self.angle += dEncoder
-        self.odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,self.angle)
+        self.rate = rospy.Rate(10)
 
     def position_calculator(self,initial_x_coordinate, initial_y_coordinate, displacement_of_center, orientation_used):
         x_pose_change = displacement_of_center*math.cos(math.radians(orientation_used))
@@ -85,69 +31,6 @@ class OdomCalc:
         new_position_x = x_pose_change + initial_x_coordinate
         new_position_y = y_pose_change + initial_y_coordinate
         return new_position_x, new_position_y
-
-    def talker(self):
-        encoders = self.a_star.read_encoders()
-        oldright_encoder = encoders[1]
-        oldleft_encoder = encoders[0]
-        oldangle_Encoder = 0.0
-        oldangle_Gyro = 0.0
-        self.last_time = rospy.Time.now()
-
-        rate = rospy.Rate(100)
-        while not rospy.is_shutdown():
-            # start_time = timeit.default_timer()
-            start_time = rospy.Time.now()
-            Threshold = 0.125
-            #Read the encoder and imu
-            encoders = self.a_star.read_encoders()
-            self.imu.read()
-            #print(encoders[0], encoders[1])
-            right_encoder = encoders[1]
-            left_encoder = encoders[0]
-
-            passRight = right_encoder - oldright_encoder
-            passLeft = left_encoder - oldleft_encoder
-
-            oldright_encoder = right_encoder
-            oldleft_encoder = left_encoder
-
-            self.angle_Encoder,self.center_displacement = self.displacement(passRight,passLeft)
-
-            #print('Encoder: %s' % angle_Encoder)
-
-            #Find the offset of the gyro and remove it
-            i=10
-            while i<=10:
-                self.imu.read()
-                self.total += self.imu.g.z
-                i += 10
-
-            offsetGZ = self.total/10
-
-            self.angle_Gyro_unbounded += (self.imu.g.z*self.gyroSensitivity-offsetGZ)*self.sampleRate
-            angle_Gyro = self.angle_Gyro_unbounded % 360
-            rospy.loginfo('gyro: %s' % angle_Gyro)
-
-            dGyro = angle_Gyro - oldangle_Gyro
-            rospy.loginfo('Delta gyro: %s' % dGyro)
-            dEncoder = angle_Encoder - oldangle_Encoder
-            rospy.loginfo('Delta Encoder: %s' % dEncoder)
-
-            oldangle_Encoder = angle_Encoder
-            rospy.loginfo('old encoder: %s' % oldangle_Encoder)
-            oldangle_Gyro = angle_Gyro
-            rospy.loginfo('old gyro: %s' % oldangle_Gyro)
-            self.get_odom_quat(dGyro,dEncoder,Threshold)
-            angle_msg = Quaternion(*self.odom_quat)
-
-            # rospy.loginfo(angle_msg)
-            rospy.loginfo(self.sampleRate)
-            rate.sleep() #Make sure this is equal to the output of the sample rate, DO NOT USE THE VARIABLE
-
-            # self.sampleRate = timeit.default_timer() - start_time
-            self.sampleRate = rospy.Time.now() - start_time
-            self.broadcaster()
 
     def broadcaster(self):
         # Noah, I don't know how you figured out where the new pose of the rover is,
@@ -167,7 +50,7 @@ class OdomCalc:
         if (self.initial):
             # Keep looking for the parameter until it's there
             while not rospy.has_param('/%s_first_pose_x' % self.robot_name):
-                rate.sleep()
+                self.rate.sleep()
                 continue
             # Store the parameters in x and y
             first_x = rospy.get_param('/%s_first_pose_x' % self.robot_name)
@@ -216,7 +99,7 @@ class OdomCalc:
         odom.pose.pose.position.x = self.new_x
         odom.pose.pose.position.y = self.new_y
         odom.pose.pose.position.z = 0
-        # odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
+        odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
         odom.pose.pose.orientation = Quaternion(*self.odom_quat)
 
         odom.child_frame_id = 'base_link_%s' % self.robot_name
