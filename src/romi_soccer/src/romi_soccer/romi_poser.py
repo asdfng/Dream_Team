@@ -61,9 +61,10 @@ class RomiPoser:
             new_pose.pose.position.y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
             new_pose.pose.position.z = 0
             self.pub.publish(new_pose)
-            if (first):
+            if (self.first):
                 rospy.set_param_raw('/%s_first_pose_x' % self.robot_name, new_pose.pose.position.x)
                 rospy.set_param_raw('/%s_first_pose_y' % self.robot_name, new_pose.pose.position.y)
+                self.first = False
             self.tf_broadcaster(new_pose)
 
     def tf_broadcaster(self,new_pose):
