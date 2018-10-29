@@ -17,7 +17,7 @@ class OdomCalc:
         # Initializes publisher to odom topic
         self.pub_odom = rospy.Publisher('/%s/%s/romi_controller/odom' % (self.subject,self.robot_name),Odometry,queue_size=10)
         rospy.Subscriber('/%s/%s/pi_vel' % (self.subject, self.robot_name), Twist, self.velCallback)
-        rospy.Subscriber('/%s/%s/pi_pose' % (self.subject, self.robot_name), Twist, self.poseCallback)
+        rospy.Subscriber('/%s/%s/pi_pose' % (self.subject, self.robot_name), Pose2D, self.poseCallback)
         self.new_x = 0.0
         self.new_y = 0.0
         self.vel = Twist()
