@@ -13,6 +13,14 @@
           <arg name="subject_robot" value="$(arg romi_circle)"/>
      </include>
 
+     <!-- Romi Circle Sensor Frames -->
+     <node
+          name="$(arg romi_circle)_sensor_tf"
+          pkg="tf2_ros"
+          type="static_transform_publisher"
+          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) sensor_frame_$(arg romi_circle)" />
+
+
      <!-- Team - Different -->
      <!-- Shape - Square -->
      <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">

@@ -3,6 +3,13 @@
      <arg name='romi_circle'/>
      <arg name='romi_square'/>
      <arg name='romi_triangle'/>
+     <!-- Romi Square Sensor Frames -->
+     <node
+          name="$(arg romi_square)_sensor_tf"
+          pkg="tf2_ros"
+          type="static_transform_publisher"
+          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) sensor_frame_$(arg romi_square)" />
+
      <!-- Team - Different -->
      <!-- Shape - Circle -->
      <include file="$(find romi_soccer)/launch/fake_sensor/one_fake_sensor.launch">

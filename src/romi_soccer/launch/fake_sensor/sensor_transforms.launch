@@ -5,98 +5,22 @@
 
      <!-- Romi Circle Sensor Frames -->
      <node
-          name="$(arg romi_circle)_sensor_tf_0"
+          name="$(arg romi_circle)_sensor_tf"
           pkg="tf2_ros"
           type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) $(arg romi_circle)_sensor_frame_0" />
-     <node
-          name="$(arg romi_circle)_sensor_tf_1"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) $(arg romi_circle)_sensor_frame_1" />
-     <node
-          name="$(arg romi_circle)_sensor_tf_2"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) $(arg romi_circle)_sensor_frame_2" />
-     <node
-          name="$(arg romi_circle)_sensor_tf_3"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) $(arg romi_circle)_sensor_frame_3" />
-     <node
-          name="$(arg romi_circle)_sensor_tf_4"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) $(arg romi_circle)_sensor_frame_4" />
-     <node
-          name="$(arg romi_circle)_sensor_tf_5"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) $(arg romi_circle)_sensor_frame_5" />
-
+          args="0 0 0 0 0 0 1 base_link_$(arg romi_circle) sensor_frame_$(arg romi_circle)" />
      <!-- Romi Square Sensor Frames -->
      <node
-          name="$(arg romi_square)_sensor_tf_0"
+          name="$(arg romi_square)_sensor_tf"
           pkg="tf2_ros"
           type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) $(arg romi_square)_sensor_frame_0" />
-     <node
-          name="$(arg romi_square)_sensor_tf_1"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) $(arg romi_square)_sensor_frame_1" />
-     <node
-          name="$(arg romi_square)_sensor_tf_2"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) $(arg romi_square)_sensor_frame_2" />
-     <node
-          name="$(arg romi_square)_sensor_tf_3"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) $(arg romi_square)_sensor_frame_3" />
-     <node
-          name="$(arg romi_square)_sensor_tf_4"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) $(arg romi_square)_sensor_frame_4" />
-     <node
-          name="$(arg romi_square)_sensor_tf_5"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) $(arg romi_square)_sensor_frame_5" />
+          args="0 0 0 0 0 0 1 base_link_$(arg romi_square) sensor_frame_$(arg romi_square)" />
 
      <!-- Romi Triangle Sensor Frames -->
      <node
-          name="$(arg romi_triangle)_sensor_tf_0"
+          name="$(arg romi_triangle)_sensor_tf"
           pkg="tf2_ros"
           type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) $(arg romi_triangle)_sensor_frame_0" />
-     <node
-          name="$(arg romi_triangle)_sensor_tf_1"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) $(arg romi_triangle)_sensor_frame_1" />
-     <node
-          name="$(arg romi_triangle)_sensor_tf_2"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) $(arg romi_triangle)_sensor_frame_2" />
-     <node
-          name="$(arg romi_triangle)_sensor_tf_3"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) $(arg romi_triangle)_sensor_frame_3" />
-     <node
-          name="$(arg romi_triangle)_sensor_tf_4"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) $(arg romi_triangle)_sensor_frame_4" />
-     <node
-          name="$(arg romi_triangle)_sensor_tf_5"
-          pkg="tf2_ros"
-          type="static_transform_publisher"
-          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) $(arg romi_triangle)_sensor_frame_5" />
+          args="0 0 0 0 0 0 1 base_link_$(arg romi_triangle) sensor_frame_$(arg romi_triangle)" />
 
 </launch>

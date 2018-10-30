@@ -3,9 +3,9 @@
      <arg name = "use_sim_time" value = "true"/>
      <arg name = "home_team" value = "red"/>
      <arg name = "visiting_team" value = "blue"/>
-     <arg name = "romi_circle" value="romi_pink"/>
-     <arg name = "romi_square" value="romi_white"/>
-     <arg name = "romi_triangle" value="romi_red"/>
+     <arg name = "romi_circle"/>
+     <arg name = "romi_square"/>
+     <arg name = "romi_triangle"/>
 
      <include file="$(find romi_soccer)/launch/team_tracker.launch">
           <arg name="home_team" value="$(arg home_team)"/>

@@ -12,7 +12,7 @@
      <arg name="romi_triangle"/>
 
      <group ns="/$(arg team)_circle/$(arg romi_circle)">
-          <param name="tf_prefix" value="$(arg romi_circle)_tf" />
+          <!-- <param name="tf_prefix" value="$(arg romi_circle)_tf" /> -->
           <include file="$(find romi_soccer)/launch/one_romi.launch">
                <arg name="init_pose" value="-x 1 -y 1 -z 0"/>
                <arg name="robot_name" value="$(arg romi_circle)"/>
@@ -25,7 +25,7 @@
      </group>
 
      <group ns="/$(arg team)_triangle/$(arg romi_triangle)">
-          <param name="tf_prefix" value="$(arg romi_triangle)_tf" />
+          <!-- <param name="tf_prefix" value="$(arg romi_triangle)_tf" /> -->
           <include file="$(find romi_soccer)/launch/one_romi.launch">
                <arg name="init_pose" value="-x -1 -y 1 -z 0"/>
                <arg name="robot_name" value="$(arg romi_triangle)"/>
@@ -38,7 +38,7 @@
      </group>
 
      <group ns="/$(arg team)_square/$(arg romi_square)">
-          <param name="tf_prefix" value="$(arg romi_square)_tf" />
+          <!-- <param name="tf_prefix" value="$(arg romi_square)_tf" /> -->
           <include file="$(find romi_soccer)/launch/one_romi.launch">
                <arg name="init_pose" value="-x 0 -y 1 -z 0"/>
                <arg name="robot_name" value="$(arg romi_square)"/>

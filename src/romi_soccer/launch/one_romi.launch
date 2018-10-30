@@ -46,6 +46,12 @@
          <arg name="romi_square" value="$(arg romi_square)"/>
          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
     </include>
+
+    <!-- Start up move_base.launch -->
+    <include file="$(find romi_soccer)/launch/move_base.launch">
+         <arg name="robot" value="$(arg robot_name)"/>
+    </include>
+    
     <!-- Start the odom calculator -->
     <node
          name="odom_node"

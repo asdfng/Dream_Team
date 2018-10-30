@@ -78,30 +78,31 @@ class RomiPoser:
             try:
                 # Look for the odom->base_link transform for the robot specified in the parameter server
                 starscream = tfBuffer.lookup_transform('odom_%s' % self.robot_name, 'base_link_%s' % self.robot_name, rospy.Time())
+                # Out of the loop, we have our transform now.
+                # Initializes a tf2 broadcaster for our map->odom
+                br = tf2_ros.TransformBroadcaster()
+                # Initializes an empty TransformStamped object
+                opt_prime = TransformStamped()
+                # Sets the frame ID of the transform to the map frame
+                opt_prime.header.frame_id = "map"
+                # Stamps the transform with the current time
+                opt_prime.header.stamp = rospy.Time.now()
+                # Sets the child frame ID to odom, set in the poseCallback
+                opt_prime.child_frame_id = new_pose.header.frame_id
+                # Fill in the transform with the info we have.
+                # The entire tf is map->odom->base_link, we're making the map->base_link by doing map->odom since
+                # we can't do map->base_link directly because no child frame can have more than one parent frame.
+                # So we find map->odom instead by finding what would have been map->base_link and then subtracting
+                # the tf from odom->base_link.
+                opt_prime.transform.translation.x = new_pose.pose.position.x - starscream.transform.translation.x
+                opt_prime.transform.translation.y = new_pose.pose.position.y - starscream.transform.translation.y
+                opt_prime.transform.translation.z = new_pose.pose.position.z - starscream.transform.translation.z
+                # The JSON orientation sucks anyway so don't even bother. Just use the same rotation as odometry.
+                opt_prime.transform.rotation = starscream.transform.rotation
+                # Broadcast the transform.
+                br.sendTransform(opt_prime)
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
                 # Couldn't find the transform, try again
                 rate.sleep()
+                rospy.loginfo("Couldn't find transform, trying again.")
                 continue
-        # Out of the loop, we have our transform now.
-        # Initializes a tf2 broadcaster for our map->odom
-        br = tf2_ros.TransformBroadcaster()
-        # Initializes an empty TransformStamped object
-        opt_prime = TransformStamped()
-        # Sets the frame ID of the transform to the map frame
-        opt_prime.header.frame_id = "map"
-        # Stamps the transform with the current time
-        opt_prime.header.stamp = rospy.Time.now()
-        # Sets the child frame ID to odom, set in the poseCallback
-        opt_prime.child_frame_id = new_pose.header.frame_id
-        # Fill in the transform with the info we have.
-        # The entire tf is map->odom->base_link, we're making the map->base_link by doing map->odom since
-        # we can't do map->base_link directly because no child frame can have more than one parent frame.
-        # So we find map->odom instead by finding what would have been map->base_link and then subtracting
-        # the tf from odom->base_link.
-        opt_prime.transform.translation.x = new_pose.pose.position.x - starscream.transform.translaton.x
-        opt_prime.transform.translation.y = new_pose.pose.position.y - starscream.transform.translaton.y
-        opt_prime.transform.translation.z = new_pose.pose.position.z - starscream.transform.translaton.z
-        # The JSON orientation sucks anyway so don't even bother. Just use the same rotation as odometry.
-        opt_prime.transform.rotation = starscream.transform.rotation
-        # Broadcast the transform.
-        br.sendTransform(opt_prime)

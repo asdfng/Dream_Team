@@ -1,0 +1,12 @@
+local_costmap:
+  global_frame: odom_romi_red
+  robot_base_frame: base_link_romi_red
+  update_frequency: 5.0
+  publish_frequency: 2.0
+  static_map: false
+  rolling_window: true #Tutorial says to set True for no
+                        #map server, but we have multiple robots?
+                        #If static map is false. This must be true.
+  width: 4.8768 #meters
+  height: 2.4384 #meters
+  resolution: 0.1524 #meters/cell

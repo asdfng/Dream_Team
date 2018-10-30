@@ -1,0 +1,35 @@
+<launch>
+     <master auto="start"/>
+     <arg name="robot"/>
+     <!-- Run the map server -->
+     <!-- <node
+          name="map_server"
+          pkg="map_server"
+          type="map_server"
+          args="$(find my_map_package)/my_map.pgm my_map_resolution"/> -->
+
+     <!--- Run AMCL -->
+     <include file="$(find amcl)/examples/amcl_omni.launch" />
+
+     <node
+          name="move_base"
+          pkg="move_base"
+          type="move_base"
+          respawn="false"
+          output="screen">
+          <rosparam
+               file="$(find romi_soccer)/config/$(arg robot)/costmap_common_params.yaml"
+               command="load" ns="global_costmap" />
+          <rosparam
+               file="$(find romi_soccer)/config/$(arg robot)/costmap_common_params.yaml"
+               command="load" ns="local_costmap" />
+          <rosparam
+               file="$(find romi_soccer)/config/$(arg robot)/local_costmap_params.yaml"
+               command="load" />
+          <rosparam
+               file="$(find romi_soccer)/config/$(arg robot)/global_costmap_params.yaml"
+               command="load" />
+          <rosparam
+               file="$(find romi_soccer)/config/$(arg robot)/base_local_planner_params.yaml" command="load" />
+     </node>
+</launch>
