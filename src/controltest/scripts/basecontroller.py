@@ -30,7 +30,10 @@ def straight(speed):
 
     while (i < 10):
         #set the motors with a starting value
-        a_star.motors(mLeft,sRight)
+        if (i==0):
+            a_star.motors(mLeft,sRight)
+
+
         encoders = a_star.read_encoders()
 
         encoderL = encoders[0]
@@ -47,6 +50,7 @@ def straight(speed):
         oldencoderL = encoderL
         oldencoderR = encoderR
 
+        a_star.motors(mLeft,sSlave)
         i = 1 + i
 
         time.sleep(.05)
