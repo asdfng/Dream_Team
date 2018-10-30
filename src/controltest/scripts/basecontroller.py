@@ -44,7 +44,7 @@ def straight(speed):
         error = dL - dR
         print(error)
 
-        sSlave -= error/kp
+        sSlave += error/kp
 
         oldencoderL = encoderL
         oldencoderR = encoderR
