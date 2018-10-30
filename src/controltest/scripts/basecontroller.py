@@ -17,7 +17,7 @@ def straight(speed):
     #Store the master speed into values 
     mLeft = speed
     sRight = speed
-    sSlave = 0
+    sSlave = sRight
 
     encoders = a_star.read_encoders()
     oldencoderL = encoders[0]
@@ -40,7 +40,8 @@ def straight(speed):
         dR = encoderR - oldencoderR
 
         error = dL - dR
-        sSlave += error/kp
+
+        sSlave -= error/kp
 
         oldencoderL = encoderL
         oldencoderR = encoderR
