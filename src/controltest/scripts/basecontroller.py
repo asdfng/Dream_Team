@@ -13,41 +13,41 @@ mTOft = 3.28084
 a_star = AStar()
 
 #Inspiration from robotc
-# def straight(speed):
-#     #Store the master speed into values 
-#     mLeft = speed
-#     sRight = speed
-#     sSlave = 0
+def straight(speed):
+    #Store the master speed into values 
+    mLeft = speed
+    sRight = speed
+    sSlave = 0
 
-#     encoders = a_star.read_encoders()
-#     oldencoderL = encoders[0]
-#     oldencoderR = encoders[1]
+    encoders = a_star.read_encoders()
+    oldencoderL = encoders[0]
+    oldencoderR = encoders[1]
 
-#     error = 0
-#     kp = 5 #proportionality constant used to adjust the feedback amount
+    error = 0
+    kp = 5 #proportionality constant used to adjust the feedback amount
 
-#     i = 0
+    i = 0
 
-#     while (i < 10):
-#         #set the motors with a starting value
-#         a_star.motors(mLeft,sRight)
-#         encoders = a_star.read_encoders()
+    while (i < 10):
+        #set the motors with a starting value
+        a_star.motors(mLeft,sRight)
+        encoders = a_star.read_encoders()
 
-#         encoderL = encoders[0]
-#         encoderR = encoders[1]
+        encoderL = encoders[0]
+        encoderR = encoders[1]
 
-#         dL = encoderL - oldencoderL
-#         dR = encoderR - oldencoderR
+        dL = encoderL - oldencoderL
+        dR = encoderR - oldencoderR
 
-#         error = dL - dR
-#         sSlave += error/kp
+        error = dL - dR
+        sSlave += error/kp
 
-#         oldencoderL = encoderL
-#         oldencoderR = encoderR
+        oldencoderL = encoderL
+        oldencoderR = encoderR
 
-#         i = 1 + i
+        i = 1 + i
 
-#         time.sleep(.05)
+        time.sleep(.05)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
@@ -81,10 +81,10 @@ def callback(msg):
     # print(spLeft)
     # print(spRight)
     
-    # if (spLeft==spRight):
-    #     straight(spLeft)
-    # else:
-    a_star.motors(spLeft,spRight)
+    if (spLeft==spRight):
+        straight(spLeft)
+    else:
+        a_star.motors(spLeft,spRight)
 
 #Setting up the subscriber node
 def listener():
