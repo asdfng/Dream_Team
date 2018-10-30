@@ -33,7 +33,6 @@ def straight(speed):
         if (i==0):
             a_star.motors(mLeft,sRight)
 
-
         encoders = a_star.read_encoders()
 
         encoderL = encoders[0]
