@@ -81,7 +81,7 @@ def callback(msg):
     # print(spLeft)
     # print(spRight)
     
-    if ((spLeft==spRight) && (spLeft != 0) && (spRight != 0):
+    if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0):
         straight(spLeft)
     else:
         a_star.motors(spLeft,spRight)
