@@ -24,7 +24,7 @@ def straight(speed):
     oldencoderR = encoders[1]
 
     error = 0
-    kp = 5  #proportionality constant used to adjust the feedback amount
+    kp = 3  #proportionality constant used to adjust the feedback amount
 
     i = 0
 
