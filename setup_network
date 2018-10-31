@@ -1,0 +1,10 @@
+#!/bin/bash
+echo What is the IP address on the PC?
+read pc_ip
+export ROS_MASTER_URI=http://$pc_ip:11311
+export ROS_IP=$(hostname -I)
+
+env | grep ROS_MASTER_URI
+env | grep ROS_IP
+
+echo Done.
