@@ -28,7 +28,7 @@ def straight(speed):
 
     i = 0
 
-    while (i < 10):
+    while (i < 3):
         #set the motors with a starting value
         if (i==0):
             a_star.motors(mLeft,sRight)
@@ -54,7 +54,7 @@ def straight(speed):
         a_star.motors(mLeft,sSlave)
         i = 1 + i
 
-        time.sleep(.01)
+        time.sleep(1)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
