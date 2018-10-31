@@ -100,7 +100,7 @@ def listener():
     # shape_name = rospy.get_param('shape')
     subject = rospy.get_param('subject')
     robot_name = rospy.get_param('robot_name')
-    rospy.Subscriber("/%s/%s/cmd_vel" % (subject robot_name), Twist, callback)
+    rospy.Subscriber("/%s/%s/cmd_vel" % (subject, robot_name), Twist, callback)
     rospy.spin()
 
 if __name__ == '__main__':
