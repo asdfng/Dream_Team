@@ -54,7 +54,6 @@ def straight(speed):
         a_star.motors(mLeft,sSlave)
         i = 1 + i
 
-        time.sleep(.05)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
