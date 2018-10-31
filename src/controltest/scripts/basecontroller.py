@@ -13,48 +13,48 @@ mTOft = 3.28084
 a_star = AStar()
 
 #Inspiration from robotc
-# def straight(speed):
-#     #Store the master speed into values 
-#     mLeft = speed
-#     sRight = speed
-#     sSlave = sRight
+def straight(speed):
+    #Store the master speed into values 
+    mLeft = speed
+    sRight = speed
+    sSlave = sRight
 
-#     encoders = a_star.read_encoders()
-#     oldencoderL = encoders[0]
-#     oldencoderR = encoders[1]
+    encoders = a_star.read_encoders()
+    oldencoderL = encoders[0]
+    oldencoderR = encoders[1]
 
-#     error = 0
-#     kp = 12  #proportionality constant used to adjust the feedback amount
+    error = 0
+    kp = 12  #proportionality constant used to adjust the feedback amount
 
-#     i = 0
+    i = 0
 
-#     while (i < 3):
-#         #set the motors with a starting value
-#         if (i==0):
-#             a_star.motors(mLeft,sRight)
+    while (i < 3):
+        #set the motors with a starting value
+        if (i==0):
+            a_star.motors(mLeft,sRight)
 
-#         encoders = a_star.read_encoders()
+        encoders = a_star.read_encoders()
 
-#         encoderL = encoders[0]
-#         encoderR = encoders[1]
+        encoderL = encoders[0]
+        encoderR = encoders[1]
 
-#         dL = encoderL - oldencoderL
-#         dR = encoderR - oldencoderR
+        dL = encoderL - oldencoderL
+        dR = encoderR - oldencoderR
 
-#         error = dL - dR
-#         print(error)
+        error = dL - dR
+        print(error)
 
-#         sSlave += error/kp
-#         print(sSlave)
-#         print(mLeft)
+        sSlave += error/kp
+        print(sSlave)
+        print(mLeft)
 
-#         oldencoderL = encoderL
-#         oldencoderR = encoderR
+        oldencoderL = encoderL
+        oldencoderR = encoderR
 
-#         a_star.motors(mLeft,sSlave)
-#         i = 1 + i
+        a_star.motors(mLeft,sSlave)
+        i = 1 + i
 
-#         time.sleep(1)
+        time.sleep(1)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
@@ -100,7 +100,7 @@ def listener():
     # shape_name = rospy.get_param('shape')
     subject = rospy.get_param('subject')
     robot_name = rospy.get_param('robot_name')
-    rospy.Subscriber("/%s/%s/romi_controller/cmd_vel" % (subject robot_name), Twist, callback)
+    rospy.Subscriber("/%s/%s/cmd_vel" % (subject robot_name), Twist, callback)
     rospy.spin()
 
 if __name__ == '__main__':
