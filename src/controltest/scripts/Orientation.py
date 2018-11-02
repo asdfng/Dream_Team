@@ -190,10 +190,10 @@ def  talker():
         oldangle_Gyro = angle_Gyro                                      
         #print('old gyro: %s' % oldangle_Gyro)
         #print('orientation_input = %s' % orientation_input)
-        if abs(dGyro - dEncoder) < Threshold:
-            angle += dGyro
-        else:
-            angle += dEncoder
+        #if abs(dGyro - dEncoder) < Threshold:
+            #angle += dGyro
+        #else:
+        angle += dEncoder
         print("orientation = %s" % angle)
         if ((angle - 3 <= orientation_input) and (orientation_input <= angle + 3)): #current orientation should just be angle of encoder or gyro
             #run(mag)
