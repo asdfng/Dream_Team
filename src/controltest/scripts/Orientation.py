@@ -200,7 +200,7 @@ def  talker():
             #run(mag)
             a_star.motors(0,0)  
         else:
-            a_star.motors(-50,50)
+            a_star.motors(50,50)
         
         #print('angle_degrees = %s' % angle_degrees)
         #rate.sleep()
