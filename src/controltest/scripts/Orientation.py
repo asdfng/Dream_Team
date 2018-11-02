@@ -209,6 +209,7 @@ def  talker():
         #Add a time.sleep under this line if you think there should be one here
         
         sampleRate = timeit.default_timer() - start_time
+        os.system("clear")
 
 
 
