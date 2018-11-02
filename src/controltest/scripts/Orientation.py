@@ -143,7 +143,7 @@ def  talker():
     #ballX=ball.x
     #ballY=ball.y
 
-    orientation_input, angle_degrees, mag = point_orientation(0,0,3,3,angle) #dummy coordinates for now
+    orientation_input, angle_degrees, mag = point_orientation(3,0,3,3,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
@@ -194,6 +194,7 @@ def  talker():
             #angle += dGyro
         #else:
         angle += dEncoder
+        print("desired angle = %s" % orientation_input)
         print("orientation = %s" % angle)
         if ((angle - 3 <= orientation_input) and (orientation_input <= angle + 3)): #current orientation should just be angle of encoder or gyro
             #run(mag)
