@@ -24,11 +24,11 @@ def straight(speed):
     oldencoderR = encoders[1]
 
     error = 0
-    kp = 12  #proportionality constant used to adjust the feedback amount
+    kp = 2  #proportionality constant used to adjust the feedback amount
 
     i = 0
 
-    while (i < 3):
+    while (i < 10):
         #set the motors with a starting value
         if (i==0):
             a_star.motors(mLeft,sRight)
@@ -54,7 +54,7 @@ def straight(speed):
         a_star.motors(mLeft,sSlave)
         i = 1 + i
 
-        time.sleep(1)
+        time.sleep(0.05)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
