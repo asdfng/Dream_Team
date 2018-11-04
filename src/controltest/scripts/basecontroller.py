@@ -88,10 +88,10 @@ def callback(msg):
     # print(spLeft)
     # print(spRight)
     
-    # if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
-    #     straight(spLeft)
-    # else:
-    a_star.motors(spLeft,spRight)
+    if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
+        straight(spLeft)
+    else:
+        a_star.motors(spLeft,spRight)
 
 #Setting up the subscriber node
 def listener():
