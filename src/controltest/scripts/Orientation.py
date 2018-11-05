@@ -36,26 +36,16 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     center_displacement = 0
     pi = math.pi
     dist_between_wheels = 0.4791667
-    
-    #converts encoder counts to rotations
     right_wheel_rotations = right_encoder/float(1440)                  
-    left_wheel_rotations = left_encoder/float(1440)
-
-    #calculates displacement of right, left and center wheels                    
+    left_wheel_rotations = left_encoder/float(1440)                    
     right_displacement = right_wheel_rotations*float(2)*pi*.114829     
     left_displacement = left_wheel_rotations*float(2)*pi*.114829
     center_displacement = (right_displacement + left_displacement)/float(2)
-    #calculates the change of the angle by a turn
     alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels
-
-    #converts to degrees
     alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi
-
-    #appends initial theta to new theta
     theta_new_unbounded = theta_initial + alpha_left_turn_degrees 
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
-    
     return theta_new, center_displacement, right_displacement, left_displacement
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
@@ -194,13 +184,15 @@ def  talker():
             #angle += dGyro
         #else:
         angle += dEncoder
-        print("desired angle = %s" % orientation_input)
         print("orientation = %s" % angle)
-        if ((angle - 1 <= orientation_input) and (orientation_input <= angle + 1)): #current orientation should just be angle of encoder or gyro
+        print("displacement = %s" % center_displacement)
+        #if ((angle - 1 <= orientation_input) and (orientation_input <= angle + 1)): #current orientation should just be angle of encoder or gyro
             #run(mag)
-            a_star.motors(0,0)  
-        else:
-            a_star.motors(50,50)
+            #a_star.motors(0,0)  
+        #else:
+        a_star.motors(50,50)
+        time.sleep(3)
+        a_star.motors(0,0)
         
         #print('angle_degrees = %s' % angle_degrees)
         #rate.sleep()
