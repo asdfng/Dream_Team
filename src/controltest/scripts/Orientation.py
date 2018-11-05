@@ -168,6 +168,7 @@ def  talker():
         dEncoder = angle_Encoder - oldangle_Encoder
         total_displacement = center_displacement + old_center_displacement
         old_center_displacement = center_displacement
+        center_displacement = 0
         oldangle_Encoder = angle_Encoder
         oldangle_Gyro = angle_Gyro                                      
         #if abs(dGyro - dEncoder) < Threshold:
