@@ -193,6 +193,8 @@ def  talker():
         a_star.motors(50,50)
         time.sleep(3)
         a_star.motors(0,0)
+        time.sleep(10)
+
         
         #print('angle_degrees = %s' % angle_degrees)
         #rate.sleep()
