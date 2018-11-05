@@ -31,22 +31,22 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     
     global theta_initial
     global theta_new_unbounded
-    right_displacement = 0    
-    left_displacement = 0
-    center_displacement = 0
+    right_displacement = 0.0    
+    left_displacement = 0.0
+    displacement_middle = 0.0
     pi = math.pi
     dist_between_wheels = 0.4791667
     right_wheel_rotations = right_encoder/float(1440)                  
     left_wheel_rotations = left_encoder/float(1440)                    
     right_displacement = right_wheel_rotations*float(2)*pi*.114829     
     left_displacement = left_wheel_rotations*float(2)*pi*.114829
-    center_displacement = (right_displacement + left_displacement)/float(2)
+    displacement_middle = (right_displacement + left_displacement)/float(2)
     alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels
     alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi
     theta_new_unbounded = theta_initial + alpha_left_turn_degrees 
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
-    return theta_new, center_displacement, right_displacement, left_displacement
+    return theta_new, displacement_middle, right_displacement, left_displacement
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
     pi = math.pi
