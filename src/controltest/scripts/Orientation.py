@@ -113,6 +113,8 @@ def  talker():
 
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
+    total_displacement = 0.0
+    old_center_displacement = 0.0
 
     #Ros stuff needs to be in the talker function as per:http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
 
@@ -152,9 +154,7 @@ def  talker():
 
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
-
-        angle_Encoder, center_displacement, right_displacement, left_displacement = displacement(passRight,passLeft)
-        
+        angle_Encoder, center_displacement, right_displacement, left_displacement = displacement(passRight,passLeft) 
         
     
         #Find the offset of the gyro and remove it
@@ -168,32 +168,23 @@ def  talker():
 
         angle_Gyro_unbounded += (imu.g.z*gyroSensitivity-offsetGZ)*sampleRate
         angle_Gyro = angle_Gyro_unbounded % 360
-        #print('gyro: %s' % angle_Gyro)
-
         dGyro = angle_Gyro - oldangle_Gyro
-        #print('Delta gyro: %s' % dGyro)
         dEncoder = angle_Encoder - oldangle_Encoder
-        #print('Delta Encoder: %s' % dEncoder)
-
+        total_displacement = center_displacement + old_center_displacement
+        old_center_displacement = center_displacement
         oldangle_Encoder = angle_Encoder
-        #print('old encoder: %s' % oldangle_Encoder)
         oldangle_Gyro = angle_Gyro                                      
-        #print('old gyro: %s' % oldangle_Gyro)
-        #print('orientation_input = %s' % orientation_input)
         #if abs(dGyro - dEncoder) < Threshold:
             #angle += dGyro
         #else:
         angle += dEncoder
         print("orientation = %s" % angle)
-        print("displacement = %s" % center_displacement)
+        print("displacement = %s" % total_displacement)
         #if ((angle - 1 <= orientation_input) and (orientation_input <= angle + 1)): #current orientation should just be angle of encoder or gyro
             #run(mag)
             #a_star.motors(0,0)  
         #else:
         a_star.motors(50,50)
-        time.sleep(3)
-        a_star.motors(0,0)
-        time.sleep(10)
 
         
         #print('angle_degrees = %s' % angle_degrees)
