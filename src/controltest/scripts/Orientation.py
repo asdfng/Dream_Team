@@ -28,12 +28,8 @@ theta_initial = 0.0
 theta_new_unbounded = 0.0
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
-    
     global theta_initial
     global theta_new_unbounded
-    right_displacement = 0.0    
-    left_displacement = 0.0
-    displacement_middle = 0.0
     pi = math.pi
     dist_between_wheels = 0.4791667
     right_wheel_rotations = right_encoder/float(1440)                  
@@ -180,8 +176,6 @@ def  talker():
         angle += dEncoder
         print("orientation = %s" % angle)
         print("displacement = %s" % total_displacement)
-        print("right_displacement = %s" % right_displacement)
-        print("left_displacement = %s" % left_displacement)
         #if ((angle - 1 <= orientation_input) and (orientation_input <= angle + 1)): #current orientation should just be angle of encoder or gyro
             #run(mag)
             #a_star.motors(0,0)  
