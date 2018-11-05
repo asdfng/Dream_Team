@@ -110,7 +110,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
     total_displacement = 0.0
-    old_center_displacement = 0.0
+    
 
     #Ros stuff needs to be in the talker function as per:http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
 
@@ -166,9 +166,7 @@ def  talker():
         angle_Gyro = angle_Gyro_unbounded % 360
         dGyro = angle_Gyro - oldangle_Gyro
         dEncoder = angle_Encoder - oldangle_Encoder
-        total_displacement = center_displacement + old_center_displacement
-        old_center_displacement = center_displacement
-        center_displacement = 0
+        total_displacement += center_displacement
         oldangle_Encoder = angle_Encoder
         oldangle_Gyro = angle_Gyro                                      
         #if abs(dGyro - dEncoder) < Threshold:
