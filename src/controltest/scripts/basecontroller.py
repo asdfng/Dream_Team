@@ -27,7 +27,7 @@ def straight(speed):
     error = 0
 
     kp = 2  #proportional constant
-    ki = 1  #integral constant
+    #ki = 1  #integral constant
 
     i = 0
 
@@ -45,10 +45,10 @@ def straight(speed):
         dR = encoderR - oldencoderR
 
         error = dL - dR
-        tError += error
+        #tError += error
         print(error)
 
-        sSlave += error/kp + ki*tError
+        sSlave += error/kp #+ ki*tError
         print(sSlave)
         print(mLeft)
 
