@@ -98,9 +98,9 @@ def run(mag):
 
 
 def  talker():
+    a_star.motors(50,50)
 
     global angle, angle_Gyro_unbounded, total, i, sampleRate
-    a_star.motors(-50,50)
 
     #Setup for the encoders
     encoders = a_star.read_encoders()
@@ -180,7 +180,6 @@ def  talker():
             #run(mag)
             #a_star.motors(0,0)  
         #else:
-        a_star.motors(50,50)
 
         
         #print('angle_degrees = %s' % angle_degrees)
