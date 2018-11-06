@@ -5,7 +5,7 @@
 
 import rospy
 import time
-from a_star import AStar
+#from a_star import AStar
 from geometry_msgs.msg import Twist
 
 
