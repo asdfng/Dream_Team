@@ -13,52 +13,52 @@ mTOft = 3.28084
 a_star = AStar()
 
 #Inspiration from robotc
-def straight(speed):
-    #Store the master speed into values 
-    mLeft = speed
-    sRight = speed
-    sSlave = sRight
+# def straight(speed):
+#     #Store the master speed into values 
+#     mLeft = speed
+#     sRight = speed
+#     sSlave = sRight
 
-    encoders = a_star.read_encoders()
-    oldencoderL = encoders[0]
-    oldencoderR = encoders[1]
+#     encoders = a_star.read_encoders()
+#     oldencoderL = encoders[0]
+#     oldencoderR = encoders[1]
 
-    tError = 0
-    error = 0
+#     tError = 0
+#     error = 0
 
-    kp = 2  #proportional constant
-    #ki = 1  #integral constant
+#     kp = 2  #proportional constant
+#     #ki = 1  #integral constant
 
-    i = 0
+#     i = 0
 
-    while (i < 10):
-        #set the motors with a starting value
-        if (i==0):
-            a_star.motors(mLeft,sRight)
+#     while (i < 10):
+#         #set the motors with a starting value
+#         if (i==0):
+#             a_star.motors(mLeft,sRight)
 
-        encoders = a_star.read_encoders()
+#         encoders = a_star.read_encoders()
 
-        encoderL = encoders[0]
-        encoderR = encoders[1]
+#         encoderL = encoders[0]
+#         encoderR = encoders[1]
 
-        dL = encoderL - oldencoderL
-        dR = encoderR - oldencoderR
+#         dL = encoderL - oldencoderL
+#         dR = encoderR - oldencoderR
 
-        error = dL - dR
-        #tError += error
-        print(error)
+#         error = dL - dR
+#         #tError += error
+#         print(error)
 
-        sSlave += error/kp #+ ki*tError
-        print(sSlave)
-        print(mLeft)
+#         sSlave += error/kp #+ ki*tError
+#         print(sSlave)
+#         print(mLeft)
 
-        oldencoderL = encoderL
-        oldencoderR = encoderR
+#         oldencoderL = encoderL
+#         oldencoderR = encoderR
 
-        a_star.motors(mLeft,sSlave)
-        i = 1 + i
+#         a_star.motors(mLeft,sSlave)
+#         i = 1 + i
 
-        time.sleep(0.05)
+#         time.sleep(0.05)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
@@ -92,10 +92,12 @@ def callback(msg):
     # print(spLeft)
     # print(spRight)
     
-    if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
-        straight(spLeft)
-    else:
-        a_star.motors(spLeft,spRight)
+    # if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
+    #     straight(spLeft)
+    # else:
+    #a_star.motors
+    print(spLeft)
+    print(spRight)
 
 #Setting up the subscriber node
 def listener():
