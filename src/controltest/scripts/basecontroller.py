@@ -96,8 +96,8 @@ def callback(msg):
     #     straight(spLeft)
     # else:
     #a_star.motors
-    print(spLeft)
-    print(spRight)
+    print("Left Motor:%s" % spLeft)
+    print("Right Motor:%s" % spRight)
 
 #Setting up the subscriber node
 def listener():
