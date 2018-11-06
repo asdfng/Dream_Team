@@ -99,6 +99,9 @@ def callback(msg):
     #a_star.motors
     print("Left Motor:%s" % spLeft)
     print("Right Motor:%s" % spRight)
+
+    time.sleep(1)
+
     os.system('clear')
 
 #Setting up the subscriber node
