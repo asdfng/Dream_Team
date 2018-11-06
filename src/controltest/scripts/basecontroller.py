@@ -3,6 +3,7 @@
 #Code convert geometry/twist msgs to motor commands
 #By: Nicholas Gregg
 
+import os
 import rospy
 import time
 #from a_star import AStar
@@ -98,6 +99,7 @@ def callback(msg):
     #a_star.motors
     print("Left Motor:%s" % spLeft)
     print("Right Motor:%s" % spRight)
+    os.system('clear')
 
 #Setting up the subscriber node
 def listener():
