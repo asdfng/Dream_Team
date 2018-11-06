@@ -10,7 +10,7 @@ from geometry_msgs.msg import Twist
 
 
 mTOft = 3.28084
-a_star = AStar()
+#a_star = AStar()
 
 #Inspiration from robotc
 # def straight(speed):
