@@ -107,7 +107,7 @@
      Historically, swarm robotics is typically implemented as a \textit{distributed} system \cite{Dimos08}\cite{Easton04}, and Sahin argues that it is one of the defining characteristics of swarm robotics \cite{Sahin08}. However, in addition to addressing the second constraint of the vision system, the centralized system design provides two main advantages: it is achieved in a simple structure, and it guarantees an optimized solution, as the central hub is connected to all units of the swarm at once and can thus take all parameters into account \cite{Barca16}. For these reasons, it was decided that the centralized design was more practical for the application of playing soccer than a distributed system design.
      % Third constraint: volume
      \par To address the third constraint of the vision system, each unit is confined to a cylindrical volume of \SI{8}{\in} height with diameter of \SI{8}{\in} and holds an \SI{8}{\in} diameter, \SI{1/4}{\in} thick disk such that each unit is completely covered under the disk. This disk is completely white with the brightly colored shape in the center, ensuring that the vision system would not see an overlap of shapes when two units collide; the disk provides a white border around the colored shape at all times.
-     \par This paper will discuss the setup of the network on which the central hub communicates with the swarm, the algorithms of the Python scripts executed by the central hub, and the navigation stack responsible for path-planning around the field.
+     \par This paper will discuss the setup of the network on which the central hub communicates with the swarm, the algorithms of the Python scripts executed by the central hub, and the navigation stack responsible for path-planning around the field. Testing of the methods described in this paper will use a simplified version of soccer: there will only be two rounds and each one has a duration of three minutes. No penalties are considered in tracking ``points'' scored by a team.
 
 % Methodology
      \section{Methodology}
@@ -193,6 +193,19 @@
                \caption[Solenoid Charge Circuit Schematic]{Schematic of the solenoid charge circuit. Uses an ABXS001 boost converter.}
                \label{fig:sol-ckt}
           \end{figure}
+          \subsection{Power Distribution}
+          \begin{table}[h]
+          \begin{tabular}{lllll}
+            Name                           & Quantity & Operating Voltage (Typ.) & Current Draw & Power Consumption \\
+            Pololu 120:1 Gearmotor         & 2        & 4.50 V                   & 0.80 A       & 7.20 W            \\
+            Pololu Romi 32U4 Control Board & 1        & 7.20 V                   & 0.20 A       & 1.44 W            \\
+            Raspberry Pi Zero W            & 1        & 5.00 V                   & 1.00 A       & 5.00 W            \\
+            Solenoid Charge Circuit        & 1        & 12.00 V                  & 1.00 A       & 12.00 W           \\
+            \textit{Unused Power}          & \multicolumn{3}{l}{}                               & 11.47 W
+          \end{tabular}
+          \label{tab:power-dist}
+          \end{table}
+          The solenoid is
           \subsection{Coordinate Conversion}
           % \lipsum[1]
           To map the set of pixel coordinates given by the JSON file (referred to from this point onward as set $S_p$) to the set of physical coordinates on the table (referred to from this point onward as set $S_t$), a bijective 2D \textit{homography} is constructed. Gava and Bleser define a 2D homography as "an invertible mapping $h$ from $P^2$ to itself such that three points $x_1$, $x_2$, $x_3$ lie on the same line if and only if $h_1(x)$, $h_2(x)$, $h_3(x)$ do," and they theorize that "a mapping $h$ from $P^2\rightarrow P^2$ is a homography if and only if there exists a non-singular \num{3x3} matrix $H$ such that for any point in $P^2$ represeted by a vector $x$ it is true that $h(x)=Hx$ \cite{GavaDfki}." In other words, if each $x_i'$ is an element in the set $S_p$ and each $x_i$ is an element in the set $S_t$, then
@@ -294,7 +307,9 @@
           \item The robot can take in velocity commands and output the appropriate velocity in the motors using a node called \verb|base_controller|.
           \item The transform from the sensor to its position on the rover is defined and published in the \verb|/tf| transform tree.
           \end{itemize}
-          Each of these requirements are addressed in the configuration described in this paper.
+          These requirements are addressed as various nodes that publish to expected topics for the nodes in the navigation stack to subscribe to (see Figure \ref{fig:nav-stack-overview}). An odometry node subscribes to the topics that a separate node running from the computer on each unit is publishing information to such as the center displacement of the unit and its linear and angular velocities. The odometry node then fills an \verb|nav_msgs/Odometry| message with the appropriate information so that it can publish to the \verb|odom| topic that the navigation stack is subscribed to.
+          \par There are no planar sensors mounted on each unit, so to address this requirement, sensor streams are generated using the coordinates of obstacles surrounding each unit from the JSON file. These sensor streams are then used to construct the costmap of the obstacles around each unit. Since there are no physical sensors on the rover, the requirement of creating a transform for each sensor is fulfilled by using a \textit{static broadcaster} which broadcasts a transform that is rigidly attached at a fixed coordinate (the origin of the coordinate frame of the rover).
+          \par The \verb|base_controller| node subscribes to the velocity commands published by the \verb|move_base| node in the navigation stack and translates velocity to motor commands. The \verb|move_base| node that publishes these velocity commands uses the costmap that was constructed using the sensor streams to plan a path that is free of obstacles, and steers the unit onto that path by providing velocity commands along that path.
           \begin{figure}[h]
                \centering
                \includegraphics[scale=0.5]{images/nav_stack_overview}
