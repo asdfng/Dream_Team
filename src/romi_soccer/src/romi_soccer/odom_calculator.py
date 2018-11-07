@@ -88,9 +88,9 @@ class OdomCalc:
             # Stamps the transform with the current time
             odom_trans.header.stamp = rospy.Time.now()
             # Sets the frame ID of the transform to the odom frame
-            odom_trans.header.frame_id = 'odom_%s' % self.robot_name
+            odom_trans.header.frame_id = 'odom_%s' % (self.robot_name)
             # Sets the child frame ID to base_link
-            odom_trans.child_frame_id = 'base_link_%s' % self.robot_name
+            odom_trans.child_frame_id = 'base_link_%s' % (self.robot_name)
 
             th = self.pose2D.theta
             odom_quat = tf_conversions.transformations.quaternion_from_euler(0,0,th)
@@ -115,7 +115,7 @@ class OdomCalc:
 
             odom.pose.pose.orientation = Quaternion(*odom_quat)
 
-            odom.child_frame_id = 'base_link_%s' % self.robot_name
+            odom.child_frame_id = 'base_link_%s' % (self.robot_name)
             odom.twist.twist.linear.x = self.vel.linear.x
             odom.twist.twist.linear.y = self.vel.linear.y
             odom.twist.twist.angular.z = self.vel.angular.z
