@@ -15,7 +15,7 @@ a_star = AStar()
 
 #Inspiration from robotc
 # def straight(speed):
-#     #Store the master speed into values 
+#     #Store the master speed into values
 #     mLeft = speed
 #     sRight = speed
 #     sSlave = sRight
@@ -92,7 +92,7 @@ def callback(msg):
 
     # print(spLeft)
     # print(spRight)
-    
+
     # if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
     #     straight(spLeft)
     # else:
@@ -109,10 +109,10 @@ def listener():
     rospy.init_node('motor_control', anonymous=True)
     # team_name = rospy.get_param('team')
     # shape_name = rospy.get_param('shape')
-    subject = rospy.get_param('subject')
-    robot_name = rospy.get_param('robot_name')
-    rospy.Subscriber("/%s/%s/cmd_vel" % (subject, robot_name), Twist, callback) #use this one for running the launch file
-    # rospy.Subscriber("/cmd_vel", Twist, callback) #use this one for testing the system
+    #subject = rospy.get_param('subject')
+    #robot_name = rospy.get_param('robot_name')
+    #rospy.Subscriber("/%s/%s/cmd_vel" % (subject, robot_name), Twist, callback) #use this one for running the launch file
+    rospy.Subscriber("/cmd_vel", Twist, callback) #use this one for testing the system
     rospy.spin()
 
 if __name__ == '__main__':
