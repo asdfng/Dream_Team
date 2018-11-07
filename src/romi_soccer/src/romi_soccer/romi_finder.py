@@ -17,6 +17,7 @@ class RomiFinder:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
+        self.cloud = PointCloud()
         self.cloud_num = rospy.get_param('~number')
         object = rospy.get_param('~object')
         subject = rospy.get_param('~subject')
@@ -44,14 +45,14 @@ class RomiFinder:
 
     def callback(self,data):
         if (self.grabbed):
-            cloud = PointCloud()
-            cloud.header.stamp = rospy.Time.now()
-            cloud.header.frame_id = 'sensor_frame_%s' % self.subject_robot
-            cloud.points = [None] * 7
+            self.cloud.header.stamp = rospy.Time.now()
+            self.cloud.header.frame_id = 'sensor_frame_%s' % self.subject_robot
+            self.cloud.points = [None] * 7
 
             u = data.pose.position.x
             v = data.pose.position.y
             x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
             y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
-            cloud.points[self.cloud_num] = Point32(x,y,0)
+            self.cloud.points[self.cloud_num] = Point32(x,y,0)
+            self.pub(self.cloud)
         else: rospy.loginfo('Waiting for homography calibration...')

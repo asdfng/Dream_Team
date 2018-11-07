@@ -6,6 +6,6 @@ global_costmap:
     rolling_window: true #must be opposite of static_map?
                         #if rolling_window is true. Must define W,H,Resol
 
-    width: 4.8768
-    height: 2.4384
-    resolution: 0.1524
+  # width: 2.438
+  # height: 1.219
+  # resolution: 0.092 #meters/cell
