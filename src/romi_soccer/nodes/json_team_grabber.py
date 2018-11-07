@@ -7,7 +7,7 @@ def json_team_grabber():
     rover = geometry_msgs.msg.PoseStamped()
     rate = rospy.Rate(10)  # 10 Hz
     while not rospy.is_shutdown():
-        response = urllib2.urlopen('http://172.16.0.1:8001/FieldData/GetData')
+        response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
         source = response.read()
         data = json.loads(source.decode())
         rospy.loginfo('It connected!')
