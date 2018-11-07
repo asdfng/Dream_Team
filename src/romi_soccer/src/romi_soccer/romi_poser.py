@@ -35,7 +35,7 @@ class RomiPoser:
         # Initializes subscriber to the JSON coordinate for the specific robot/subject specified by the parameters
         rospy.Subscriber('/%s/%s/raw_pose' % (subject,self.robot_name),PoseStamped, self.poseCallback)
         # Initializes a publisher for the new pose after being converted via homography
-        self.pub = rospy.Publisher('/%s/%s/romi_controller/pose' % (subject,self.robot_name),PoseStamped, queue_size=10)
+        self.pub = rospy.Publisher('/%s/%s/pose' % (subject,self.robot_name),PoseStamped, queue_size=10)
         rospy.spin()
         while not rospy.is_shutdown():
             self.tf_listener()
