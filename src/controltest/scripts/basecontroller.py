@@ -3,14 +3,15 @@
 #Code convert geometry/twist msgs to motor commands
 #By: Nicholas Gregg
 
+import os
 import rospy
 import time
-from a_star import AStar
+#from a_star import AStar
 from geometry_msgs.msg import Twist
 
 
 mTOft = 3.28084
-a_star = AStar()
+#a_star = AStar()
 
 #Inspiration from robotc
 # def straight(speed):
@@ -23,12 +24,15 @@ a_star = AStar()
 #     oldencoderL = encoders[0]
 #     oldencoderR = encoders[1]
 
+#     tError = 0
 #     error = 0
-#     kp = 12  #proportionality constant used to adjust the feedback amount
+
+#     kp = 2  #proportional constant
+#     #ki = 1  #integral constant
 
 #     i = 0
 
-#     while (i < 3):
+#     while (i < 10):
 #         #set the motors with a starting value
 #         if (i==0):
 #             a_star.motors(mLeft,sRight)
@@ -42,9 +46,10 @@ a_star = AStar()
 #         dR = encoderR - oldencoderR
 
 #         error = dL - dR
+#         #tError += error
 #         print(error)
 
-#         sSlave += error/kp
+#         sSlave += error/kp #+ ki*tError
 #         print(sSlave)
 #         print(mLeft)
 
@@ -54,7 +59,7 @@ a_star = AStar()
 #         a_star.motors(mLeft,sSlave)
 #         i = 1 + i
 
-#         time.sleep(1)
+#         time.sleep(0.05)
 
 #converting the linear and angular message velocities to x and y
 def callback(msg):
@@ -92,15 +97,22 @@ def callback(msg):
     #     straight(spLeft)
     # else:
     a_star.motors(spLeft,spRight)
+    #print("Left Motor:%s" % spLeft)
+    #print("Right Motor:%s" % spRight)
+
+    #time.sleep(1)
+
+    #os.system('clear')
 
 #Setting up the subscriber node
 def listener():
     rospy.init_node('motor_control', anonymous=True)
     # team_name = rospy.get_param('team')
     # shape_name = rospy.get_param('shape')
-    subject = rospy.get_param('subject')
-    robot_name = rospy.get_param('robot_name')
-    rospy.Subscriber("/%s/%s/romi_controller/cmd_vel" % (subject robot_name), Twist, callback)
+    #subject = rospy.get_param('subject')
+    #robot_name = rospy.get_param('robot_name')
+    #rospy.Subscriber("/%s/%s/cmd_vel" % (subject, robot_name), Twist, callback) #use this one for running the launch file
+    rospy.Subscriber("/cmd_vel", Twist, callback) #use this one for testing the system
     rospy.spin()
 
 if __name__ == '__main__':
