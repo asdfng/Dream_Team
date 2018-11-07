@@ -72,7 +72,7 @@
           type   = "rqt_robot_steering">
      <param
           name   = "default_topic"
-          value  = "/$(arg team)_$(arg shape)/$(arg robot_name)/cmd_vel"/>
+          value  = "/$(arg team)_$(arg shape)/$(arg robot_name)bj/cmd_vel"/>
      </node>
 
 </launch>
