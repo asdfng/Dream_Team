@@ -54,5 +54,5 @@ class RomiFinder:
             x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
             y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
             self.cloud.points[self.cloud_num] = Point32(x,y,0)
-            self.pub(self.cloud)
+            self.pub.publish(self.cloud)
         else: rospy.loginfo('Waiting for homography calibration...')
