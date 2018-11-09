@@ -26,6 +26,37 @@ total = 0.0
 #Starting values for the encoders
 theta_initial = 0.0
 theta_new_unbounded = 0.0
+def straight(speed):
+    #Store the master speed into values
+    mLeft = speed
+    sRight = speed
+    sSlave = sRight
+    encoders = a_star.read_encoders()
+    oldencoderL = encoders[0]
+    oldencoderR = encoders[1]
+    tError = 0
+    error = 0
+    kp = 2  #proportional constant
+    ki = 1  #integral constant
+    i = 0
+    while (i < 10):
+        if (i==0):
+            a_star.motors(mLeft,sRight)
+        encoders = a_star.read_encoders()
+        encoderL = encoders[0]
+        encoderR = encoders[1]
+        dL = encoderL - oldencoderL
+        dR = encoderR - oldencoderR
+        error = dL - dR
+        tError += error
+        sSlave += error/kp #+ ki*tError
+        print(sSlave)
+        print(mLeft)
+        oldencoderL = encoderL
+        oldencoderR = encoderR
+        a_star.motors(mLeft,sSlave)
+        i = 1 + i
+        time.sleep(0.05)
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     global theta_initial
@@ -69,9 +100,13 @@ def run(mag):
     #Convert the magnitude to an encoder count
     targetcount = int((mag/(float(2)*math.pi*.114829))*1440)
     currentcount = 0
-
+    spLeft = 100
+    spRight = 100
     #Set the motors
-    a_star.motors(100,100)
+    if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
+        straight(spLeft)
+    else:
+        a_star.motors(spLeft,spRight)
 
     while currentcount < targetcount:
 
@@ -131,7 +166,7 @@ def  talker():
     #ballX=ball.x
     #ballY=ball.y
 
-    orientation_input, angle_degrees, mag = point_orientation(3,0,3,3,angle) #dummy coordinates for now
+    orientation_input, angle_degrees, mag = point_orientation(0,0,3,3,angle) #dummy coordinates for now
 
     while True:
         start_time = timeit.default_timer()
@@ -175,18 +210,11 @@ def  talker():
         angle += dEncoder
         print("orientation = %s" % angle)
         print("displacement = %s" % total_displacement)
-        #if ((angle - 1 <= orientation_input) and (orientation_input <= angle + 1)): #current orientation should just be angle of encoder or gyro
-            #run(mag)
-            #a_star.motors(0,0)  
-        #else:
-
-        
-        #print('angle_degrees = %s' % angle_degrees)
-        #rate.sleep()
-        #print('angle = %s' % angle)
-        #print(sampleRate)
-
-        #Add a time.sleep under this line if you think there should be one here
+        if ((angle - 1 <= orientation_input) and (orientation_input <= angle + 1)): #current orientation should just be angle of encoder or gyro
+            run(mag)
+            a_star.motors(0,0)  
+        else:
+            a_star.motors(-50,50)
         
         sampleRate = timeit.default_timer() - start_time
         os.system("clear")
