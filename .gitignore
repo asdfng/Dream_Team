@@ -57,3 +57,15 @@ frames.gv
 frames.pdf
 #vccode files
 .vscode
+.aux
+.bbl
+.blg
+.fdb_latexmk
+.fls
+.loa
+.lof
+.log
+.lot
+.run.xml
+.toc
+*-blx.bib
