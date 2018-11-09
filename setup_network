@@ -4,6 +4,7 @@ read pc_ip
 export ROS_MASTER_URI=http://$pc_ip:11311
 export ROS_IP=$(hostname -I)
 export ROS_HOSTNAME=$(hostname).mshome.net
+env | grep ROS_HOSTNAME
 env | grep ROS_MASTER_URI
 env | grep ROS_IP
 
