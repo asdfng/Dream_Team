@@ -102,14 +102,12 @@ def run(mag):
     currentcount = 0
     spLeft = 100
     spRight = 100
-    #Set the motors
-    if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
-        straight(spLeft)
-    else:
-        a_star.motors(spLeft,spRight)
 
     while currentcount < targetcount:
-
+        if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
+            straight(spLeft)
+        else:
+            a_star.motors(spLeft,spRight)
         #Read the Encoders get the current encoder value
         encoders_run = a_star.read_encoders()
         curEnc = encoders_run[1]
@@ -126,14 +124,13 @@ def run(mag):
         if currentcount < 0:
             currentcount = 0.0
     
-        print('mag = %s' % mag)
-        print('target count = %s' % targetcount)
-        print('current count = %s' % currentcount)
-        os.system('clear')
+        #print('mag = %s' % mag)
+        #print('target count = %s' % targetcount)
+        #print('current count = %s' % currentcount)
+        #os.system('clear')
 
 
 def  talker():
-    a_star.motors(50,50)
 
     global angle, angle_Gyro_unbounded, total, i, sampleRate
 
