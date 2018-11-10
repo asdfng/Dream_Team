@@ -1,7 +1,5 @@
 #!/bin/bash
-echo What is the IP address on the PC?
-read pc_ip
-export ROS_MASTER_URI=http://$pc_ip:11311
+export ROS_MASTER_URI=http://rice-laptop.mshome.net:11311
 export ROS_IP=$(hostname -I)
 export ROS_HOSTNAME=$(hostname).mshome.net
 env | grep ROS_HOSTNAME
