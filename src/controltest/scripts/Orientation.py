@@ -186,7 +186,9 @@ def  talker():
             run(mag)
             a_star.motors(0,0) 
             break 
-        else:
+        elif ((orientation_input <= 360) and (orientation_input >= 180)):
+            a_star.motors(-50,50)
+        elif ((orientation_input <= 180) and (orientation_input >= 0)):
             a_star.motors(50,-50)
         
         sampleRate = timeit.default_timer() - start_time
