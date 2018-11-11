@@ -68,7 +68,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     right_displacement = right_wheel_rotations*float(2)*pi*.114829     
     left_displacement = left_wheel_rotations*float(2)*pi*.114829
     displacement_middle = (right_displacement + left_displacement)/float(2)
-    alpha_left_turn_radians = (right_displacement - left_displacement)/dist_between_wheels
+    alpha_left_turn_radians = (left_displacement - right_displacement)/dist_between_wheels
     alpha_left_turn_degrees = alpha_left_turn_radians * float(180)/pi
     theta_new_unbounded = theta_initial + alpha_left_turn_degrees 
     theta_new = theta_new_unbounded % 360                                   
@@ -208,7 +208,7 @@ def  talker():
             run(mag)
             a_star.motors(0,0)  
         else:
-            a_star.motors(-50,50)
+            a_star.motors(50,-50)
         
         sampleRate = timeit.default_timer() - start_time
         os.system("clear")
