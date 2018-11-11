@@ -65,14 +65,5 @@
          pkg="romi_soccer"
          type="poser"
          output="screen"/>
-     <!-- Start up the rqt GUI for setting cmd_vel commands                     -->
-     <node
-          name   = "rqt_robot_steering"
-          pkg    = "rqt_robot_steering"
-          type   = "rqt_robot_steering">
-     <param
-          name   = "default_topic"
-          value  = "/$(arg team)_$(arg shape)/$(arg robot_name)/cmd_vel"/>
-     </node>
 
 </launch>

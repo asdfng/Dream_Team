@@ -9,4 +9,4 @@ local_costmap:
                         #If static map is false. This must be true.
   width: 2.438
   height: 1.219
-  resolution: 0.092 #meters/cell
+  resolution: 0.0254 #meters/cell
