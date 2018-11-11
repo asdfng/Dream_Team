@@ -142,14 +142,14 @@ def  talker():
     response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
     source = response.read()
     data = json.loads(source.decode())
-    red_square_x = data['Red Team Data']['Square']['Object Center']['X']
-    red_square_y = data['Red Team Data']['Square']['Object Center']['Y']
-    ball_x = data['Ball']['Object Center']['X']
-    ball_y = data['Ball']['Object Center']['Y']
-    mRSX = float(int(red_square_x) - 12)*(float(8/(394-12)))
-    mRSY = float(int(red_square_y) - 31)*(float(4/(221-31)))
-    mBX = float(int(ball_x) - 12)*(float(8/(394-12)))
-    mBY = float(int(ball_y) - 31)*(float(4/(221-31)))
+    red_square_x = int(data['Red Team Data']['Square']['Object Center']['X'])
+    red_square_y = int(data['Red Team Data']['Square']['Object Center']['Y'])
+    ball_x = int(data['Ball']['Object Center']['X'])
+    ball_y = int(data['Ball']['Object Center']['Y'])
+    mRSX = float(red_square_x - 12)*(float(8/(394-12)))
+    mRSY = float(red_square_y - 31)*(float(4/(221-31)))
+    mBX = float(ball_x - 12)*(float(8/(394-12)))
+    mBY = float(ball_y - 31)*(float(4/(221-31)))
 
     orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
     while True:
