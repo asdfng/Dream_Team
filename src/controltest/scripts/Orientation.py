@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+
 #import rospy
-import time, json, urllib
+import time, json, urllib.request
 import timeit 
 import os
 import math
