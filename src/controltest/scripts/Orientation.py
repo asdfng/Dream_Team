@@ -1,6 +1,6 @@
-
+#!/usr/bin/env python
 #import rospy
-import time, json, urllib.request
+import time, json, urllib2
 import timeit 
 import os
 import math
@@ -139,7 +139,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
     total_displacement = 0.0
-    response = urllib.request.urlopen('http://192.168.137.1:8001/FieldData/GetData')
+    response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
     source = response.read()
     data = json.loads(source.decode())
     red_square_x = data['Red Team Data']['Square']['Object Center']['X']
