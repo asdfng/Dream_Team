@@ -88,7 +88,7 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     else:
         orientation_input_unbounded = float(360) + angle_degrees + float(360)
     orientation_input = orientation_input_unbounded % 360
-    return orientation_input, angle_degrees, mag
+    return orientation_input, mag
 
 #This code will find the distance it needs to move in order to get to the point
 def run(mag):
@@ -146,7 +146,7 @@ def  talker():
     red_square_y = data['Red Team Data']['Square']['Object Center']['Y']
     ball_x = data['Ball']['Object Center']['X']
     ball_y = data['Ball']['Object Center']['Y']
-    orientation_input, angle_degrees, mag = point_orientation(red_square_x,red_square_y,ball_x,ball_y)
+    orientation_input, mag = point_orientation(red_square_x,red_square_y,ball_x,ball_y)
     while True:
         start_time = timeit.default_timer()
 
