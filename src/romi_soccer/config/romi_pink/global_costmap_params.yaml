@@ -2,9 +2,7 @@ global_costmap:
     global_frame: /map #Cannot be the same as robot base
     robot_base_frame: base_link_romi_pink
     update_frequency: 5.0 #Hz
-    static_map: false #If false, rolling_window must be true
-    rolling_window: true #must be opposite of static_map?
-                        #if rolling_window is true. Must define W,H,Resol
+    static_map: true #If false, rolling_window must be true
 
   # width: 2.438
   # height: 1.219

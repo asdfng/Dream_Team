@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy, roslib, numpy, tf2_ros, tf_conversions
-from geometry_msgs.msg import PoseStamped, TransformStamped
+from geometry_msgs.msg import PoseStamped, TransformStamped, PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry
 from romi_soccer.msg import Homography
 
@@ -36,6 +36,7 @@ class RomiPoser:
         rospy.Subscriber('/%s/%s/raw_pose' % (subject,self.robot_name),PoseStamped, self.poseCallback)
         # Initializes a publisher for the new pose after being converted via homography
         self.pub = rospy.Publisher('/%s/%s/pose' % (subject,self.robot_name),PoseStamped, queue_size=10)
+        self.pub_initial = rospy.Publisher('%s/%s/initialpose' % (subject,self.robot_name),PoseWithCovarianceStamped,queue_size=10)
         rospy.spin()
         while not rospy.is_shutdown():
             self.tf_listener()
@@ -71,6 +72,9 @@ class RomiPoser:
             if (self.first):
                 rospy.set_param('/%s_first_pose_x' % self.robot_name, '%s' % new_pose.pose.position.x)
                 rospy.set_param('/%s_first_pose_y' % self.robot_name, '%s' % new_pose.pose.position.y)
+                msg = PoseWithCovarianceStamped()
+                msg.pose.pose.position = new_pose.pose.position
+                self.pub_initial.publish(msg)
                 self.first = False
             self.tf_listener(new_pose)
 
