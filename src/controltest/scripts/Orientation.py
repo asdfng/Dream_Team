@@ -203,7 +203,7 @@ def  talker():
         print(mRSY)
         print(mBX)
         print(mBY)
-        if ((angle - 3 <= orientation_input) and (orientation_input <= angle + 3)): #current orientation should just be angle of encoder or gyro
+        if (((angle - 3) <= (orientation_input + 90)) and ((orientation_input + 90) <= (angle + 3))): #current orientation should just be angle of encoder or gyro
             run(mag)
             a_star.motors(0,0)  
         else:
