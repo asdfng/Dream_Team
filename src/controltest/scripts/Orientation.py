@@ -106,42 +106,18 @@ def fetch_coordinates():
 #This code will find the distance it needs to move in order to get to the point
 def run(mag):
 
-    #Read the Encoders
-    encoders_run = a_star.read_encoders()
-    oldEnc = encoders_run[1]
-    
-    #Convert the magnitude to an encoder count
-    targetcount = int((mag/(float(2)*math.pi*.114829))*1440)
-    currentcount = 0
-    spLeft = 100
-    spRight = 100
+    while True:
+        mark = 0.5
+        spLeft = 100
 
-    while currentcount < targetcount:
-        if ((spLeft==spRight) and (spLeft != 0) and (spRight != 0)):
-            straight(spLeft)
+        mRSX, mRSY, mBX, mBY = fetch_coordinates()
+        nn, mag = point_orientation(mRSX,mRSX,mBX,mBX)
+
+        if (mag < mark):
+            a_star.motors(0,0)
+            break
         else:
-            a_star.motors(spLeft,spRight)
-        #Read the Encoders get the current encoder value
-        encoders_run = a_star.read_encoders()
-        curEnc = encoders_run[1]
-        
-        #Find the difference in counts
-        dEnc = curEnc - oldEnc
-
-        #Reset the old count
-        oldEnc = curEnc
-        
-        #update the current count
-        currentcount += dEnc
-
-        if currentcount < 0:
-            currentcount = 0.0
-    
-        #print('mag = %s' % mag)
-        #print('target count = %s' % targetcount)
-        #print('current count = %s' % currentcount)
-        #os.system('clear')
-
+            straight(spLeft)
 
 def  talker():
     global angle, angle_Gyro_unbounded, total, i, sampleRate
