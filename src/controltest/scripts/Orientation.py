@@ -89,6 +89,19 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
         orientation_input_unbounded = float(360) + angle_degrees + float(360)
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, mag
+def fetch_coordinates():
+    response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
+    source = response.read()
+    data = json.loads(source.decode())
+    red_square_x = data['Red Team Data']['Square']['Object Center']['X']
+    red_square_y = data['Red Team Data']['Square']['Object Center']['Y']
+    ball_x = data['Ball']['Object Center']['X']
+    ball_y = data['Ball']['Object Center']['Y']
+    mRSX = float(red_square_x - 12)*(float(8/float(394-12)))
+    mRSY = float(red_square_y - 31)*(float(4/float(221-31)))
+    mBX = float(ball_x - 12)*(float(8/float(394-12)))
+    mBY = float(ball_y - 31)*(float(4/float(221-31)))
+    return mRSX, mRSY, mBX, mBY
 
 #This code will find the distance it needs to move in order to get to the point
 def run(mag):
@@ -139,18 +152,7 @@ def  talker():
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
     total_displacement = 0.0
-    response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
-    source = response.read()
-    data = json.loads(source.decode())
-    red_square_x = data['Red Team Data']['Square']['Object Center']['X']
-    red_square_y = data['Red Team Data']['Square']['Object Center']['Y']
-    ball_x = data['Ball']['Object Center']['X']
-    ball_y = data['Ball']['Object Center']['Y']
-    mRSX = float(red_square_x - 12)*(float(8/float(394-12)))
-    mRSY = float(red_square_y - 31)*(float(4/float(221-31)))
-    mBX = float(ball_x - 12)*(float(8/float(394-12)))
-    mBY = float(ball_y - 31)*(float(4/float(221-31)))
-
+    mRSX, mRSY, mBX, mBY = fetch_coordinates()
     orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
     while True:
         start_time = timeit.default_timer()
