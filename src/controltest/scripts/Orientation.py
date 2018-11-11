@@ -194,6 +194,10 @@ def  talker():
         angle += dEncoder
         print("orientation = %s" % angle)
         print("displacement = %s" % total_displacement)
+        print(red_square_x)
+        print(red_square_y)
+        print(ball_x)
+        print(ball_y)
         print(mRSX)
         print(mRSY)
         print(mBX)
