@@ -50,8 +50,6 @@ def straight(speed):
         error = dL - dR
         tError += error
         sSlave += error/kp #+ ki*tError
-        print(sSlave)
-        print(mLeft)
         oldencoderL = encoderL
         oldencoderR = encoderR
         a_star.motors(mLeft,sSlave)
@@ -112,7 +110,7 @@ def run(mag):
 
         mRSX, mRSY, mBX, mBY = fetch_coordinates()
         nn, mag = point_orientation(mRSX,mRSX,mBX,mBX)
-
+        print(mag)
         if (mag < mark):
             a_star.motors(0,0)
             break
