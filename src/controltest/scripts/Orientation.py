@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #import rospy
-import time
+import time, json, urllib
 import timeit 
 import os
 import math
@@ -75,7 +75,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_initial = theta_new 
     return theta_new, displacement_middle, right_displacement, left_displacement
                                                                 
-def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y, original_orientation): #calculates the angle between the two points to figure out the correction
+def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y): #calculates the angle between the two points to figure out the correction
     pi = math.pi
     atan2 = math.atan2
     dist_x = float(desired_point_x) - float(our_point_x) #original orientation should be angle from gyro/encoder taken only once at the beginning of the process
@@ -84,9 +84,9 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     angle = atan2(dist_y , dist_x) #can return [-pi,pi]
     angle_degrees = angle * float(180)/pi
     if angle_degrees >= 0:
-        orientation_input_unbounded = angle_degrees + float(360) - float(original_orientation)
+        orientation_input_unbounded = angle_degrees + float(360)
     else:
-        orientation_input_unbounded = float(360) + angle_degrees + float(360) - float(original_orientation)
+        orientation_input_unbounded = float(360) + angle_degrees + float(360)
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, angle_degrees, mag
 
@@ -131,40 +131,22 @@ def run(mag):
 
 
 def  talker():
-
     global angle, angle_Gyro_unbounded, total, i, sampleRate
-
     #Setup for the encoders
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
-
     oldangle_Encoder = 0.0
     oldangle_Gyro = 0.0
     total_displacement = 0.0
-    
-
-    #Ros stuff needs to be in the talker function as per:http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
-
-    #pub = rospy.Publisher('/Enc_Degree', Orientation, queue_size=10)
-    #rospy.init_node('Encoder_Orientation', anonymous=True)
-    #rate = rospy.Rate(100)
-    #rospy.Suscriber('mapper/new_data/red/triangle',Rover,queue_size=10)
-    #rospy.Suscriber('mapper/new_data/red/square',Rover,queue_size=10)
-    #rospy.Suscriber('mapper/new_data/red/circle',Rover,queue_size=10)
-    #rospy.Suscriber('mapper/new_data/ball',Rover,queue_size=10)
-    #callback?
-    #playerRCX=player_rc.center.x
-    #playerRCY=player_rc.center.y
-    #playerRSX=player_rs.center.x
-    #playerRSY=player_rs.center.y
-    #playerRTX=player_rt.center.x
-    #playerRTY=player_rt.center.y
-    #ballX=ball.x
-    #ballY=ball.y
-
-    orientation_input, angle_degrees, mag = point_orientation(0,0,3,3,angle) #dummy coordinates for now
-
+    response = urllib.request.urlopen('http://192.168.137.1:8001/FieldData/GetData')
+    source = response.read()
+    data = json.loads(source.decode())
+    red_square_x = data['Red Team Data']['Square']['Object Center']['X']
+    red_square_y = data['Red Team Data']['Square']['Object Center']['Y']
+    ball_x = data['Ball']['Object Center']['X']
+    ball_y = data['Ball']['Object Center']['Y']
+    orientation_input, angle_degrees, mag = point_orientation(red_square_x,red_square_y,ball_x,ball_y)
     while True:
         start_time = timeit.default_timer()
 
