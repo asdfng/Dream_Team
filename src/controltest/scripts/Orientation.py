@@ -146,10 +146,11 @@ def  talker():
     red_square_y = data['Red Team Data']['Square']['Object Center']['Y']
     ball_x = data['Ball']['Object Center']['X']
     ball_y = data['Ball']['Object Center']['Y']
-    mRSX = (red_square_x - 12)*(float(8/(394-12)))
-    mRSY = (red_square_y - 31)*(float(4/(221-31)))
-    mBX = (ball_x - 12)*(float(8/(394-12)))
-    mBY = (ball_y - 31)*(float(4/(221-31)))
+    mRSX = float(red_square_x - 12)*(float(8/(394-12)))
+
+    mRSY = float(red_square_y - 31)*(float(4/(221-31)))
+    mBX = float(ball_x - 12)*(float(8/(394-12)))
+    mBY = float(ball_y - 31)*(float(4/(221-31)))
 
     orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
     while True:
