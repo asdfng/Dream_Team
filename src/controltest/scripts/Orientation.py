@@ -107,7 +107,7 @@ def fetch_coordinates():
 def run(mag):
 
     while True:
-        mark = 1
+        mark = 2
         spLeft = 100
 
         mRSX, mRSY, mBX, mBY = fetch_coordinates()
