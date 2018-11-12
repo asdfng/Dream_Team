@@ -112,7 +112,10 @@ def  talker():
     total_displacement = 0.0
     mRSX, mRSY, mBX, mBY = fetch_coordinates()
     orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
-    angle_error_offset = 5.0
+    if (orientation_input >= 180):
+        angle_error_offset = -5.0
+    else:
+        angle_error_offset = 5.0
     #if ((orientation_input >= 0.0) and (orientation_input <= 90.0)):
         #angle_error_offset = 3.0
     #elif ((orientation_input <= 360.0) and (orientation_input >= 270.0)):
