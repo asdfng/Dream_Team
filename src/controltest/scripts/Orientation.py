@@ -110,6 +110,7 @@ def  talker():
     oldleft_encoder = encoders[0]
     oldangle_Encoder = 0.0
     total_displacement = 0.0
+    angle_error_offset = 5.0
     mRSX, mRSY, mBX, mBY = fetch_coordinates()
     orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
     while True:
@@ -128,7 +129,7 @@ def  talker():
         print("orientation = %s" % angle)
         print("displacement = %s" % total_displacement)
         print('orientation_input = %s' % orientation_input)
-        if (((angle - 1) <= orientation_input - 5) and (orientation_input - 5 <= (angle + 1))): #current orientation should just be angle of encoder or gyro
+        if (((angle - 1) <= orientation_input - angle_error_offset) and (orientation_input - angle_error_offset <= (angle + 1))): #current orientation should just be angle of encoder or gyro
             run(mag)
             a_star.motors(0,0) 
             break 
