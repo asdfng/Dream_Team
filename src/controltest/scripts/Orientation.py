@@ -92,7 +92,7 @@ def fetch_coordinates():
 
 def run(mag):
     while True:
-        mark = 2
+        mark = 1
         spLeft = 100
         mRSX, mRSY, mBX, mBY = fetch_coordinates()
         unused_angle, mag = point_orientation(mRSX,mRSX,mBX,mBX)
