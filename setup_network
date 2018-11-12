@@ -1,7 +1,7 @@
 #!/bin/bash
 export ROS_MASTER_URI=http://rice-laptop:11311
-export ROS_IP=$(hostname).mshome.net
-export ROS_HOSTNAME=$(hostname).mshome.net
+export ROS_IP=$(hostname)
+export ROS_HOSTNAME=$(hostname)
 env | grep ROS_HOSTNAME
 env | grep ROS_MASTER_URI
 env | grep ROS_IP
