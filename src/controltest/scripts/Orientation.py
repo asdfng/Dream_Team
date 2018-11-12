@@ -110,9 +110,13 @@ def  talker():
     oldleft_encoder = encoders[0]
     oldangle_Encoder = 0.0
     total_displacement = 0.0
-    angle_error_offset = 5.0
+    angle_error_offset = 0.0
     mRSX, mRSY, mBX, mBY = fetch_coordinates()
     orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
+    if ((orientation_input >= 0 and orientation_input <= 90) or (orientation_input <= 360 and orientation_input >= 270)):
+        angle_error_offset = 3
+    elif ((orientation_input >= 180 and orientation_input <= 270) or (orientation_input <= 180 and orientation_input >= 90)):
+        angle_error_offset = 8
     while True:
         encoders = a_star.read_encoders()  
         right_encoder = encoders[1]
