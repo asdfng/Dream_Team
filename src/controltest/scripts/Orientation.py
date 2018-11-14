@@ -95,7 +95,7 @@ def run(mag):
         mark = 1
         spLeft = 100
         mRSX, mRSY, mBX, mBY = fetch_coordinates()
-        unused_angle, mag = point_orientation(mRSX,mRSX,mBX,mBX)
+        unused_angle, mag = point_orientation(mRSX,mRSY,mBX,mBY)
         print(mag)
         if (mag < mark):
             a_star.motors(0,0)
