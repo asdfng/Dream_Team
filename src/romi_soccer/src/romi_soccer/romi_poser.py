@@ -73,6 +73,7 @@ class RomiPoser:
                 rospy.set_param('/%s_first_pose_x' % self.robot_name, '%s' % new_pose.pose.position.x)
                 rospy.set_param('/%s_first_pose_y' % self.robot_name, '%s' % new_pose.pose.position.y)
                 msg = PoseWithCovarianceStamped()
+                msg.header.stamp = rospy.Time.now()
                 msg.pose.pose.position = new_pose.pose.position
                 self.pub_initial.publish(msg)
                 self.first = False
