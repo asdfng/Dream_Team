@@ -7,7 +7,8 @@ from romi_soccer.msg import Homography
 class RomiPoser:
     def __init__(self):
         # Initializes a boolean to flag whether homography matrix has been received and stored yet
-        self.grabbed = False
+        self.grabbed_mat = False
+        self.grabbed_pose = False
         # Initializes a boolean to flag whether this is the initial pose or not
         self.first = True
         # Initializes each element of the inverse homography matrix. Does this because when I grab the
@@ -22,6 +23,8 @@ class RomiPoser:
         self.q31 = 0
         self.q32 = 0
         self.q33 = 0
+        # Initializes a PoseStamped object
+        self.pose = PoseStamped()
         # Initializes a buffer for the tf2 listener
         self.tfBuffer = tf2_ros.Buffer()
         # Initializes a tf2 listener using the buffer
@@ -36,11 +39,23 @@ class RomiPoser:
         rospy.Subscriber('/%s/%s/raw_pose' % (subject,self.robot_name),PoseStamped, self.poseCallback)
         # Initializes a publisher for the new pose after being converted via homography
         self.pub = rospy.Publisher('/%s/%s/pose' % (subject,self.robot_name),PoseStamped, queue_size=10)
-        self.pub_initial = rospy.Publisher('%s/%s/initialpose' % (subject,self.robot_name),PoseWithCovarianceStamped,queue_size=10)
-        rospy.spin()
+        self.pub_initial = rospy.Publisher('/%s/%s/initialpose' % (subject,self.robot_name),PoseWithCovarianceStamped,queue_size=10)
+        # Set the rate to 10 Hz
+        rate = rospy.Rate(10)
         while not rospy.is_shutdown():
-            self.tf_listener()
-            self.tf_broadcaster()
+            if (self.grabbed_pose):
+                while not rospy.is_shutdown():
+                    try:
+                        # Look for the odom->base_link transform for the robot specified in the parameter server
+                        starscream = self.tfBuffer.lookup_transform('odom_%s' % (self.robot_name), 'base_link_%s' % (self.robot_name), rospy.Time())
+                        rospy.logdebug("MAP_NODE: Found the transform!")
+                        self.tf_broadcaster(self.pose,starscream)
+                    except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
+                        # Couldn't find the transform, try again
+                        rate.sleep()
+                        rospy.loginfo("MAP_NODE: Couldn't find transform from odom_%s to base_link_%s, trying again." %(self.robot_name, self.robot_name))
+                        continue
+
 
     def matCallback(self,matrix):
         # Grabs the homography matrix from the homography topic.
@@ -55,20 +70,25 @@ class RomiPoser:
         self.q32 = matrix.q32
         self.q33 = matrix.q33
         # Set flag to true now that we have our data.
-        self.grabbed = True
+        rospy.logdebug("MAP_NODE: Homography matrix has been grabbed.")
+        self.grabbed_mat = True
 
     def poseCallback(self,data):
+        rospy.logdebug("MAP_NODE: Received raw pose from JSON file.")
         u = data.pose.position.x
         v = data.pose.position.y
-        if (self.grabbed):
+        if (self.grabbed_mat):
             # Initializes an empty PoseStamped object
             new_pose = PoseStamped()
             new_pose.header.frame_id = 'odom_%s' % (self.robot_name)
             new_pose.header.stamp = rospy.Time.now()
-            new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
+            # new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
+            new_pose.pose.position.x = 0.006095*u
             new_pose.pose.position.y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
             new_pose.pose.position.z = 0
             self.pub.publish(new_pose)
+            rospy.logdebug("MAP_NODE: Published new pose after homography transformation")
+            self.pose = new_pose
             if (self.first):
                 rospy.set_param('/%s_first_pose_x' % self.robot_name, '%s' % new_pose.pose.position.x)
                 rospy.set_param('/%s_first_pose_y' % self.robot_name, '%s' % new_pose.pose.position.y)
@@ -76,23 +96,9 @@ class RomiPoser:
                 msg.header.stamp = rospy.Time.now()
                 msg.pose.pose.position = new_pose.pose.position
                 self.pub_initial.publish(msg)
+                rospy.loginfo("MAP_NODE: Published initial coordinates to /initialpose")
                 self.first = False
-            self.tf_listener(new_pose)
-
-    def tf_listener(self,new_pose):
-        # Set the rate to 10 Hz
-        rate = rospy.Rate(10)
-        while not rospy.is_shutdown():
-            try:
-                # Look for the odom->base_link transform for the robot specified in the parameter server
-                starscream = self.tfBuffer.lookup_transform('odom_%s' % (self.robot_name), 'base_link_%s' % (self.robot_name), rospy.Time())
-                rospy.logdebug("Found the transform!")
-                self.tf_broadcaster(new_pose,starscream)
-            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-                # Couldn't find the transform, try again
-                rate.sleep()
-                rospy.loginfo("Couldn't find transform from odom_%s to base_link_%s, trying again." %(self.robot_name, self.robot_name))
-                continue
+            self.grabbed_pose = True
 
 
     def tf_broadcaster(self,new_pose,starscream):

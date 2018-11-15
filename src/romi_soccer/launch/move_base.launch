@@ -7,7 +7,6 @@
           pkg="map_server"
           type="map_server"
           args="$(find romi_soccer)/config/map.yaml"/>
-
      <node
           name="move_base"
           pkg="move_base"
