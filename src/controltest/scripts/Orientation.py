@@ -103,7 +103,7 @@ def run(mag):
         else:
             straight(spLeft)
 
-def  talker():
+def talker():
     global angle, angle_Gyro_unbounded, total, i, sampleRate
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
@@ -116,14 +116,10 @@ def  talker():
         angle_error_offset = -5.0
     else:
         angle_error_offset = 5.0
-    #if ((orientation_input >= 0.0) and (orientation_input <= 90.0)):
-        #angle_error_offset = 3.0
-    #elif ((orientation_input <= 360.0) and (orientation_input >= 270.0)):
-        #angle_error_offset = -3.0
-    #elif ((orientation_input <= 180.0) and (orientation_input >= 90.0)):
-        #angle_error_offset = 8.0
-    #elif ((orientation_input >= 180.0) and (orientation_input <= 270.0)):
-        #angle_error_offset = -8.0
+    if ((orientation_input < 5) or (orientation_input > 355)):
+        compensated_orientation = 0
+    else:
+        compensated_orientation = orientation_input - angle_error_offset
     while True:
         encoders = a_star.read_encoders()  
         right_encoder = encoders[1]
@@ -140,7 +136,7 @@ def  talker():
         print("orientation = %s" % angle)
         print("displacement = %s" % total_displacement)
         print('orientation_input = %s' % orientation_input)
-        if (((angle - 1) <= (orientation_input - angle_error_offset)) and ((orientation_input - angle_error_offset) <= (angle + 1))): #current orientation should just be angle of encoder or gyro
+        if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
             run(mag)
             a_star.motors(0,0) 
             break 
