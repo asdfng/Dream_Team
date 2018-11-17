@@ -112,6 +112,7 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
 
 
 def talker(me, goal, previous_orientation):
+    
     a_star = AStar()
     locations = grabber()
     encoders = a_star.read_encoders()
@@ -120,7 +121,9 @@ def talker(me, goal, previous_orientation):
     tAngle = previous_orientation
     locations = grabber()
     orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
-    
+    print(orientation_input)
+    print(mag)
+
     if (orientation_input >= 180):
         angle_error_offset = -5.0
     else:
