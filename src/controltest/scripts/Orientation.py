@@ -5,6 +5,7 @@ import timeit
 import os
 import math
 from a_star import AStar
+from Grabber import grabber
 
 
 def straight(speed):
@@ -95,19 +96,16 @@ def run(mag):
         else:
             straight(spLeft)
 
-def talker():
-    
+def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
     a_star = AStar()
-    angle = 0.0
-    angle_Gyro_unbounded = 0.0
-    total = 0.0
+    angle = previous_orientation
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
     oldangle_Encoder = 0.0
     total_displacement = 0.0
     mRSX, mRSY, mBX, mBY = fetch_coordinates()
-    orientation_input, mag = point_orientation(mRSX,mRSY,mBX,mBY)
+    orientation_input, mag = point_orientation(our_x, our_y, desired_x, desired_y)
     if (orientation_input >= 180):
         angle_error_offset = -5.0
     else:
@@ -129,9 +127,6 @@ def talker():
         total_displacement += center_displacement
         oldangle_Encoder = angle_Encoder                                     
         angle += dEncoder
-        print("orientation = %s" % angle)
-        print("displacement = %s" % total_displacement)
-        print('orientation_input = %s' % orientation_input)
         if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
             run(mag)
             a_star.motors(0,0) 
