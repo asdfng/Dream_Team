@@ -138,7 +138,7 @@ def talker(me, goal, previous_orientation):
 
 if __name__ == '__main__':
     try:
-        last_orientation = talker(rSquare,rTriangle,0.0)
-        end_orientation = talker(rSquare,ball,last_orientation)
+        last_orientation = talker('rSquare','rTriangle',0.0)
+        end_orientation = talker('rSquare','ball',last_orientation)
     except KeyboardInterrupt:
         a_star.motors(0,0)
