@@ -4,16 +4,8 @@ import time, json, urllib2
 import timeit 
 import os
 import math
-from lms6 import LSM6
 from a_star import AStar
 
-#Initialize all objects
-a_star = AStar()
-angle = 0.0
-angle_Gyro_unbounded = 0.0
-total = 0.0
-theta_initial = 0.0
-theta_new_unbounded = 0.0
 
 def straight(speed):
     mLeft = speed
@@ -45,8 +37,8 @@ def straight(speed):
         time.sleep(0.05)
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
-    global theta_initial
-    global theta_new_unbounded
+    theta_initial = 0.0
+    theta_new_unbounded = 0.0
     pi = math.pi
     dist_between_wheels = 0.4791667
     right_wheel_rotations = right_encoder/float(1440)                  
@@ -104,7 +96,11 @@ def run(mag):
             straight(spLeft)
 
 def talker():
-    global angle, angle_Gyro_unbounded, total, i, sampleRate
+    
+    a_star = AStar()
+    angle = 0.0
+    angle_Gyro_unbounded = 0.0
+    total = 0.0
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
