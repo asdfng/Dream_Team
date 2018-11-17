@@ -82,30 +82,33 @@ def run(me, goal):
             straight(spLeft)
 
 def orient(oAngle, oLEncoder, oREncoder):
-    
-    encoders = a_star.read_encoders()
-    rEncoder = encoders[1]
-    lEncoder = encoders[0]
+    while True:
+        encoders = a_star.read_encoders()
+        rEncoder = encoders[1]
+        lEncoder = encoders[0]
 
-    pRight = rEncoder - oREncoder
-    pLeft  = lEncoder - oLEncoder
+        pRight = rEncoder - oREncoder
+        pLeft  = lEncoder - oLEncoder
 
-    oLEncoder = lEncoder
-    oREncoder = rEncoder
+        oLEncoder = lEncoder
+        oREncoder = rEncoder
 
-    angle_Encoder = displacement(passRight,passLeft) 
-    dEncoder = angle - oAngle
+        angle_Encoder = displacement(passRight,passLeft) 
+        dEncoder = angle - oAngle
 
-    oldangle_Encoder = angle_Encoder                                     
-    angle += dEncoder
-    if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
-        run(mag)
-        a_star.motors(0,0) 
-        break 
-    elif ((orientation_input <= 360) and (orientation_input >= 180)):
-        a_star.motors(-50,50)
-    elif ((orientation_input <= 180) and (orientation_input >= 0)):
-        a_star.motors(50,-50)
+        oldangle_Encoder = angle_Encoder                                     
+        angle += dEncoder
+        
+        if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
+            run(mag)
+            a_star.motors(0,0) 
+            break 
+        elif ((orientation_input <= 360) and (orientation_input >= 180)):
+            a_star.motors(-50,50)
+        elif ((orientation_input <= 180) and (orientation_input >= 0)):
+            a_star.motors(50,-50)
+
+    return angle
 
 
 def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
@@ -131,3 +134,4 @@ def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
     else:
         compensated_orientation = orientation_input - angle_error_offset
     
+    angle = orient(angle,oldleft_encoder,oldright_encoder)
