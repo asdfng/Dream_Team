@@ -101,7 +101,7 @@ def run(mag):
 def  talker():
 
     a_star = AStar()
-    
+
     angle = 0.0
     angle_Gyro_unbounded = 0.0
     total = 0.0
