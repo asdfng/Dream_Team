@@ -145,3 +145,5 @@ if __name__ == '__main__':
        execute()
     except KeyboardInterrupt:
         a_star.motors(0,0)
+
+print(__name__)
