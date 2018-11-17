@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#import rospy
 import time, json, urllib2
 import timeit 
 import os
@@ -52,7 +51,7 @@ def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_new_unbounded = theta_initial + alpha_left_turn_degrees 
     theta_new = theta_new_unbounded % 360                                   
     theta_initial = theta_new 
-    return theta_new, displacement_middle, right_displacement, left_displacement
+    return theta_new
                                                                 
 def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y): #calculates the angle between the two points to figure out the correction
     pi = math.pi
@@ -69,32 +68,45 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, mag
 
-def fetch_coordinates():
-    response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
-    source = response.read()
-    data = json.loads(source.decode())
-    red_square_x = data['Blue Team Data']['Square']['Object Center']['X']
-    red_square_y = data['Blue Team Data']['Square']['Object Center']['Y']
-    ball_x = data['Ball']['Object Center']['X']
-    ball_y = data['Ball']['Object Center']['Y']
-    mRSX = float(red_square_x - 12)*(float(8/float(394-12)))
-    mRSY = float(red_square_y - 31)*(float(4/float(221-31)))
-    mBX = float(ball_x - 12)*(float(8/float(394-12)))
-    mBY = float(ball_y - 31)*(float(4/float(221-31)))
-    return mRSX, mRSY, mBX, mBY
-
-def run(mag):
+def run(me, goal):
     while True:
         mark = 1
         spLeft = 100
-        mRSX, mRSY, mBX, mBY = fetch_coordinates()
-        unused_angle, mag = point_orientation(mRSX,mRSY,mBX,mBY)
+        locations = grabber()
+        null1 , mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
         print(mag)
         if (mag < mark):
             a_star.motors(0,0)
             break
         else:
             straight(spLeft)
+
+def orient(oAngle, oLEncoder, oREncoder):
+    
+    encoders = a_star.read_encoders()
+    rEncoder = encoders[1]
+    lEncoder = encoders[0]
+
+    pRight = rEncoder - oREncoder
+    pLeft  = lEncoder - oLEncoder
+
+    oLEncoder = lEncoder
+    oREncoder = rEncoder
+
+    angle_Encoder = displacement(passRight,passLeft) 
+    dEncoder = angle - oAngle
+
+    oldangle_Encoder = angle_Encoder                                     
+    angle += dEncoder
+    if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
+        run(mag)
+        a_star.motors(0,0) 
+        break 
+    elif ((orientation_input <= 360) and (orientation_input >= 180)):
+        a_star.motors(-50,50)
+    elif ((orientation_input <= 180) and (orientation_input >= 0)):
+        a_star.motors(50,-50)
+
 
 def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
     
@@ -104,11 +116,11 @@ def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
     
-    oldangle_Encoder = previous_orientation
+    angle = previous_orientation
     total_displacement = 0.0
     
-    mRSX, mRSY, mBX, mBY = fetch_coordinates()
-    orientation_input, mag = point_orientation(our_x, our_y, desired_x, desired_y)
+    locations = grabber()
+    orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
     
     if (orientation_input >= 180):
         angle_error_offset = -5.0
@@ -119,34 +131,3 @@ def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
     else:
         compensated_orientation = orientation_input - angle_error_offset
     
-    while True:
-    
-        encoders = a_star.read_encoders()  
-        right_encoder = encoders[1]
-        left_encoder = encoders[0]
-    
-        passRight = right_encoder - oldright_encoder
-        passLeft = left_encoder - oldleft_encoder
-    
-        oldright_encoder = right_encoder 
-        oldleft_encoder = left_encoder
-        angle_Encoder, center_displacement, right_displacement, left_displacement = displacement(passRight,passLeft) 
-        dEncoder = angle_Encoder - oldangle_Encoder
-    
-        oldangle_Encoder = angle_Encoder                                     
-        angle += dEncoder
-        if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
-            run(mag)
-            a_star.motors(0,0) 
-            break 
-        elif ((orientation_input <= 360) and (orientation_input >= 180)):
-            a_star.motors(-50,50)
-        elif ((orientation_input <= 180) and (orientation_input >= 0)):
-            a_star.motors(50,-50)
-        os.system("clear")
-
-if __name__ == '__main__':
-    try:
-        talker()
-    except KeyboardInterrupt:
-        a_star.motors(0,0)
