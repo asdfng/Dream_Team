@@ -113,7 +113,7 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
 
 
 def talker(me, goal, previous_orientation):
-    
+    print('Here!')
     locations = grabber()
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
