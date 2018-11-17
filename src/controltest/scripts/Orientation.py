@@ -82,7 +82,7 @@ def run(me, goal):
             straight(spLeft)
 
 def orient(tAngle, oLEncoder, oREncoder):
-    oldangle_Encoder = angle
+    oldangle_Encoder = 0.0
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
@@ -109,7 +109,7 @@ def orient(tAngle, oLEncoder, oREncoder):
         elif ((orientation_input <= 180) and (orientation_input >= 0)):
             a_star.motors(50,-50)
 
-    return total_angle
+    return tAngle
 
 
 def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
