@@ -136,9 +136,12 @@ def talker(me, goal, previous_orientation):
     last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation)
     return last_angle
 
+def execute():
+    last_orientation = talker('rSquare','rTriangle',0.0)
+    end_orientation = talker('rSquare','ball',last_orientation)
+
 if __name__ == "__main__":
     try:
-        last_orientation = talker('rSquare','rTriangle',0.0)
-        end_orientation = talker('rSquare','ball',last_orientation)
+       execute()
     except KeyboardInterrupt:
         a_star.motors(0,0)
