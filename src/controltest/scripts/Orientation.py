@@ -81,7 +81,7 @@ def run(me, goal):
         else:
             straight(spLeft)
 
-def orient(tAngle, oLEncoder, oREncoder):
+def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
     oldangle_Encoder = 0.0
     while True:
         encoders = a_star.read_encoders()
@@ -100,28 +100,24 @@ def orient(tAngle, oLEncoder, oREncoder):
         oldangle_Encoder = angle                                   
         tAngle += dEncoder
 
-        if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
+        if (((tAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (tAngle + 1))):
             run(mag)
             a_star.motors(0,0) 
             break 
-        elif ((orientation_input <= 360) and (orientation_input >= 180)):
+        elif ((compensated_orientation <= 360) and (compensated_orientation >= 180)):
             a_star.motors(-50,50)
-        elif ((orientation_input <= 180) and (orientation_input >= 0)):
+        elif ((compensated_orientation <= 180) and (compensated_orientation >= 0)):
             a_star.motors(50,-50)
-
     return tAngle
 
 
-def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
-    
+def talker(me, goal, previous_orientation):
     a_star = AStar()
-
+    locations = grabber()
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
-    
     tAngle = previous_orientation
-    
     locations = grabber()
     orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
     
@@ -134,4 +130,15 @@ def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
     else:
         compensated_orientation = orientation_input - angle_error_offset
     
-    angle = orient(tAngle,oldleft_encoder,oldright_encoder)
+    last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation)
+    return last_angle
+
+
+
+
+if __name__ == '__main__':
+    try:
+        last_orientation = talker(rSquare,rTriangle,0.0)
+        end_orientation = talker(rSquare,ball,last_orientation)
+    except KeyboardInterrupt:
+        a_star.motors(0,0)
