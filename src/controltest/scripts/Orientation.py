@@ -137,12 +137,14 @@ def talker(me, goal, previous_orientation):
     return last_angle
 
 def execute():
+    print('made it!')
     last_orientation = talker('rSquare','rTriangle',0.0)
     end_orientation = talker('rSquare','ball',last_orientation)
 
 if __name__ == '__main__':
     try:
-       execute()
+        print('Done!')
+        execute()
     except KeyboardInterrupt:
         a_star.motors(0,0)
 
