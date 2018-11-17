@@ -6,6 +6,7 @@ import math
 from a_star import AStar
 from Grabber import grabber
 
+a_star = AStar()
 
 def straight(speed):
     mLeft = speed
@@ -113,7 +114,6 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
 
 def talker(me, goal, previous_orientation):
     
-    a_star = AStar()
     locations = grabber()
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
@@ -135,9 +135,6 @@ def talker(me, goal, previous_orientation):
     
     last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation)
     return last_angle
-
-
-
 
 if __name__ == '__main__':
     try:
