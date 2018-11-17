@@ -136,7 +136,7 @@ def talker(me, goal, previous_orientation):
     last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation)
     return last_angle
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     try:
         last_orientation = talker('rSquare','rTriangle',0.0)
         end_orientation = talker('rSquare','ball',last_orientation)
