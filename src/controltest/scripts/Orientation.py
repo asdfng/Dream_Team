@@ -97,15 +97,19 @@ def run(mag):
             straight(spLeft)
 
 def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
+    
     a_star = AStar()
-    angle = previous_orientation
+
     encoders = a_star.read_encoders()
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
-    oldangle_Encoder = 0.0
+    
+    oldangle_Encoder = previous_orientation
     total_displacement = 0.0
+    
     mRSX, mRSY, mBX, mBY = fetch_coordinates()
     orientation_input, mag = point_orientation(our_x, our_y, desired_x, desired_y)
+    
     if (orientation_input >= 180):
         angle_error_offset = -5.0
     else:
@@ -114,17 +118,21 @@ def talker(our_x, our_y, desired_x, desired_y,previous_orientation):
         compensated_orientation = 0
     else:
         compensated_orientation = orientation_input - angle_error_offset
+    
     while True:
+    
         encoders = a_star.read_encoders()  
         right_encoder = encoders[1]
         left_encoder = encoders[0]
+    
         passRight = right_encoder - oldright_encoder
         passLeft = left_encoder - oldleft_encoder
+    
         oldright_encoder = right_encoder 
         oldleft_encoder = left_encoder
         angle_Encoder, center_displacement, right_displacement, left_displacement = displacement(passRight,passLeft) 
         dEncoder = angle_Encoder - oldangle_Encoder
-        total_displacement += center_displacement
+    
         oldangle_Encoder = angle_Encoder                                     
         angle += dEncoder
         if (((angle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (angle + 1))):
