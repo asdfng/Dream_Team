@@ -140,7 +140,7 @@ def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
     end_orientation = talker('rSquare','ball',last_orientation)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     try:
        execute()
     except KeyboardInterrupt:
