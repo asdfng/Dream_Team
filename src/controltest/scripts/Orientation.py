@@ -112,7 +112,8 @@ def run(me, goal):
         else:
             straight(spLeft)
 
-def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, me, goal):
+def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, , previous_orientation, me, goal):
+    tAngle = previous_orientation
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
@@ -150,7 +151,6 @@ def talker(me, goal, previous_orientation):
    
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
-    tAngle = previous_orientation
    
     locations = grabber()
 
@@ -165,14 +165,14 @@ def talker(me, goal, previous_orientation):
     else:
         compensated_orientation = orientation_input - angle_error_offset
     
-    last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation, me, goal)
+    last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
     print('the last angle for the first movement was: %s' % last_angle)
     return last_angle
    
 
 def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
-    #end_orientation = talker('rSquare','ball',last_orientation)
+    end_orientation = talker('rSquare','ball',last_orientation)
 
 if __name__ == '__main__':
     try:
