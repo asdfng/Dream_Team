@@ -112,7 +112,7 @@ def run(me, goal):
         else:
             straight(spLeft)
 
-def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, , previous_orientation, me, goal):
+def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, previous_orientation, me, goal):
     tAngle = previous_orientation
     while True:
         encoders = a_star.read_encoders()
