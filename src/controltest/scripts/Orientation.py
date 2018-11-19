@@ -116,7 +116,8 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
         tAngle += dEncoder
 
         print(compensated_orientation)
-        print(angle)
+        print(tAngle)
+
         if (((tAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (tAngle + 1))):
             run(mag)
             a_star.motors(0,0) 
