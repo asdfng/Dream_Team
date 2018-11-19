@@ -85,9 +85,11 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 
 def run(me, goal):
     while True:
+        print('Here!')
         mark = 1
         spLeft = 100
         locations = grabber()
+        print('Made it')
         null1 , mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
         print(mag)
         if (mag < mark):
