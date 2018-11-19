@@ -97,7 +97,7 @@ def run(me, goal):
             straight(spLeft)
 
 def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
-    oldangle_Encoder = 0.0
+    oAngle = 0.0
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
@@ -112,7 +112,7 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
         angle = displacement(pRight,pLeft) 
         dEncoder = angle - oAngle
 
-        oldangle_Encoder = angle                                   
+        oAngle = angle                                   
         tAngle += dEncoder
 
         if (((tAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (tAngle + 1))):
