@@ -97,7 +97,6 @@ def run(me, goal):
             straight(spLeft)
 
 def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
-    oAngle = 0.0
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
@@ -110,10 +109,8 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
         oREncoder = rEncoder
 
         angle = displacement(pRight,pLeft) 
-        dEncoder = angle - oAngle
-
-        oAngle = angle                                   
-        tAngle += dEncoder
+                                  
+        tAngle += angle
 
         print(compensated_orientation)
         print(tAngle)
@@ -130,18 +127,16 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
 
 
 def talker(me, goal, previous_orientation):
-    print('Here!')
+  
     encoders = a_star.read_encoders()
-    print('read encoders')
+   
     oldright_encoder = encoders[1]
     oldleft_encoder = encoders[0]
     tAngle = previous_orientation
-    print('got my previous orientation')
+   
     locations = grabber()
-    print(locations)
+
     orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
-    print(orientation_input)
-    print(mag)
 
     if (orientation_input >= 180):
         angle_error_offset = -5.0
