@@ -90,7 +90,11 @@ def run(me, goal):
         spLeft = 100
         locations = grabber()
         print('Made it')
-        null1 , mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
+        mMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
+        mMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
+        mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
+        mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
+        null1 ,mag = point_orientation(mMeX,mMeY,mGX,mGY)
         print('Mag:%s' % mag)
         if (mag < mark):
             a_star.motors(0,0)
