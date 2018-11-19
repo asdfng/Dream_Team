@@ -120,9 +120,9 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, me, goal):
         tAngle += angle
         cAngle = tAngle % 360
         
-        print(angle)
-        print(compensated_orientation)
-        print(cAngle)
+        print('differene Angle:%s' % angle)
+        print('compensated orientation:%s' % compensated_orientation)
+        print('Total angle:%s' % cAngle)
 
         if (((cAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 1))):
             run(me, goal)
