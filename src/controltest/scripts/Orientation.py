@@ -89,7 +89,12 @@ def run(me, goal):
     locations = grabber()
     mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
     mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
-    mark = 1.2
+
+    if (goal == 'ball')
+        mark = 2
+    else:
+        mark = 1
+        
     spLeft = 100
     while True:
         print('Here!')
