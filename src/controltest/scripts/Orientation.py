@@ -112,6 +112,7 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
                                   
         tAngle += angle
 
+        print(angle)
         print(compensated_orientation)
         print(tAngle)
 
