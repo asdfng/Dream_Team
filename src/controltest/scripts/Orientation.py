@@ -85,6 +85,17 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     orientation_input = orientation_input_unbounded % 360
     return orientation_input, mag
 
+def check(comrade, target):
+    locations = grabber()
+    mGX = float(locations[target]['X'] - 12)*(float(8/float(394-12)))
+    mGY = float(locations[target]['Y'] - 31)*(float(4/float(221-31)))
+    mMeX = float(locations[comrade]['X'] - 12)*(float(8/float(394-12)))
+    mMeY = float(locations[comrade]['Y'] - 31)*(float(4/float(221-31)))
+
+    null1 ,mag = point_orientation(mMeX,mMeY,mGX,mGY)
+
+    return mag
+
 def run(me, goal):
     locations = grabber()
     mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
@@ -175,6 +186,11 @@ def talker(me, goal, previous_orientation):
 
 def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
+    distance = check('rTriangle','rCircle')
+
+    while (distance < 2):
+        distance = check('rTriangle','rCircle')
+
     end_orientation = talker('rSquare','ball',last_orientation)
 
 if __name__ == '__main__':
