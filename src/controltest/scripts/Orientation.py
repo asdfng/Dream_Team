@@ -91,7 +91,7 @@ def run(me, goal):
         locations = grabber()
         print('Made it')
         null1 , mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
-        print(mag)
+        print('Mag:%s' % mag)
         if (mag < mark):
             a_star.motors(0,0)
             break
