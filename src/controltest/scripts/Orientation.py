@@ -166,8 +166,9 @@ def talker(me, goal, previous_orientation):
         compensated_orientation = orientation_input - angle_error_offset
     
     last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation, me, goal)
+     print('the last angle for the first movement was: %s' % last_angle)
     return last_angle
-    print('the last angle for the first movement was: %s' % last_angle)
+   
 
 def execute():
     print('made it!')
