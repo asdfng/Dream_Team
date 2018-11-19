@@ -94,7 +94,7 @@ def run(me, goal):
         mark = 2
     else:
         mark = 1
-        
+
     spLeft = 100
     while True:
         print('Here!')
@@ -141,7 +141,7 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, me, goal):
             a_star.motors(-50,50)
         elif ((compensated_orientation <= 180) and (compensated_orientation >= 0)):
             a_star.motors(50,-50)
-    return tAngle
+    return cAngle
 
 
 def talker(me, goal, previous_orientation):
