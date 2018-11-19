@@ -45,6 +45,8 @@ def straight(speed):
         error = dL - dR
         tError += error
         sSlave += error/kp #+ ki*tError
+        if (sSlave > 400):
+            sSlave = 400
         oldencoderL = encoderL
         oldencoderR = encoderR
         a_star.motors(mLeft,sSlave)
@@ -87,9 +89,11 @@ def run(me, goal):
     locations = grabber()
     mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
     mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
+    mark = 1.2
+    spLeft = 100
     while True:
         print('Here!')
-        mark = 1
+        mark = 1.2
         spLeft = 100
         locations = grabber()
         print('Made it')
