@@ -188,7 +188,7 @@ def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
     distance = check('rTriangle','rCircle')
 
-    while (distance < 2):
+    while (distance > 2):
         distance = check('rTriangle','rCircle')
 
     end_orientation = talker('rSquare','ball',last_orientation)
