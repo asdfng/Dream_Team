@@ -84,6 +84,9 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
     return orientation_input, mag
 
 def run(me, goal):
+    locations = grabber()
+    mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
+    mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
     while True:
         print('Here!')
         mark = 1
@@ -92,8 +95,6 @@ def run(me, goal):
         print('Made it')
         mMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
         mMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
-        mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
-        mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
         null1 ,mag = point_orientation(mMeX,mMeY,mGX,mGY)
         print('Mag:%s' % mag)
         if (mag < mark):
