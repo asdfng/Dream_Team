@@ -111,12 +111,13 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
         angle = displacement(pRight,pLeft) 
                                   
         tAngle += angle
-
+        cAngle = tAngle % 360
+        
         print(angle)
         print(compensated_orientation)
-        print(tAngle)
+        print(cAngle)
 
-        if (((tAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (tAngle + 1))):
+        if (((cAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 1))):
             run(mag)
             a_star.motors(0,0) 
             break 
