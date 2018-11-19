@@ -90,7 +90,7 @@ def run(me, goal):
     mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
     mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
 
-    if (goal == 'ball')
+    if (goal == 'ball'):
         mark = 2
     else:
         mark = 1
@@ -167,6 +167,7 @@ def talker(me, goal, previous_orientation):
     
     last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation, me, goal)
     return last_angle
+    print('the last angle for the first movement was: %s' % last_angle)
 
 def execute():
     print('made it!')
