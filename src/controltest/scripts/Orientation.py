@@ -134,13 +134,16 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, 
         print('compensated orientation: %s' % compensated_orientation)
         print('Total angle: %s' % cAngle)
 
+        lA = (cAngle - compensated_orientation) % 360
+        rA = (compensated_orientation - cAngle) % 360
+
         if (((cAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 1))):
             run(me, goal)
             a_star.motors(0,0) 
             break 
-        elif ((compensated_orientation <= 360) and (compensated_orientation >= 180)):
+        elif (rA > lA):
             a_star.motors(-50,50)
-        elif ((compensated_orientation <= 180) and (compensated_orientation >= 0)):
+        elif (rA < lA):
             a_star.motors(50,-50)
     return cAngle
 
