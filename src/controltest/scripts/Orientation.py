@@ -130,7 +130,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, 
         tAngle += angle
         cAngle = tAngle % 360
         
-        print('differene Angle: %s' % angle)
+        print('difference Angle: %s' % angle)
         print('compensated orientation: %s' % compensated_orientation)
         print('Total angle: %s' % cAngle)
 
@@ -163,7 +163,7 @@ def talker(me, goal, previous_orientation):
     if ((orientation_input < 2.0) or (orientation_input > 358.0)):
         compensated_orientation = 0.0
     else:
-        compensated_orientation = orientation_input - angle_error_offset
+        compensated_orientation = (orientation_input - angle_error_offset) % 360
     
     last_angle = orient(oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
     print('the last angle for the first movement was: %s' % last_angle)
