@@ -96,7 +96,7 @@ def run(me, goal):
         else:
             straight(spLeft)
 
-def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
+def orient(tAngle, oLEncoder, oREncoder, compensated_orientation, me, goal):
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
@@ -118,7 +118,7 @@ def orient(tAngle, oLEncoder, oREncoder, compensated_orientation,):
         print(cAngle)
 
         if (((cAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 1))):
-            run(mag)
+            run(me, goal)
             a_star.motors(0,0) 
             break 
         elif ((compensated_orientation <= 360) and (compensated_orientation >= 180)):
@@ -149,7 +149,7 @@ def talker(me, goal, previous_orientation):
     else:
         compensated_orientation = orientation_input - angle_error_offset
     
-    last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation)
+    last_angle = orient(tAngle,oldleft_encoder,oldright_encoder,compensated_orientation, me, goal)
     return last_angle
 
 def execute():
