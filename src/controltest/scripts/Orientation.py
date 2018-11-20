@@ -3,10 +3,21 @@ import time, json, urllib2
 import timeit 
 import os
 import math
+import RPi.GPIO as GPIO
 from a_star import AStar
 
 
 a_star = AStar()
+
+def fire():
+    
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(21,GPIO.OUT)
+
+    GPIO.output(21,GPIO.HIGH)
+    time.sleep(.1)
+    GPIO.output(21,GPIO.LOW)
 
 def grabber():
     response = urllib2.urlopen('http://192.168.137.1:8001/FieldData/GetData')
