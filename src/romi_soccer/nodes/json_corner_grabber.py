@@ -16,10 +16,10 @@ def json_corner_grabber():
         map.header.frame_id = 'world'
         #Corners data parsing
         corners = data['Corners']
-        cornerTL = corners[0]
-        cornerTR = corners[1]
-        cornerBL = corners[2]
-        cornerBR = corners[3]
+        cornerBL = corners[0]
+        cornerTL = corners[1]
+        cornerBR = corners[2]
+        cornerTR = corners[3]
         map.BotR.y = cornerBR['Y']
         map.BotL.x = cornerBL['X']
         map.BotL.y = cornerBL['Y']

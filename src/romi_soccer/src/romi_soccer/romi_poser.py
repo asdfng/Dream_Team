@@ -82,8 +82,8 @@ class RomiPoser:
             new_pose = PoseStamped()
             new_pose.header.frame_id = 'odom_%s' % (self.robot_name)
             new_pose.header.stamp = rospy.Time.now()
-            # new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
-            new_pose.pose.position.x = 0.006095*u
+            new_pose.pose.position.x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
+            # new_pose.pose.position.x = 0.006095*u
             new_pose.pose.position.y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
             new_pose.pose.position.z = 0
             self.pub.publish(new_pose)

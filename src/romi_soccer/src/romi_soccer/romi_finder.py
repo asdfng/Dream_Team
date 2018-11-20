@@ -51,8 +51,8 @@ class RomiFinder:
 
             u = data.pose.position.x
             v = data.pose.position.y
-            # x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
-            x = 0.006095*u
+            x = ((self.q11*u+self.q12*v+self.q13)/(self.q31*u+self.q32*v+self.q33))
+            # x = 0.006095*u
             y = ((self.q21*u+self.q22*v+self.q23)/(self.q31*u+self.q32*v+self.q33))
             cloud.points[self.cloud_num] = Point32(x,y,0)
             self.pub.publish(cloud)

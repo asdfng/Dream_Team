@@ -23,7 +23,7 @@ def callback(corner):
     v2 = corner.BotR.y
     # u2 = corner.BotR.x - 32
     # v2 = corner.BotR.y + 32
-    x2 = 2.4384
+    x2 = 2.438
     y2 = 0
 
     rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x2,y2,corner.BotR.x, corner.BotR.y)
@@ -35,7 +35,7 @@ def callback(corner):
     # u3 = corner.TopL.x + 32
     # v3 = corner.TopL.y - 32
     x3 = 0
-    y3 = 1.2192
+    y3 = 1.219
 
     rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x3,y3,corner.TopL.x, corner.TopL.y)
     # rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
@@ -45,8 +45,8 @@ def callback(corner):
     v4 = corner.TopR.y
     # u4 = corner.TopR.x - 32
     # v4 = corner.TopR.y - 32
-    x4 = 2.4384
-    y4 = 1.2192
+    x4 = 2.438
+    y4 = 1.219
 
     rospy.loginfo('Received table coordinate (%s,%s) as pixel coordinates (%s,%s).',x4,y4,corner.TopR.x, corner.TopR.y)
     # rospy.loginfo('Offset origin by 32 pixels to adjust for radius of rover.')
