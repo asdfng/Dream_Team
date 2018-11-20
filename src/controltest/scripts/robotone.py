@@ -3,7 +3,7 @@ import timeit
 import os
 import math
 from a_star import AStar
-from Orientation import straight, grabber, displacement, point_orientation, run, orient, talker
+import Orientation
 a_star = AStar()
 
 if __name__ == '__main__':
