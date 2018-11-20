@@ -7,7 +7,7 @@
 
 import Orientation #I think we can do this instead
 
-a_star = AStar()
+#a_star = AStar() #Not sure that we need this line because it is defined in the orientation code
 
 if __name__ == '__main__':
     try:
