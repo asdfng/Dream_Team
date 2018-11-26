@@ -200,6 +200,8 @@ def execute():
     while (distance > 1):
         distance = check('rTriangle','rCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
+    fire()
+    
 
 if __name__ == '__main__':
     try:
