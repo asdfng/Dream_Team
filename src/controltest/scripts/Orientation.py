@@ -115,7 +115,7 @@ def run(me, goal):
     if (goal == 'ball'):
         mark = 1
     else:
-        mark = .5
+        mark = 1
 
     spLeft = 100
     while True:
