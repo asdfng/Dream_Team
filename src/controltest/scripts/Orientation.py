@@ -111,7 +111,9 @@ def run(me, goal):
     locations = grabber()
     mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
     mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
-
+    previousMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
+    previousMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
+    
     if (goal == 'ball'):
         mark = .75
     else:
@@ -119,14 +121,23 @@ def run(me, goal):
 
     spLeft = 100
     while True:
-        print('Here!')
+        
         spLeft = 100
         locations = grabber()
-        print('Made it')
+        
         mMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
         mMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
+        dMe = mMex - previousMeX
+
+        if abs(dMe) > 2:
+            mMeX = previousMeX
+            mMeY = previousMeY
+        
         null1 ,mag = point_orientation(mMeX,mMeY,mGX,mGY)
-        print('Mag:%s' % mag)
+
+        previousMeX = mMeX
+        previousMeY = mMeY
+        
         if (mag < mark):
             a_star.motors(0,0)
             break
