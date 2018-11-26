@@ -109,11 +109,16 @@ def check(comrade, target):
 
 def run(me, goal):
     locations = grabber()
-    mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
-    mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
+    if (goal == 'goal'):
+        mGX = float(339 - 12)*(float(8/float(394-12))) 
+        mGY = float(128 - 31)*(float(4/float(221-31)))       
+    else:
+        mGX = float(locations[goal]['X'] - 12)*(float(8/float(394-12)))
+        mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
+    
     previousMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
     previousMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
-    
+
     if (goal == 'ball'):
         mark = .75
     else:
