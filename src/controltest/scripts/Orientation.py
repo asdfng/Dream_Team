@@ -113,7 +113,7 @@ def run(me, goal):
     mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
 
     if (goal == 'ball'):
-        mark = 1
+        mark = .75
     else:
         mark = 1
 
@@ -200,6 +200,7 @@ def execute():
     while (distance > 1):
         distance = check('rTriangle','rCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
+    nn = talker('rSquare','bTriangle',end_orientation)
     fire()
     
 
