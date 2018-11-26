@@ -181,9 +181,9 @@ def talker(me, goal, previous_orientation):
     orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
     if (orientation_input >= 180):
-        angle_error_offset = -2.0
+        angle_error_offset = -5.0
     else:
-        angle_error_offset = 2.0
+        angle_error_offset = 5.0
     if ((orientation_input < 5.0) or (orientation_input > 355.0)):
         compensated_orientation = 0.0
     else:
