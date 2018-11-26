@@ -15,6 +15,7 @@ if __name__ == '__main__':
         i = 0
         while i < 10:
             a_star.motors(-50,-50)
+            i = i + 10
         a_star.motors(0,0)
         end_orientation = talker('rTriangle','rCircle',last_orientation)
     except KeyboardInterrupt:
