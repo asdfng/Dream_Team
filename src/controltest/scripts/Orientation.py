@@ -64,6 +64,8 @@ def straight(speed):
         
         if (sSlave > 400):
             sSlave = 400
+        if (sSlave < -400):
+            sSlave = -400 
             
         oldencoderL = encoderL
         oldencoderR = encoderR
