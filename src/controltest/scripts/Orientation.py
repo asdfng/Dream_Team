@@ -131,7 +131,6 @@ def run(me, goal):
     else:
         mark = 1.25
 
-    spLeft = 100
     while True:
         
         spLeft = 100
