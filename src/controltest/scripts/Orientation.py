@@ -139,7 +139,7 @@ def run(me, goal):
         
         mMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
         mMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
-        dMe = mMex - previousMeX
+        dMe = mMeX - previousMeX
 
         if abs(dMe) > 2:
             mMeX = previousMeX
