@@ -126,9 +126,9 @@ def run(me, goal):
     previousMeY = float(locations[me]['Y'] - 31)*(float(4/float(221-31)))
 
     if (goal == 'ball'):
-        mark = .75
-    else:
         mark = 1
+    else:
+        mark = 1.25
 
     while True:
         
