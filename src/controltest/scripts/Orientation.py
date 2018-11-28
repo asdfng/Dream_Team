@@ -208,7 +208,7 @@ def talker(me, goal, previous_orientation,run):
     if (orientation_input >= 180):
         angle_error_offset = -5.0*(1 + run)
     else:
-        angle_error_offset = 5.0*(1 + run)
+        angle_error_offset = 10.0*(1 + run)
 
     if ((orientation_input < 5.0) or (orientation_input > 355.0)):
         compensated_orientation = 0.0
