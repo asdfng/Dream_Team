@@ -150,7 +150,7 @@ def run(me, goal):
         print('Triangle:%s' % checkT)
         print('Square:%s' % checkS)
 
-        shapes = {'rTriangle':checkT, 'rCircle':checkC, 'rSquare':checkS}
+        shapes = {'rTriangle': float(checkT), 'rCircle':float(checkC), 'rSquare':float(checkS)}
 
         smallest = min(shapes)
         print(smallest)
