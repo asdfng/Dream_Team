@@ -234,12 +234,12 @@ def talker(me, goal, previous_orientation):
    
 
 def execute():
-    last_orientation = talker('rSquare','rTriangle',0.0)
+    last_orientation = talker('rCircle','rTriangle',0.0)
     print(run)
-    distance = check('rTriangle','rCircle')
+    distance = check('rTriangle','rSquare')
     while (distance > 1):
-        distance = check('rTriangle','rCircle')
-    end_orientation = talker('rSquare','ball',last_orientation)
+        distance = check('rTriangle','rSquare')
+    end_orientation = talker('rCircle','ball',last_orientation)
     fire()
     
 
