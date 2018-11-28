@@ -190,7 +190,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, 
     return cAngle
 
 
-def talker(me, goal, previous_orientation):
+def talker(me, goal, previous_orientation,run):
   
     encoders = a_star.read_encoders()
    
@@ -205,9 +205,9 @@ def talker(me, goal, previous_orientation):
         orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
     if (orientation_input >= 180):
-        angle_error_offset = -5.0
+        angle_error_offset = -5.0*(1 + run)
     else:
-        angle_error_offset = 5.0
+        angle_error_offset = 5.0 *(1 + run)
     if ((orientation_input < 5.0) or (orientation_input > 355.0)):
         compensated_orientation = 0.0
     else:
@@ -215,15 +215,15 @@ def talker(me, goal, previous_orientation):
     
     last_angle = orient(oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
     print('the last angle for the first movement was: %s' % last_angle)
-    return last_angle
+    return last_angle, (run+1)
    
 
 def execute():
-    last_orientation = talker('rSquare','rTriangle',0.0)
+    last_orientation, run = talker('rSquare','rTriangle',0.0,0)
     distance = check('rTriangle','rCircle')
     while (distance > 1):
         distance = check('rTriangle','rCircle')
-    end_orientation = talker('rSquare','ball',last_orientation)
+    end_orientation, run = talker('rSquare','ball',last_orientation, run)
     fire()
     
 
