@@ -121,7 +121,7 @@ def run(me, goal):
     else:
         mGX = locations[goal]['X']
         mGY = locations[goal]['Y']
-    
+
     previousMeX = locations[me]['X']
     previousMeY = locations[me]['Y']
 
@@ -134,17 +134,25 @@ def run(me, goal):
         
         spLeft = 100
         locations = grabber()
-        
-        mMeX = locations[me]['X']
-        mMeY = locations[me]['Y']
-        dMe = mMeX - previousMeX
 
-        if abs(dMe) > 150:
-            mMeX = previousMeX
-            mMeY = previousMeY
+        rTX = locations['rTriangle']['X']
+        rTY = locations['rTriangle']['Y']
+        rCX = locations['rCircle']['X']
+        rCY = locations['rCircle']['Y']
+        rSX = locations['rSquare']['X']
+        rSY = locations['rSquare']['Y']
         
-        null1 ,mag = point_orientation(mMeX,mMeY,mGX,mGY)
+        null0, checkT = point_orientation(previousMeX, previousMeY, rTX, rTY)
+        null1, checkC = point_orientation(previousMeX, previousMeY, rCX, rCY)
+        null2, checkS = point_orientation(previousMeX, previousMeY, rSX, rSY)
 
+        shapes = {'rTriangle':checkT, 'rCircle':checkC, 'rSquare':checkS}
+
+        smallest = min(shapes)
+
+        mMeX = locations[smallest]['X']
+        mMeY = locations[smallest]['Y']
+        
         previousMeX = mMeX
         previousMeY = mMeY
         
