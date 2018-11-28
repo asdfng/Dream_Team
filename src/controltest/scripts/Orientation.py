@@ -227,7 +227,6 @@ def execute():
     while (distance > 1):
         distance = check('rTriangle','rCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
-    nn = talker('rSquare','goal',end_orientation)
     fire()
     
 
