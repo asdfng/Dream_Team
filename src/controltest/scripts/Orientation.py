@@ -126,9 +126,9 @@ def run(me, goal):
     previousMeY = locations[me]['Y']
 
     if (goal == 'ball'):
-        mark = 50
+        mark = 25
     else:
-        mark = 50
+        mark = 25
 
     while True:
         
