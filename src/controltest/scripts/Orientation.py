@@ -146,13 +146,15 @@ def run(me, goal):
         null1, checkC = point_orientation(previousMeX, previousMeY, rCX, rCY)
         null2, checkS = point_orientation(previousMeX, previousMeY, rSX, rSY)
 
+        print('Circle:%s' % checkC)
+        print('Triangle:%s' % checkT)
+        print('Square:%s' % checkS)
+
         shapes = {'rTriangle':checkT, 'rCircle':checkC, 'rSquare':checkS}
 
         smallest = min(shapes)
         print(smallest)
-        print('Circle:%s' % checkC)
-        print('Triangle:%s' % checkT)
-        print('Square:%s' % checkS)
+        
 
         mMeX = locations[smallest]['X']
         mMeY = locations[smallest]['Y']
