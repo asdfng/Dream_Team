@@ -128,7 +128,7 @@ def run(me, goal):
     if (goal == 'ball'):
         mark = .75
     else:
-        mark = 1.25
+        mark = 1
 
     while True:
         
@@ -205,9 +205,9 @@ def talker(me, goal, previous_orientation,run):
         orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
     if (orientation_input >= 180):
-        angle_error_offset = 1.0*(1 + run)
+        angle_error_offset = -5.0*(1 + run)
     else:
-        angle_error_offset = -1.0*(1 + run)
+        angle_error_offset = 5.0*(1 + run)
     if ((orientation_input < 5.0) or (orientation_input > 355.0)):
         compensated_orientation = 0.0
     else:
