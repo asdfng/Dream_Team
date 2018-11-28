@@ -43,7 +43,7 @@ def straight(speed):
     tError = 0
     error = 0
     kp = 2
-    ki = 1
+    ki = 100
     i = 0
     while (i < 10):
         if (i==0):
@@ -54,15 +54,16 @@ def straight(speed):
         dL = encoderL - oldencoderL
         dR = encoderR - oldencoderR
         error = dL - dR
+	if (error > 1000):
+		error = 0
         tError += error
-        sSlave += error/kp #+ ki*tError
-        if (sSlave > 400):
-            sSlave = 400
+        sSlave += error/kp 
+        sSlave = sSlave % 400
         oldencoderL = encoderL
         oldencoderR = encoderR
         a_star.motors(mLeft,sSlave)
         i = 1 + i
-        time.sleep(0.05)
+        time.sleep(0.2)
 
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_initial = 0.0
@@ -113,14 +114,13 @@ def run(me, goal):
     mGY = float(locations[goal]['Y'] - 31)*(float(4/float(221-31)))
 
     if (goal == 'ball'):
-        mark = .75
+        mark = .5
     else:
-        mark = 1
+        mark = .5
 
-    spLeft = 100
     while True:
         print('Here!')
-        spLeft = 100
+        spLeft = 50
         locations = grabber()
         print('Made it')
         mMeX = float(locations[me]['X'] - 12)*(float(8/float(394-12)))
@@ -163,9 +163,9 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, 
             a_star.motors(0,0) 
             break 
         elif (rA > lA):
-            a_star.motors(-50,50)
+            a_star.motors(-45,45)
         elif (rA < lA):
-            a_star.motors(50,-50)
+            a_star.motors(45,-45)
     return cAngle
 
 
@@ -181,13 +181,10 @@ def talker(me, goal, previous_orientation):
     orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
     if (orientation_input >= 180):
-        angle_error_offset = -5.0
+        angle_error_offset = -10.0
     else:
-        angle_error_offset = 5.0
-    if ((orientation_input < 5.0) or (orientation_input > 355.0)):
-        compensated_orientation = 0.0
-    else:
-        compensated_orientation = (orientation_input - angle_error_offset) % 360
+        angle_error_offset = -10.0
+    compensated_orientation = (orientation_input - angle_error_offset) % 360
     
     last_angle = orient(oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
     print('the last angle for the first movement was: %s' % last_angle)
@@ -196,11 +193,11 @@ def talker(me, goal, previous_orientation):
 
 def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
-    distance = check('rTriangle','rCircle')
+    distance = check('rTriangle','bCircle')
     while (distance > 1):
-        distance = check('rTriangle','rCircle')
+        distance = check('rTriangle','bCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
-    nn = talker('rSquare','bSquare',end_orientation)
+    #nn = talker('rSquare','bSquare',end_orientation)
     fire()
     
 
