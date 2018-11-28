@@ -43,7 +43,7 @@ def straight(speed):
     tError = 0
     error = 0
     kp = 2
-    ki = 1
+    ki = 100
     i = 0
     while (i < 10):
         if (i==0):
@@ -60,7 +60,7 @@ def straight(speed):
             error = 0
 
         tError += error
-        sSlave += error/kp + ki*tError
+        sSlave += error/kp + tError/ki
 
         sSlave = sSlave % 400 
             
