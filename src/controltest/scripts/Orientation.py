@@ -128,7 +128,7 @@ def run(me, goal):
     if (goal == 'ball'):
         mark = .75
     else:
-        mark = .75
+        mark = 1.25
 
     while True:
         
