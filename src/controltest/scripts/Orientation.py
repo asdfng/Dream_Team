@@ -207,7 +207,7 @@ def talker(me, goal, previous_orientation,run):
     if (orientation_input >= 180):
         angle_error_offset = -5.0*(1 + run)
     else:
-        angle_error_offset = 5.0 *(1 + run)
+        angle_error_offset = 5.0*(1 + run)
     if ((orientation_input < 5.0) or (orientation_input > 355.0)):
         compensated_orientation = 0.0
     else:
@@ -215,11 +215,12 @@ def talker(me, goal, previous_orientation,run):
     
     last_angle = orient(oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
     print('the last angle for the first movement was: %s' % last_angle)
-    return last_angle, (run+1)
+    return last_angle, (run + 1)
    
 
 def execute():
     last_orientation, run = talker('rSquare','rTriangle',0.0,0)
+    print(run)
     distance = check('rTriangle','rCircle')
     while (distance > 1):
         distance = check('rTriangle','rCircle')
