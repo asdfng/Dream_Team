@@ -214,7 +214,7 @@ def talker(me, goal, previous_orientation):
     
     last_angle = orient(oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
     print('the last angle for the first movement was: %s' % last_angle)
-    return last_angle
+    return (last_angle + 5)
    
 
 def execute():
