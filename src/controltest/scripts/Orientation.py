@@ -202,7 +202,10 @@ def talker(me, goal, previous_orientation):
    
     locations = grabber()
 
-    orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
+    if (goal == 'goal'):
+        orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],float(339 - 12)*(float(8/float(394-12))),float(128 - 31)*(float(4/float(221-31))))
+    else:
+        orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
     if (orientation_input >= 180):
         angle_error_offset = -5.0
