@@ -153,11 +153,12 @@ def run(me, goal):
         print('Circle:%s' % checkC)
         print('Triangle:%s' % checkT)
         print('Square:%s' % checkS)
+
         mMeX = locations[smallest]['X']
         mMeY = locations[smallest]['Y']
         
         null3, mag = point_orientation(mMeX,mMeY,mGX,mGY)
-
+        print('mag:%s' % mag)
         previousMeX = mMeX
         previousMeY = mMeY
         
