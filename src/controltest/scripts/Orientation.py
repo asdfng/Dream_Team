@@ -191,7 +191,8 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, 
 
 
 def talker(me, goal, previous_orientation,run):
-  
+    
+    angle_error_offset = 0.0
     encoders = a_star.read_encoders()
    
     oldright_encoder = encoders[1]
@@ -207,7 +208,8 @@ def talker(me, goal, previous_orientation,run):
     if (orientation_input >= 180):
         angle_error_offset = -5.0*(1 + run)
     else:
-        angle_error_offset = -10.0*(1 + run)
+        angle_error_offset = -15.0*(1 + run)
+
     if ((orientation_input < 5.0) or (orientation_input > 355.0)):
         compensated_orientation = 0.0
     else:
