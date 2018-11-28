@@ -60,7 +60,7 @@ def straight(speed):
             error = 0
 
         tError += error
-        sSlave += error/kp #+ ki*tError
+        sSlave += error/kp + ki*tError
 
         sSlave = sSlave % 400 
             
