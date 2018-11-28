@@ -184,9 +184,9 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, 
             a_star.motors(0,0) 
             break 
         elif (rA > lA):
-            a_star.motors(-60,60)
+            a_star.motors(-55,55)
         elif (rA < lA):
-            a_star.motors(60,-60)
+            a_star.motors(55,-55)
     return cAngle
 
 
@@ -206,7 +206,7 @@ def talker(me, goal, previous_orientation):
         orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
     if (orientation_input >= 180):
-        angle_error_offset = -5.0
+        angle_error_offset = -8.0
     else:
         angle_error_offset = 5.0
 
