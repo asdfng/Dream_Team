@@ -139,7 +139,7 @@ def run(me, goal):
         mMeY = locations[me]['Y']
         dMe = mMeX - previousMeX
 
-        if abs(dMe) > 300:
+        if abs(dMe) > 150:
             mMeX = previousMeX
             mMeY = previousMeY
         
