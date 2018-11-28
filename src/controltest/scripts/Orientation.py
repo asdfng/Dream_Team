@@ -149,7 +149,7 @@ def run(me, goal):
         shapes = {'rTriangle':checkT, 'rCircle':checkC, 'rSquare':checkS}
 
         smallest = min(shapes)
-
+        print(smallest)
         mMeX = locations[smallest]['X']
         mMeY = locations[smallest]['Y']
         
