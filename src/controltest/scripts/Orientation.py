@@ -153,6 +153,8 @@ def run(me, goal):
         mMeX = locations[smallest]['X']
         mMeY = locations[smallest]['Y']
         
+        null3, mag = point_orientation(mMeX,mMeY,mGX,mGY)
+
         previousMeX = mMeX
         previousMeY = mMeY
         
