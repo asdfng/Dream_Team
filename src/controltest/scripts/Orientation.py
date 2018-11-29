@@ -213,7 +213,7 @@ def talker(me, goal, previous_orientation):
     locations = grabber()
 
     if (goal == 'goal'):
-        orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],float(339 - 12)*(float(8/float(394-12))),float(128 - 31)*(float(4/float(221-31))))
+        orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],339,128)
     else:
         orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
@@ -235,6 +235,7 @@ def execute():
     while (distance > 1):
         distance = check('rTriangle','bCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
+    nn = talker('rSquare','goal',end_orientation)
     fire()
     
 
