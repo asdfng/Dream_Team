@@ -207,6 +207,7 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
             break
         else:
             current_angle = orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation)
+            print('currenta:%s' % current_angle)
             straight(spLeft)
         
         return current_angle
