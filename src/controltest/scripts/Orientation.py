@@ -95,7 +95,11 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         
         print('goal:%s' % compensated_orientation)                          
         tAngle += angle
-        cAngle = tAngle % 360
+
+        if (abs(tAngle - previous_orientation) > 30)
+            cAngle = previous_orientation % 360
+        else:
+            cAngle = tAngle % 360
         print('current:%s' % cAngle)
         print(check)
         lA = (cAngle - compensated_orientation) % 360
@@ -110,12 +114,9 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         elif (rA < lA):
             print('Right')
             a_star.motors(55,-55)
-            
-        previousA = cAngle
-        print(abs(cAngle - previousA))    
-        if (abs(cAngle - previousA) > 30):
-            cAngle = previousA
 
+        previousA = tAngle
+    
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
