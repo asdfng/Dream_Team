@@ -67,8 +67,7 @@ def straight(speed):
         oldencoderL = encoderL
         oldencoderR = encoderR
         a_star.motors(mLeft,sSlave)
-        print('right:%s' % sSlave)
-        print('left:%s' % mLeft)
+        
         i = 1 + i
         time.sleep(0.05)
 
@@ -184,21 +183,16 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
         null1, checkC = point_orientation(previousMeX, previousMeY, rCX, rCY)
         null2, checkS = point_orientation(previousMeX, previousMeY, rSX, rSY)
 
-        print('Circle:%s' % checkC)
-        print('Triangle:%s' % checkT)
-        print('Square:%s' % checkS)
-
+    
         shapes = {'rTriangle': float(checkT), 'rCircle':float(checkC), 'rSquare':float(checkS)}
 
         smallest = min(shapes, key = lambda x: shapes.get(x))
-        print(smallest)
-        
 
         mMeX = locations[smallest]['X']
         mMeY = locations[smallest]['Y']
         
         null3, mag = point_orientation(mMeX,mMeY,mGX,mGY)
-        print('mag:%s' % mag)
+        
         previousMeX = mMeX
         previousMeY = mMeY
         
@@ -241,7 +235,6 @@ def talker(me, goal, previous_orientation):
 
 def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
-    print(run)
     distance = check('rTriangle','bCircle')
     while (distance > 1):
         distance = check('rTriangle','bCircle')
