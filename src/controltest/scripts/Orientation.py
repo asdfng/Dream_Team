@@ -115,7 +115,42 @@ def check(comrade, target):
 
     return mag
 
-def run(me, goal):
+def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
+    tAngle = previous_orientation
+    while True:
+        encoders = a_star.read_encoders()
+        rEncoder = encoders[1]
+        lEncoder = encoders[0]
+
+        pRight = rEncoder - oREncoder
+        pLeft  = lEncoder - oLEncoder
+
+        oLEncoder = lEncoder
+        oREncoder = rEncoder
+
+        angle = displacement(pRight,pLeft) 
+                                  
+        tAngle += angle
+        cAngle = tAngle % 360
+        
+        print('difference Angle: %s' % angle)
+        print('compensated orientation: %s' % compensated_orientation)
+        print('Total angle: %s' % cAngle)
+
+        lA = (cAngle - compensated_orientation) % 360
+        rA = (compensated_orientation - cAngle) % 360
+
+        if (((cAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 1))):
+            a_star.motors(0,0) 
+            break 
+        elif (rA > lA):
+            a_star.motors(-55,55)
+        elif (rA < lA):
+            a_star.motors(55,-55)
+    return cAngle
+
+def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
+    current_angle = previous_orientation
     locations = grabber()
     if (goal == 'goal'):
         mGX = 339
@@ -170,43 +205,8 @@ def run(me, goal):
             a_star.motors(0,0)
             break
         else:
+            current_angle = orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation)
             straight(spLeft)
-
-def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation, me, goal):
-    tAngle = previous_orientation
-    while True:
-        encoders = a_star.read_encoders()
-        rEncoder = encoders[1]
-        lEncoder = encoders[0]
-
-        pRight = rEncoder - oREncoder
-        pLeft  = lEncoder - oLEncoder
-
-        oLEncoder = lEncoder
-        oREncoder = rEncoder
-
-        angle = displacement(pRight,pLeft) 
-                                  
-        tAngle += angle
-        cAngle = tAngle % 360
-        
-        print('difference Angle: %s' % angle)
-        print('compensated orientation: %s' % compensated_orientation)
-        print('Total angle: %s' % cAngle)
-
-        lA = (cAngle - compensated_orientation) % 360
-        rA = (compensated_orientation - cAngle) % 360
-
-        if (((cAngle - 1) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 1))):
-            run(me, goal)
-            a_star.motors(0,0) 
-            break 
-        elif (rA > lA):
-            a_star.motors(-55,55)
-        elif (rA < lA):
-            a_star.motors(55,-55)
-    return cAngle
-
 
 def talker(me, goal, previous_orientation):
     
@@ -230,7 +230,7 @@ def talker(me, goal, previous_orientation):
 
     compensated_orientation = (orientation_input - angle_error_offset) % 360
     
-    last_angle = orient(oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation, me, goal)
+    last_angle = run(me, goal, oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation)
     print('the last angle for the first movement was: %s' % last_angle)
     return last_angle
    
