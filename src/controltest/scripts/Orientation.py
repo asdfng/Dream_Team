@@ -152,7 +152,7 @@ def run(me, goal):
 
         shapes = {'rTriangle': float(checkT), 'rCircle':float(checkC), 'rSquare':float(checkS)}
 
-        smallest = min(shapes)
+        smallest = min(shapes, key = lambda x: shapes.get(x))
         print(smallest)
         
 
