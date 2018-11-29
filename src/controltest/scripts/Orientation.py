@@ -94,7 +94,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
                               
         tAngle += angle
 
-        if (abs(tAngle - previousA) > 30)
+        if (abs(tAngle - previousA) > 30):
             cAngle = previous_orientation % 360
         else:
             cAngle = tAngle % 360
