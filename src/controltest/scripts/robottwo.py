@@ -13,7 +13,7 @@ def execute():
     while (distance > 50):
         distance = check('rTriangle','bCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
-    nn = talker('rSquare','goal',end_orientation)
+    #nn = talker('rSquare','goal',end_orientation)
     fire()
     
 
