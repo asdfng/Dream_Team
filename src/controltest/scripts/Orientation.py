@@ -136,9 +136,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         print('current:%s' % cAngle)
         print(previousA)
         print(abs(cAngle - previousA))
-        if (abs(cAngle - previousA) > 180):
-            break
-
+        
         lA = (cAngle - compensated_orientation) % 360
         rA = (compensated_orientation - cAngle) % 360
 
@@ -153,6 +151,9 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             a_star.motors(55,-55)
 
         previousA = cAngle
+
+        if (abs(cAngle - previousA) > 180):
+            break
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
