@@ -188,7 +188,7 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
         mMeY = locations[smallest]['Y']
         
         null3, mag = point_orientation(mMeX,mMeY,mGX,mGY)
-        print(mag)
+        
         previousMeX = mMeX
         previousMeY = mMeY
         
@@ -200,7 +200,7 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
             print('currenta:%s' % current_angle)
             straight(spLeft)
         
-        return current_angle
+    return current_angle
 
 def talker(me, goal, previous_orientation):
     
