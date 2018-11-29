@@ -93,16 +93,8 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         angle = displacement(pRight,pLeft) 
                               
         tAngle += angle
-        print(abs(tAngle - previousA))
-        if (abs(tAngle - previousA) > 80):
-            cAngle = previousA % 360
-        else:
-            cAngle = tAngle % 360
-        print('cangle%s' % cAngle)
-        print('goal%s' % compensated_orientation)
-        print('tangle%s' % tAngle)
-        print('previous%s' % previousA)
-        previousA = tAngle
+        cAngle = tAngle % 360
+        
 
         lA = (cAngle - compensated_orientation) % 360
         rA = (compensated_orientation - cAngle) % 360
