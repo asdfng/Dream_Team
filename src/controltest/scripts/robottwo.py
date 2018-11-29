@@ -16,7 +16,7 @@ def execute():
     # a_star.motors(50,50)
     # time.sleep(1)
     # a_star.motors(0,0)
-    nn = talker('rSquare','goal',end_orientation)
+    nn = talker('rCircle','goal',end_orientation)
     # angle_error_offset = 5.0
     # encoders = a_star.read_encoders()
    
