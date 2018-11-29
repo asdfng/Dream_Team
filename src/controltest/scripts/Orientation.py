@@ -101,9 +101,13 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             a_star.motors(0,0) 
             break 
         elif ((lA - rA) > 50):
+            print('right')
             a_star.motors(35,-35)
         elif ((lA - rA) < -50):
+            print('right')
             a_star.motors(-35,35)
+
+        print(lA-rA)
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
