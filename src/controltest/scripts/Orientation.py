@@ -101,11 +101,13 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
 
         if (((cAngle - 5) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 5))):
             a_star.motors(0,0) 
-            break 
-        elif ((lA - rA) > 25):
-            a_star.motors(50,-50)
-        elif ((lA - rA) < -25):
-            a_star.motors(-50,50)
+            break
+        else:
+            a_star.motors(-50,50) 
+        # elif ((lA - rA) > 25):
+        #     a_star.motors(50,-50)
+        # elif ((lA - rA) < -25):
+        #     a_star.motors(-50,50)
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
