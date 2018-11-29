@@ -101,6 +101,8 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             cAngle = tAngle % 360
         print('cangle%s' % cAngle)
         print('goal%s' % compensated_orientation)
+        print('tangle%s' % tAngle)
+        print('previous%s' % previousA)
         previousA = tAngle
 
         lA = (cAngle - compensated_orientation) % 360
