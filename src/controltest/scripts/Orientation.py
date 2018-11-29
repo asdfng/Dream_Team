@@ -67,6 +67,8 @@ def straight(speed):
         oldencoderL = encoderL
         oldencoderR = encoderR
         a_star.motors(mLeft,sSlave)
+        print('right:%s' % sSlave)
+        print('left:%s' % mLeft)
         i = 1 + i
         time.sleep(0.05)
 
