@@ -93,7 +93,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         angle = displacement(pRight,pLeft) 
                               
         tAngle += angle
-
+        print(abs(tAngle - previousA))
         if (abs(tAngle - previousA) > 30):
             cAngle = previous_orientation % 360
         else:
@@ -107,10 +107,10 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         if (((cAngle - 2) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 2))):
             a_star.motors(0,0) 
             break 
-        elif ((lA - rA) > 100):
+        elif ((lA - rA) > 50):
             print('right')
             a_star.motors(35,-35)
-        elif ((lA - rA) < -100):
+        elif ((lA - rA) < -50):
             print('left')
             a_star.motors(-35,35)
         
