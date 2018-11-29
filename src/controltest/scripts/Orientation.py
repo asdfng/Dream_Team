@@ -159,7 +159,7 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
     previousMeY = locations[me]['Y']
 
     if (goal == 'ball'):
-        mark = 50
+        mark = 40
     else:
         mark = 50
 
