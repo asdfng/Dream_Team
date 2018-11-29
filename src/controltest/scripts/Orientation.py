@@ -109,6 +109,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         elif ((rA > lA) and (check < 1)):
             a_star.motors(-50,50)
             check -= 1
+    check = 0    
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
