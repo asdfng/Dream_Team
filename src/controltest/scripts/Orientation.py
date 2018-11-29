@@ -111,12 +111,6 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
     current_angle = previous_orientation
     locations = grabber()
-    if (goal == 'goal'):
-        mGX = 339
-        mGY = 128    
-    else:
-        mGX = locations[goal]['X']
-        mGY = locations[goal]['Y']
 
     previousMeX = locations[me]['X']
     previousMeY = locations[me]['Y']
@@ -130,6 +124,13 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
         
         spLeft = 100
         locations = grabber()
+
+        if (goal == 'goal'):
+            mGX = 339
+            mGY = 128    
+        else:
+            mGX = locations[goal]['X']
+            mGY = locations[goal]['Y']
 
         rTX = locations['rTriangle']['X']
         rTY = locations['rTriangle']['Y']
