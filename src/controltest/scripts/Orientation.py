@@ -131,7 +131,7 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
         spLeft = 100
         locations = grabber()
 
-        if (goal == 'ball')
+        if (goal == 'ball'):
             mGX = locations[goal]['X']
             mGY = locations[goal]['Y']
 
