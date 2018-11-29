@@ -79,6 +79,7 @@ def check(comrade, target):
 def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
     tAngle = previous_orientation
     previousA = previous_orientation
+    cAngle = 0.0
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
