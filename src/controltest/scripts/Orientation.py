@@ -149,8 +149,8 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         else:
             print('Right')
             a_star.motors(55,-55)
-    
-    previousA = cAngle
+        previousA = cAngle
+        
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
