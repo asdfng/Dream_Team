@@ -13,6 +13,9 @@ def execute():
     while (distance > 50):
         distance = check('rTriangle','bCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
+    a_star.motors(50,50)
+    time.sleep(1)
+    a_star.motors(0,0)
     #nn = talker('rSquare','goal',end_orientation)
     angle_error_offset = 5.0
     encoders = a_star.read_encoders()
@@ -26,7 +29,7 @@ def execute():
 
     compensated_orientation = (orientation_input - angle_error_offset) % 360
     orient(oldleft_encoder,oldright_encoder,compensated_orientation, end_orientation)
-
+    
     fire()
     
 
