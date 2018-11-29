@@ -151,9 +151,9 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             a_star.motors(55,-55)
             check = check - 1
 
-    previousA = cAngle    
-    if (abs(cAngle - previousA) > 50):
-        cAngle = previousA
+        previousA = cAngle    
+        if (abs(cAngle - previousA) > 50):
+            cAngle = previousA
 
     return cAngle
 
