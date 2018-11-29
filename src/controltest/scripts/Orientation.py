@@ -135,7 +135,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         cAngle = tAngle % 360
         print('current:%s' % cAngle)
 
-        if (abs(cAngle - previousA) > 100):
+        if (abs(cAngle - previousA) > 180):
             break
 
         lA = (cAngle - compensated_orientation) % 360
@@ -206,7 +206,6 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
             break
         else:
             current_angle = orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation)
-            print('currenta:%s' % current_angle)
             a_star.motors(100,100)
         
     return current_angle
@@ -228,7 +227,6 @@ def talker(me, goal, previous_orientation):
 
     
     last_angle = run(me, goal, oldleft_encoder,oldright_encoder,orientation_input, previous_orientation)
-    print('the last angle for the first movement was: %s' % last_angle)
     return last_angle
    
 
