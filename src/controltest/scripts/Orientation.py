@@ -211,7 +211,7 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
 
 def talker(me, goal, previous_orientation):
     
-    angle_error_offset = 0.0
+    angle_error_offset = 5.0
     encoders = a_star.read_encoders()
    
     oldright_encoder = encoders[1]
@@ -224,8 +224,9 @@ def talker(me, goal, previous_orientation):
     else:
         orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
-    
-    last_angle = run(me, goal, oldleft_encoder,oldright_encoder,orientation_input, previous_orientation)
+    compensated_orientation = (orientation_input - angle_error_offset) % 360
+
+    last_angle = run(me, goal, oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation)
     return last_angle
    
 
