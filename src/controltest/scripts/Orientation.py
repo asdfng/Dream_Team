@@ -67,10 +67,10 @@ def point_orientation(our_point_x, our_point_y, desired_point_x, desired_point_y
 
 def check(comrade, target):
     locations = grabber()
-    mGX = float(locations[target]['X'] - 12)*(float(8/float(394-12)))
-    mGY = float(locations[target]['Y'] - 31)*(float(4/float(221-31)))
-    mMeX = float(locations[comrade]['X'] - 12)*(float(8/float(394-12)))
-    mMeY = float(locations[comrade]['Y'] - 31)*(float(4/float(221-31)))
+    mGX = locations[target]['X']
+    mGY = locations[target]['Y']
+    mMeX = locations[comrade]['X']
+    mMeY = locations[comrade]['Y']
 
     null1 ,mag = point_orientation(mMeX,mMeY,mGX,mGY)
 
