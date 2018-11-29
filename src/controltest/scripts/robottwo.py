@@ -14,6 +14,22 @@ def execute():
         distance = check('rTriangle','bCircle')
     end_orientation = talker('rSquare','ball',last_orientation)
     #nn = talker('rSquare','goal',end_orientation)
+    angle_error_offset = 5.0
+    encoders = a_star.read_encoders()
+   
+    oldright_encoder = encoders[1]
+    oldleft_encoder = encoders[0]
+   
+    locations = grabber()
+
+    if (goal == 'goal'):
+        orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],339,128)
+    else:
+        orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
+
+    compensated_orientation = (orientation_input - angle_error_offset) % 360
+    orient(oldleft_encoder,oldright_encoder,compensated_orientation, end_orientation)
+
     fire()
     
 
