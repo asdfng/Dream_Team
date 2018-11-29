@@ -78,6 +78,7 @@ def check(comrade, target):
 
 def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
     tAngle = previous_orientation
+    previousA = previous_orientation
     while True:
         encoders = a_star.read_encoders()
         rEncoder = encoders[1]
@@ -92,8 +93,14 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         angle = displacement(pRight,pLeft) 
                               
         tAngle += angle
-        cAngle = tAngle % 360
+
+        if (abs(tAngle - previousA) > 30)
+            cAngle = previous_orientation % 360
+        else:
+            cAngle = tAngle % 360
         
+        previousA = tAngle
+
         lA = (cAngle - compensated_orientation) % 360
         rA = (compensated_orientation - cAngle) % 360
 
@@ -106,7 +113,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         elif ((lA - rA) < -100):
             print('left')
             a_star.motors(-35,35)
-
+        
         print(lA-rA)
     return cAngle
 
