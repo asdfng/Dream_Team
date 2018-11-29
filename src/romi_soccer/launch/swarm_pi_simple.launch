@@ -1,0 +1,36 @@
+<launch>
+	<arg name = "team"
+	     default= "red"/>
+	<arg name = "team_other"
+	     default = "blue"/>
+	<arg name = "romi_circle"/>
+	<arg name = "romi_square"/>
+	<arg name = "romi_triangle"/>
+	
+	
+     <include file="$(find romi_soccer)/launch/team_tracker.launch">
+          <arg name="home_team" value="$(arg team)"/>
+          <arg name="visiting_team" value="$(arg team_other)"/>
+          <arg name="romi_circle" value="$(arg romi_circle)"/>
+          <arg name="romi_square" value="$(arg romi_square)"/>
+          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+     </include>
+
+     <include file="$(find romi_soccer)/launch/three_romi_simple.launch">
+          <arg name="team" value="$(arg team)"/>
+          <arg name="romi_circle" value="$(arg romi_circle)"/>
+          <arg name="romi_square" value="$(arg romi_square)"/>
+          <arg name="romi_triangle" value="$(arg romi_triangle)"/>
+     </include>
+     
+     <node
+          name="homography_node"
+          pkg="romi_soccer"
+          type="homography_calibrater.py"/>
+
+     <node
+          name="corner_tracker"
+          pkg="romi_soccer"
+          type="json_corner_grabber.py"/>
+
+</launch>

@@ -26,7 +26,7 @@ def json_ball_grabber():
 if __name__ == '__main__':
     rospy.init_node('json_ball_grabber')
     subject = rospy.get_param('~subject')
-    pub = rospy.Publisher('ball/raw_pose', Vector3Stamped, queue_size=10)
+    pub = rospy.Publisher('/mapper/ball/raw_pose', Vector3Stamped, queue_size=10)
     try:
         json_ball_grabber()
     except rospy.ROSInterruptException:

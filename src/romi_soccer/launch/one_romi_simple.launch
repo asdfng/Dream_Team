@@ -1,0 +1,53 @@
+<launch>
+     <arg name   = "robot_name"/>
+     <arg name   = "team"/>
+     <arg name   = "shape"/>
+     <arg name   = "init_pose"/>
+     <arg name   = "romi_circle"/>
+     <arg name   = "romi_square"/>
+     <arg name   = "romi_triangle"/>
+
+     <!-- Starting a parameter server to hold the value of the subject -->
+     <param
+          name = "subject"
+          value = "$(arg team)_$(arg shape)"/>
+     <!-- Starting a parameter server to hold the value of the subject -->
+     <param
+          name = "robot_name"
+          value = "$(arg robot_name)"/>
+     <param
+          name = "romi_circle"
+          value = "$(arg romi_circle)"/>
+     <param
+          name = "romi_square"
+          value = "$(arg romi_square)"/>
+     <param
+          name = "romi_triangle"
+          value = "$(arg romi_triangle)"/>
+     <param
+          name = "/$(arg robot_name)_first_pose_x"
+          value = "0"/>
+     <param
+          name = "/$(arg robot_name)_first_pose_y"
+          value = "0"/>
+    <!-- Start the odom calculator -->
+    <node
+         name="odom_node"
+         pkg="romi_soccer"
+         type="odom_calculator"
+         output="screen"
+         ns     = "/$(arg team)_$(arg shape)/$(arg robot_name)"/>
+     <!-- Start the transform broadcaster from map->odom -->
+    <node
+         name="map_node"
+         pkg="romi_soccer"
+         type="poser"
+         output="screen"/>
+
+     <!-- Start the fake sensor -->
+     <node
+	 name="sensor_node"
+	 pkg="romi_soccer"
+	 type="finder_simple"/>
+</launch>
+	 

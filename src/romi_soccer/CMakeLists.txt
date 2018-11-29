@@ -175,6 +175,7 @@ catkin_install_python(
   PROGRAMS
   scripts/mapper
   scripts/finder
+  scripts/finder_simple
   scripts/jsongwriter
   scripts/odom_calculator
   scripts/poser
