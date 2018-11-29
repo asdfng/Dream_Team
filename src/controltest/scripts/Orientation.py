@@ -217,7 +217,6 @@ def talker(me, goal, previous_orientation):
     else:
         orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],locations[goal]['X'],locations[goal]['Y'])
 
-    compensated_orientation = orientation_input
     
     last_angle = run(me, goal, oldleft_encoder,oldright_encoder,orientation_input, previous_orientation)
     print('the last angle for the first movement was: %s' % last_angle)
