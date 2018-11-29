@@ -5,6 +5,7 @@ import math
 from a_star import AStar
 from Orientation import grabber, displacement, point_orientation, run, orient, talker, fire
 
+a_star = AStar()
 
 def execute():
     last_orientation = talker('rSquare','rTriangle',0.0)
