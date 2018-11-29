@@ -195,19 +195,3 @@ def talker(me, goal, previous_orientation):
     last_angle = run(me, goal, oldleft_encoder,oldright_encoder,compensated_orientation, previous_orientation)
     return last_angle
    
-
-def execute():
-    last_orientation = talker('rSquare','rTriangle',0.0)
-    distance = check('rTriangle','bCircle')
-    while (distance > 50):
-        distance = check('rTriangle','bCircle')
-    end_orientation = talker('rSquare','ball',last_orientation)
-    nn = talker('rSquare','goal',end_orientation)
-    fire()
-    
-
-if __name__ == '__main__':
-    try:
-        execute()
-    except KeyboardInterrupt:
-        a_star.motors(0,0)
