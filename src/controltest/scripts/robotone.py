@@ -3,7 +3,7 @@ import timeit
 import os
 import math
 from a_star import AStar
-from Orientation import grabber, displacement, point_orientation, run, orient, talker, fire
+from Orientation import grabber, displacement, point_orientation, run, orient, talker, fire, check
 
 
 
