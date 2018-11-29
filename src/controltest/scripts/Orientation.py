@@ -132,10 +132,6 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         print('tangle:%s' % tAngle)                          
         tAngle += angle
         cAngle = tAngle % 360
-        
-        print('difference Angle: %s' % angle)
-        print('compensated orientation: %s' % compensated_orientation)
-        print('Total angle: %s' % cAngle)
 
         lA = (cAngle - compensated_orientation) % 360
         rA = (compensated_orientation - cAngle) % 360
