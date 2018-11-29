@@ -102,8 +102,10 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             break 
         elif (rA > lA):
             a_star.motors(-55,55)
+            time.sleep(0.1)
         elif (rA < lA):
             a_star.motors(55,-55)
+            time.sleep(0.1)
 
     
     return cAngle
