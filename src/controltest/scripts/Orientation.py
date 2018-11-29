@@ -99,7 +99,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         lA = (cAngle - compensated_orientation) % 360
         rA = (compensated_orientation - cAngle) % 360
 
-        if (((cAngle - 2) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 2))):
+        if (((cAngle - 5) <= (compensated_orientation)) and ((compensated_orientation) <= (cAngle + 5))):
             a_star.motors(0,0) 
             break 
         elif ((lA - rA) > 25):
