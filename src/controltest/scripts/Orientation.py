@@ -143,6 +143,7 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             break 
         elif (abs(cAngle - previousA) > 300):
             a_star.motors(-100,100)
+            time.sleep(.1)
         elif (rA > lA):
             print('Left')
             a_star.motors(-55,55)
