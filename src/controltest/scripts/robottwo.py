@@ -22,7 +22,7 @@ def execute():
    
     locations = grabber()
 
-    orientation_input, mag = point_orientation(locations[me]['X'],locations[me]['Y'],339,128)
+    orientation_input, mag = point_orientation(locations['rSquare']['X'],locations['rSquare']['Y'],339,128)
 
     compensated_orientation = (orientation_input - angle_error_offset) % 360
     orient(oldleft_encoder,oldright_encoder,compensated_orientation, end_orientation)
