@@ -15,6 +15,6 @@ if __name__ == '__main__':
         a_star.motors(-50,-50)
         time.sleep(1)
         a_star.motors(0,0)
-        end_orientation = talker('rTriangle','rSquare',last_orientation)
+        end_orientation = talker('rTriangle','bCircle',last_orientation)
     except KeyboardInterrupt:
         a_star.motors(0,0)
