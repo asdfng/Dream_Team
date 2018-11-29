@@ -129,7 +129,8 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         oREncoder = rEncoder
 
         angle = displacement(pRight,pLeft) 
-        print('angle:%s' % angle)                          
+        print('angle:%s' % angle)
+        print('tangle:%s' % tAngle)                          
         tAngle += angle
         cAngle = tAngle % 360
         
