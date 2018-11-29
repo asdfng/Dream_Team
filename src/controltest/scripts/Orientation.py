@@ -114,7 +114,6 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
             print('left')
             a_star.motors(-35,35)
         
-        print(lA-rA)
     return cAngle
 
 def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orientation):
