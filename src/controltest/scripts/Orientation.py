@@ -134,7 +134,8 @@ def orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation):
         tAngle += angle
         cAngle = tAngle % 360
         print('current:%s' % cAngle)
-
+        print(previousA)
+        print(abs(cAngle - previousA))
         if (abs(cAngle - previousA) > 180):
             break
 
