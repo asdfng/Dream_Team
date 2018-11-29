@@ -33,44 +33,6 @@ def grabber():
 
     return locations
 
-def straight(speed):
-    mLeft = speed
-    sRight = speed
-    sSlave = sRight
-    encoders = a_star.read_encoders()
-    oldencoderL = encoders[0]
-    oldencoderR = encoders[1]
-    tError = 0
-    error = 0
-    kp = 2
-    ki = 100
-    i = 0
-    while (i < 10):
-        if (i==0):
-            a_star.motors(mLeft,sRight)
-        encoders = a_star.read_encoders()
-        encoderL = encoders[0]
-        encoderR = encoders[1]
-        dL = encoderL - oldencoderL
-        dR = encoderR - oldencoderR
-
-        error = dL - dR
-
-        if error > 1000:
-            error = 0
-
-        tError += error
-        sSlave += error/kp + tError/ki
-
-        sSlave = sSlave % 400 
-            
-        oldencoderL = encoderL
-        oldencoderR = encoderR
-        a_star.motors(mLeft,sSlave)
-        
-        i = 1 + i
-        time.sleep(0.05)
-
 def displacement(right_encoder,left_encoder): #velocity: ft/s, position: ft
     theta_initial = 0.0
     theta_new_unbounded = 0.0
