@@ -208,6 +208,8 @@ def run(me, goal, oLEncoder, oREncoder, compensated_orientation, previous_orient
         else:
             current_angle = orient(oLEncoder, oREncoder, compensated_orientation, previous_orientation)
             straight(spLeft)
+        
+        return current_angle
 
 def talker(me, goal, previous_orientation):
     
