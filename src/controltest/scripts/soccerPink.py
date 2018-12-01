@@ -11,13 +11,12 @@ def execute()
     orientation = 0.0
     while True:
         orientation = talker('rCircle','ball',orientation)
-        fire()
+        time.sleep(1)
         orientation = talker ('rCircle','goal',orientation)
         if check('rCircle','ball') > 40:
             continue
         else:
             fire()
-            break
     
 
 if __name__ == '__main__':

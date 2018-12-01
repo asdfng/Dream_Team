@@ -11,6 +11,9 @@ a_star = AStar() #Not sure that we need this line because it is defined in the o
 
 if __name__ == '__main__':
     try:
-        last_orientation = talker('rTriangle','bTriangle',355.0)
+        last_orientation = 355.0
+        while True:
+            last_orientation = talker('rTriangle','bTriangle',last_orientation)
+            last_orientation = talker('rTriangle','bSquare',last_orientation)
     except KeyboardInterrupt:
         a_star.motors(0,0)

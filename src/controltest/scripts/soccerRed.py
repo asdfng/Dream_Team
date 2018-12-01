@@ -8,7 +8,9 @@ from Orientation import grabber, displacement, point_orientation, run, orient, t
 a_star = AStar()
 
 def execute():
-    last_orientation = talker('rSquare','bCircle',0.0)
+    last_orientation = 0.0
+    while True:
+        last_orientation = talker('rSquare','bCircle',last_orientation)
     
 
 if __name__ == '__main__':
