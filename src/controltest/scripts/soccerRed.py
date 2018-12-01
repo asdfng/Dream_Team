@@ -7,17 +7,8 @@ from Orientation import grabber, displacement, point_orientation, run, orient, t
 
 a_star = AStar()
 
-def execute()
-    orientation = 0.0
-    while True:
-        orientation = talker('rCircle','ball',orientation)
-        fire()
-        orientation = talker ('rCircle','goal',orientation)
-        if check('rCircle','ball') > 40:
-            continue
-        else:
-            fire()
-            break
+def execute():
+    last_orientation = talker('rSquare','bCircle',0.0)
     
 
 if __name__ == '__main__':
